@@ -1,0 +1,1181 @@
+/* ==========================================================================
+   ÁGUAS DE FERRO — DESIGN SYSTEM "MESA DE ARQUIVO MORTO" (RECIFE 1958-1975)
+   Baseado estritamente nas diretrizes de CONTEXT.md
+   ========================================================================== */
+
+:root {
+  /* Paleta Histórica & Analógica */
+  --cor-fundo-mesa: #161412;
+  --cor-madeira-profunda: #0f0d0c;
+  --cor-papel-principal: #E6DFD3;
+  --cor-papel-secundario: #D8CFBC;
+  --cor-tinta-principal: #1E1D1B;
+  --cor-tinta-desbotada: #5A554C;
+  --cor-tinta-suave: #7D7568;
+  --cor-carimbo-vermelho: #8A2522;
+  --cor-verde-militar: #3D4337;
+  --cor-lodo-capibaribe: #3C3B30;
+  --cor-azul-caneta: #2B3A4A;
+  --cor-fita-adesiva: rgba(220, 204, 150, 0.65);
+  
+  /* Tipografia Clássica e Histórica */
+  --fonte-editorial: "EB Garamond", "Lora", "Merriweather", "Georgia", serif;
+  --fonte-datilografada: "Courier Prime", "Special Elite", "Courier New", monospace;
+  
+  /* Medidas de Conforto */
+  --largura-linha-leitura: 65ch;
+}
+
+/* ==========================================================================
+   RESET & BLACKLIST VISUAL (ANTI-GENERIC DESIGN)
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important; /* PROIBIÇÃO ABSOLUTA DE BORDAS ARREDONDADAS */
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--cor-fundo-mesa);
+  color: var(--cor-tinta-principal);
+  font-family: var(--fonte-editorial);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   ANIMAÇÃO DE SCREEN SHAKE (TREMOR TÁTIL DE IMPACTO)
+   ========================================================================== */
+@keyframes screenShake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, 1px); }
+  80% { transform: translate(2px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+.mesa-viewport.screen-shake {
+  animation: screenShake 100ms ease-in-out;
+}
+
+/* CONTAINER PRINCIPAL DA MESA */
+.mesa-viewport {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  padding: 12px 18px 18px 18px;
+  background: 
+    radial-gradient(ellipse at 50% 30%, #221e1a 0%, #161412 70%, #0d0c0a 100%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 8px);
+}
+
+/* INDICADOR DE AÇÕES NA BARRA */
+.indicador-acoes {
+  color: #c7beaf;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.indicador-acoes .ponto-ativo {
+  color: #559463;
+  margin-right: 2px;
+}
+
+.indicador-acoes .ponto-gasto {
+  color: #5a554c;
+  margin-right: 2px;
+}
+
+/* ==========================================================================
+   VISÃO DE ÍNDICE DO DOSSIÊ DA FASE
+   ========================================================================== */
+.banner-climax-dossie {
+  border: 2px solid var(--cor-carimbo-vermelho);
+  background-color: rgba(138, 37, 34, 0.08);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: var(--fonte-datilografada);
+}
+
+.banner-climax-titulo {
+  color: var(--cor-carimbo-vermelho);
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.banner-climax-desc {
+  font-size: 11px;
+  color: var(--cor-tinta-desbotada);
+  line-height: 1.4;
+}
+
+.lista-dossie-itens {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.cartao-dossie-item {
+  background-color: #dcd4c1;
+  border: 1px solid #b8ac95;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+}
+
+.cartao-dossie-item:hover {
+  background-color: #d4caa8;
+  border-color: #8f8269;
+  transform: translateY(-1px);
+}
+
+.dossie-info {
+  flex: 1;
+}
+
+.dossie-meta {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--cor-tinta-desbotada);
+  margin-bottom: 4px;
+}
+
+.dossie-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cor-tinta-principal);
+}
+
+.btn-abrir-evento {
+  background: var(--cor-tinta-principal);
+  color: #f0eae1;
+  border: 1px solid #3d3a35;
+  padding: 8px 16px;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-abrir-evento:hover {
+  background: #36322c;
+  border-color: #7d7364;
+}
+
+.btn-voltar-dossie {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid #9c917d;
+  color: var(--cor-tinta-desbotada);
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.btn-voltar-dossie:hover {
+  background: #d4caa8;
+  color: var(--cor-tinta-principal);
+  border-color: var(--cor-tinta-principal);
+}
+.barra-sistema {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px;
+  background-color: #1a1816;
+  border: 1px solid #332f2a;
+  color: #9e9587;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.status-sistema {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ponto-status {
+  color: #4f805a;
+  font-size: 12px;
+}
+
+.etiqueta-fase {
+  font-weight: bold;
+  color: #c7beaf;
+}
+
+.separador-barra {
+  color: #4a443b;
+}
+
+.comandos-sistema {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.atalho-guia {
+  color: #6d665b;
+}
+
+.btn-controle {
+  background: #25221f;
+  color: #d1c8b7;
+  border: 1px solid #4d463d;
+  padding: 3px 8px;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-controle:hover {
+  background: #36322c;
+  color: #f0eae1;
+  border-color: #7d7364;
+}
+
+/* ==========================================================================
+   LAYOUT ASSIMÉTRICO (35% ESQUERDA / 65% DIREITA)
+   ========================================================================== */
+.mesa-investigacao {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  min-height: 0;
+}
+
+/* ==========================================================================
+   COLUNA DA ESQUERDA (35% — CONTEXTO & PRONTUÁRIO DOPS)
+   ========================================================================== */
+.coluna-prontuario {
+  flex: 0 0 34%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.coluna-prontuario::-webkit-scrollbar,
+.coluna-narrativa::-webkit-scrollbar {
+  width: 6px;
+}
+.coluna-prontuario::-webkit-scrollbar-track,
+.coluna-narrativa::-webkit-scrollbar-track {
+  background: #191715;
+}
+.coluna-prontuario::-webkit-scrollbar-thumb,
+.coluna-narrativa::-webkit-scrollbar-thumb {
+  background: #3d3730;
+  border: 1px solid #29241f;
+}
+
+/* MOLDURA DE EVIDÊNCIA / FOTO POLAROID / RECORTE */
+.moldura-evidencia-container {
+  position: relative;
+  background-color: var(--cor-papel-secundario);
+  border: 1px solid #b8ad96;
+  padding: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  transform: rotate(-0.75deg);
+  margin-top: 10px;
+}
+
+.fita-adesiva.fita-topo {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(1deg);
+  width: 90px;
+  height: 20px;
+  background-color: var(--cor-fita-adesiva);
+  border: 1px dashed rgba(160, 140, 90, 0.4);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+.moldura-evidencia {
+  border: 1px solid #a69b84;
+  background: #c9bea9;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   TRATAMENTO DE IMAGENS — FILTRO CSS "JORNAL DE 75" (§2.5 CONTEXT.md)
+   ========================================================================== */
+.foto-jornal-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cor-papel-secundario);
+}
+
+.filtro-jornal-75 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(60%) contrast(115%) brightness(90%) grayscale(30%);
+  display: block;
+}
+
+/* Camada Halftone / Reticulado de Impressão e Vinheta */
+.foto-jornal-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: 
+    radial-gradient(ellipse at center, transparent 35%, rgba(22, 20, 18, 0.8) 100%),
+    repeating-radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 3px);
+  background-size: 100% 100%, 3px 3px;
+  mix-blend-mode: multiply;
+}
+
+/* ARTE PROCEDURAL TEMPORÁRIA */
+.placeholder-arte-procedural {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: var(--fonte-datilografada);
+}
+
+.arte-cabecalho {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--cor-tinta-desbotada);
+  margin-bottom: 8px;
+}
+
+.arte-carimbo-dops {
+  border: 2px solid var(--cor-carimbo-vermelho);
+  color: var(--cor-carimbo-vermelho);
+  padding: 4px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  transform: rotate(-4deg);
+  margin: 6px 0;
+  display: inline-block;
+}
+
+.arte-detalhe-grafico {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 80%;
+  margin: 6px 0;
+}
+
+.arte-detalhe-grafico .linha-estilizada {
+  flex: 1;
+  height: 1px;
+  background: #877d6c;
+}
+
+.arte-selo-confidencial {
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--cor-verde-militar);
+  letter-spacing: 2px;
+  border: 1px solid var(--cor-verde-militar);
+  padding: 2px 6px;
+}
+
+.arte-rodape {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--cor-tinta-desbotada);
+  margin-top: 6px;
+}
+
+/* FICHA DO DOPS / PRONTUÁRIO DATILOGRAFADO */
+.ficha-dops {
+  background-color: var(--cor-papel-secundario);
+  border: 1px solid #b8ad96;
+  padding: 20px 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  font-family: var(--fonte-datilografada);
+  color: var(--cor-tinta-principal);
+  transform: rotate(0.4deg);
+}
+
+.ficha-cabecalho {
+  text-align: center;
+  border-bottom: 2px solid var(--cor-tinta-principal);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.ficha-orgao {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--cor-tinta-desbotada);
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.ficha-titulo {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--cor-tinta-principal);
+}
+
+.ficha-secao {
+  margin-bottom: 12px;
+}
+
+.ficha-subtitulo {
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--cor-carimbo-vermelho);
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.ficha-campo-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.ficha-campo-linha .rotulo-campo {
+  color: var(--cor-tinta-desbotada);
+  font-weight: bold;
+}
+
+.ficha-campo-linha .valor-campo {
+  color: var(--cor-tinta-principal);
+  font-weight: bold;
+}
+
+.ficha-divisor {
+  height: 1px;
+  border-top: 1px dashed #9c917d;
+  margin: 10px 0;
+}
+
+/* GRADES DE ATRIBUTOS E RECURSOS */
+.grade-atributos,
+.grade-recursos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.item-atributo,
+.item-recurso {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid #bab09d;
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+/* BADGES DE DELTA NUMÉRICO NO PRONTUÁRIO */
+.delta-badge {
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 1px 5px;
+  pointer-events: none;
+  animation: subirEFade 1.5s forwards ease-out;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.delta-badge.delta-positivo {
+  background-color: #2b5438;
+  color: #f0eae1;
+  border: 1px solid #3d754e;
+}
+
+.delta-badge.delta-negativo {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #f0eae1;
+  border: 1px solid #b8332f;
+}
+
+@keyframes subirEFade {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+
+.rotulo-attr,
+.rotulo-recurso {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--cor-tinta-desbotada);
+}
+
+.valor-attr,
+.valor-recurso {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--cor-tinta-principal);
+}
+
+.recurso-alerta {
+  border-color: var(--cor-carimbo-vermelho);
+  background: rgba(138, 37, 34, 0.07);
+}
+
+.recurso-alerta .valor-recurso {
+  color: var(--cor-carimbo-vermelho);
+}
+
+.ficha-rodape {
+  border-top: 1px solid #aba08d;
+  padding-top: 8px;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: var(--cor-tinta-suave);
+}
+
+/* ==========================================================================
+   COLUNA DA DIREITA (65% — NARRATIVA, CRÔNICA E DECISÕES)
+   ========================================================================== */
+.coluna-narrativa {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.folha-narrativa {
+  width: 100%;
+  max-width: 860px;
+  background-color: var(--cor-papel-principal);
+  border: 1px solid #cfc5b2;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 2px rgba(0, 0, 0, 0.4);
+  padding: 44px 58px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.folha-narrativa.folha-transicao {
+  opacity: 0.25;
+  transform: translateY(4px);
+}
+
+/* CABEÇALHO EDITORIAL */
+.editorial-cabecalho {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+/* NOTIFICAÇÃO DE HOT-RELOAD DE ARQUIVO */
+.notificacao-hot-reload {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  background-color: var(--cor-papel-secundario);
+  border: 1px dashed var(--cor-carimbo-vermelho);
+  color: var(--cor-carimbo-vermelho);
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: all 0.25s ease-out;
+  z-index: 10;
+}
+
+.notificacao-hot-reload.visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.editorial-topo {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--cor-tinta-desbotada);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.editorial-filete-duplo {
+  border-top: 3px double var(--cor-tinta-principal);
+  margin-bottom: 16px;
+}
+
+.editorial-manchete {
+  font-family: var(--fonte-editorial);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.5px;
+  color: var(--cor-tinta-principal);
+  margin-bottom: 10px;
+}
+
+.editorial-lead {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--cor-tinta-desbotada);
+  max-width: var(--largura-linha-leitura);
+}
+
+/* CORPO NARRATIVO */
+.corpo-narrativa {
+  margin-bottom: 32px;
+}
+
+.corpo-narrativa p {
+  font-family: var(--fonte-editorial);
+  font-size: 19px;
+  line-height: 1.75;
+  max-width: var(--largura-linha-leitura);
+  color: #1a1917;
+  margin-bottom: 22px;
+  text-align: justify;
+}
+
+/* LETRA CAPITULAR (3 LINHAS DE ALTURA) */
+.corpo-narrativa p:first-of-type::first-letter {
+  font-size: 64px;
+  float: left;
+  line-height: 52px;
+  padding-right: 12px;
+  padding-top: 4px;
+  font-weight: 700;
+  font-family: var(--fonte-editorial);
+  color: var(--cor-tinta-principal);
+}
+
+/* GRIFOS SEMÂNTICOS HISTÓRICOS */
+.grifo-bairro {
+  background-color: rgba(220, 200, 130, 0.35);
+  border-bottom: 1px dotted var(--cor-azul-caneta);
+  padding: 0 3px;
+  color: var(--cor-azul-caneta);
+  font-weight: 600;
+}
+
+.grifo-faccao {
+  background-color: rgba(138, 37, 34, 0.12);
+  border-bottom: 1px solid var(--cor-carimbo-vermelho);
+  padding: 0 3px;
+  color: var(--cor-carimbo-vermelho);
+  font-weight: 600;
+}
+
+.grifo-rio {
+  background-color: rgba(60, 59, 48, 0.15);
+  border-bottom: 1px dashed var(--cor-lodo-capibaribe);
+  padding: 0 3px;
+  color: #2e352b;
+  font-weight: 600;
+}
+
+/* DIVISÓRIA DE DECISÕES */
+.divisor-decisoes {
+  border-top: 3px double var(--cor-tinta-principal);
+  position: relative;
+  text-align: center;
+  margin: 10px 0 24px 0;
+}
+
+.titulo-decisoes {
+  position: relative;
+  top: -10px;
+  background-color: var(--cor-papel-principal);
+  padding: 0 14px;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--cor-tinta-desbotada);
+}
+
+/* LISTA DE DECISÕES TÁTEIS */
+.lista-decisoes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cartao-decisao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background-color: #ded6c5;
+  border: 1px solid #bfb49e;
+  padding: 16px 20px;
+  position: relative;
+  font-family: var(--fonte-editorial);
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  overflow: hidden;
+}
+
+.cartao-decisao.opcao-disponivel:hover {
+  background-color: #d6ccb9;
+  border-color: #8c8068;
+  box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.cartao-decisao.opcao-disponivel:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   CARIMBO TÁTIL DE IMPACTO (SLAM ANIMATION)
+   ========================================================================== */
+@keyframes carimboImpacto {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scale(2.2) rotate(-10deg);
+  }
+  60% {
+    opacity: 0.95;
+    transform: translateY(-50%) scale(0.96) rotate(-3deg);
+  }
+  100% {
+    opacity: 0.92;
+    transform: translateY(-50%) scale(1) rotate(-4.5deg);
+  }
+}
+
+.carimbo-slam {
+  position: absolute;
+  top: 50%;
+  right: 28px;
+  border: 3px double var(--cor-carimbo-vermelho);
+  color: var(--cor-carimbo-vermelho);
+  font-family: var(--fonte-datilografada);
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding: 6px 18px;
+  background-color: rgba(230, 223, 211, 0.92);
+  box-shadow: 0 0 6px rgba(138, 37, 34, 0.35);
+  pointer-events: none;
+  animation: carimboImpacto 130ms cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+  z-index: 20;
+}
+
+.decisao-topo {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.decisao-numero {
+  font-family: var(--fonte-datilografada);
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--cor-carimbo-vermelho);
+}
+
+.decisao-rotulo {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--cor-tinta-principal);
+  flex: 1;
+}
+
+.etiqueta-custo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--cor-tinta-desbotada);
+  font-weight: bold;
+}
+
+.decisao-descricao {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cor-tinta-desbotada);
+  margin-bottom: 12px;
+  padding-left: 24px;
+}
+
+.decisao-requisitos {
+  padding-left: 24px;
+  margin-bottom: 8px;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.req-item.req-atendido {
+  color: #2b5438;
+}
+
+.req-item.req-falho {
+  color: var(--cor-carimbo-vermelho);
+  font-weight: bold;
+}
+
+.decisao-efeitos {
+  padding-left: 24px;
+  display: flex;
+  gap: 12px;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: #3b503e;
+}
+
+.efeito-item.efeito-negativo {
+  color: var(--cor-carimbo-vermelho);
+}
+
+/* CENSURA VISUAL INTERATIVA (OPÇÕES BLOQUEADAS) */
+.cartao-decisao.opcao-bloqueada {
+  background-color: #d1c8b5;
+  border: 1px solid #a89c83;
+  opacity: 0.72;
+  cursor: not-allowed;
+  position: relative;
+  overflow: hidden;
+}
+
+.tarja-censura-faixa {
+  position: absolute;
+  top: 14px;
+  right: -25px;
+  background-color: var(--cor-carimbo-vermelho);
+  color: #f0eae1;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  padding: 4px 35px;
+  transform: rotate(14deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+.cartao-decisao.opcao-bloqueada .decisao-rotulo {
+  color: #635c50;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #1e1d1b;
+}
+
+/* ==========================================================================
+   VARIAÇÕES DE FASE (ATMOSFERA)
+   ========================================================================== */
+body.fase-2 {
+  --cor-papel-principal: #ded6c7;
+  --cor-fundo-mesa: #12100e;
+}
+
+/* ==========================================================================
+   PAINEL HIDROLÓGICO DA CHEIA DE 75 (TICKET 11)
+   ========================================================================== */
+.painel-cheia-75 {
+  display: none;
+  background-color: #24241d;
+  border: 1px solid #4a493b;
+  color: #c9c3b0;
+  padding: 14px 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+  font-family: var(--fonte-datilografada);
+}
+
+body.fase-3 .painel-cheia-75 {
+  display: block;
+}
+
+.cheia-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #5a5748;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+.cheia-alerta-luz {
+  color: var(--cor-carimbo-vermelho);
+  font-weight: bold;
+}
+
+.cheia-medidor-conteudo {
+  display: flex;
+  gap: 14px;
+}
+
+.cheia-regua-grafica {
+  width: 44px;
+  height: 90px;
+  background-color: #171714;
+  border: 1px solid #525042;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.regua-nivel-agua {
+  width: 100%;
+  background: linear-gradient(to top, #2e2f23 0%, #4a4a35 100%);
+  border-top: 2px solid #8f8a65;
+  transition: height 0.6s ease-out;
+}
+
+.cheia-dados-numericos {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 11px;
+}
+
+.dado-cheia-linha {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.dado-cheia-linha .rotulo {
+  color: #8c8672;
+}
+
+.dado-cheia-linha .valor {
+  color: #e6dfd3;
+  font-weight: bold;
+}
+
+.dado-cheia-linha.status-panico .valor {
+  color: var(--cor-carimbo-vermelho);
+  font-weight: bold;
+}
+
+/* ATMOSFERA FASE 3: LODO E UMIDADE */
+body.fase-3 {
+  --cor-papel-principal: #cfc8b8;
+  --cor-papel-secundario: #bfb6a4;
+  --cor-fundo-mesa: #0e0d0b;
+}
+
+body.fase-3 .folha-narrativa {
+  background: linear-gradient(180deg, #cfc8b8 0%, #c4bda9 100%);
+  border-color: #615c4d;
+  box-shadow: 
+    inset 0 0 45px rgba(60, 59, 48, 0.45),
+    0 12px 36px rgba(0, 0, 0, 0.85);
+}
+
+/* ==========================================================================
+   CONSOLE DE DEPURAÇÃO RETRÁTIL (TICKET 12)
+   ========================================================================== */
+.console-depuracao {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 390px;
+  height: 100vh;
+  background-color: #1a1815;
+  border-left: 2px solid #544e43;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--fonte-datilografada);
+  color: #d1c8b8;
+}
+
+.console-depuracao.aberto {
+  transform: translateX(0);
+}
+
+.console-cabecalho {
+  padding: 14px 18px;
+  background-color: #24211d;
+  border-bottom: 2px solid #3d3932;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.console-titulo {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #e6dfd3;
+}
+
+.btn-fechar-console {
+  background: transparent;
+  border: 1px solid #5a554c;
+  color: #a89f90;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.console-corpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.console-secao {
+  background: #201e1a;
+  border: 1px solid #38342d;
+  padding: 12px 14px;
+}
+
+.console-secao-titulo {
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--cor-carimbo-vermelho);
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #3d3931;
+  padding-bottom: 4px;
+}
+
+.console-grid-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.campo-depuracao {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.campo-depuracao label {
+  font-size: 9px;
+  color: #8c8374;
+  letter-spacing: 0.5px;
+}
+
+.campo-depuracao input,
+.campo-depuracao select {
+  background: #141311;
+  border: 1px solid #4a453c;
+  color: #e6dfd3;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  padding: 4px 6px;
+}
+
+.btn-acao-rapida {
+  width: 100%;
+  background: #2e2b26;
+  border: 1px solid #544e43;
+  color: #dcd4c3;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 6px 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-acao-rapida:hover {
+  background: #3d3932;
+  color: #f0eae1;
+  border-color: #807666;
+}
+
+.btn-acao-perigo {
+  border-color: var(--cor-carimbo-vermelho);
+  color: #e07a78;
+}
+
+.btn-acao-perigo:hover {
+  background: rgba(138, 37, 34, 0.2);
+}
+
+/* BOTÃO DE DEVTOOLS NA BARRA SUPERIOR */
+.btn-devtools {
+  background: #2e2620;
+  border-color: #8a3a35;
+  color: #dca39c;
+}
+.btn-devtools:hover {
+  background: #422924;
+  border-color: var(--cor-carimbo-vermelho);
+}

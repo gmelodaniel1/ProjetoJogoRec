@@ -1,0 +1,25 @@
+{
+  "name": "aguas-de-ferro",
+  "version": "0.1.0",
+  "description": "RPG narrativo determinístico ambientado no Recife (1958-1975)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/runner.js"
+  },
+  "keywords": [
+    "rpg",
+    "narrative",
+    "recife",
+    "electron"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^45.2.1"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.1.3"
+  }
+}

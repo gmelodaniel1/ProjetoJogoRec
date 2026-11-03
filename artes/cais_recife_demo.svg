@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="100%" height="100%">
+  <rect width="400" height="250" fill="#c4baa7" />
+  <!-- Silhueta das pontes e armazéns do porto do Recife -->
+  <path d="M0 160 Q80 150 160 160 T320 160 L400 165 L400 250 L0 250 Z" fill="#2d2b27" />
+  <path d="M40 120 L80 120 L80 160 L40 160 Z" fill="#3f3c36" />
+  <path d="M120 100 L180 100 L180 160 L120 160 Z" fill="#4d4941" />
+  <path d="M220 130 L290 130 L290 160 L220 160 Z" fill="#3f3c36" />
+  <!-- Mastro de guindaste e vapores -->
+  <line x1="150" y1="100" x2="150" y2="40" stroke="#1e1d1b" stroke-width="3" />
+  <line x1="150" y1="50" x2="200" y2="80" stroke="#1e1d1b" stroke-width="2" />
+  <!-- Águas do Capibaribe com reflexo -->
+  <path d="M0 190 Q100 185 200 190 T400 190" stroke="#5a554c" stroke-width="2" fill="none" />
+  <path d="M0 215 Q100 210 200 215 T400 215" stroke="#5a554c" stroke-width="2" fill="none" />
+  <text x="20" y="35" font-family="monospace" font-size="12" fill="#5a554c" letter-spacing="2">REGISTRO FOTOGRÁFICO // CAIS DE SANTA RITA - 1958</text>
+</svg>
+

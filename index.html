@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Águas de Ferro — Recife (1958–1975)</title>
+  
+  <!-- Fontes Editoriais e Datilografadas Históricas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Special+Elite&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="fase-1">
+  <div class="mesa-viewport">
+    
+    <!-- BARRA DE SISTEMA (Mesa de Arquivo) -->
+    <header class="barra-sistema">
+      <div class="status-sistema">
+        <span class="ponto-status">●</span>
+        <span id="etiqueta-fase" class="etiqueta-fase">FASE 1: A FORMAÇÃO (1958–1964)</span>
+        <span class="separador-barra">|</span>
+        <span id="ano-atual" class="ano-atual">RECIFE, 1958</span>
+        <span class="separador-barra">|</span>
+        <span id="indicador-acoes" class="indicador-acoes">AÇÕES: ● ● ● ● (4/4)</span>
+      </div>
+      <div class="comandos-sistema">
+        <span class="atalho-guia">[F11] Tela Cheia</span>
+        <button id="btn-devtools" class="btn-controle btn-devtools" title="Console de Depuração [F1]">[F1] DEVTOOLS</button>
+        <button id="btn-fullscreen" class="btn-controle" title="Alternar Tela Cheia">TELA CHEIA</button>
+      </div>
+    </header>
+
+    <!-- MESA DE INVESTIGAÇÃO (Duas Colunas Assimétricas) -->
+    <main class="mesa-investigacao">
+      
+      <!-- COLUNA DA ESQUERDA (35% — Contexto, Evidência e Prontuário) -->
+      <aside class="coluna-prontuario">
+        
+        <!-- MOLDURA DE EVIDÊNCIA (Recorte de Jornal / Polaroid com Fita Adesiva) -->
+        <div class="moldura-evidencia-container">
+          <div class="fita-adesiva fita-topo"></div>
+          <div class="moldura-evidencia" id="slot-moldura-evidencia">
+            <div class="placeholder-arte-procedural">
+              <div class="arte-cabecalho">REGISTRO DE INQUÉRITO N.º 412/58</div>
+              <div class="arte-carimbo-dops">D.O.P.S. / PE</div>
+              <div class="arte-detalhe-grafico">
+                <div class="linha-estilizada"></div>
+                <div class="arte-selo-confidencial">CONFIDENCIAL</div>
+              </div>
+              <div class="arte-rodape">ARQUIVO MORTO — DELEGACIA DE COSTUMES</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAINEL HIDROLÓGICO DA CHEIA DE 75 (Fase 3: Modo Sobrevivência) -->
+        <div class="painel-cheia-75" id="painel-cheia-75">
+          <div class="cheia-cabecalho">
+            <span class="cheia-alerta-luz">▲ ALERTA HIDROLÓGICO</span>
+            <span class="cheia-titulo">RIO CAPIBARIBE</span>
+          </div>
+          <div class="cheia-medidor-conteudo">
+            <div class="cheia-regua-grafica">
+              <div class="regua-nivel-agua" id="regua-barra-nivel" style="height: 33%;"></div>
+            </div>
+            <div class="cheia-dados-numericos">
+              <div class="dado-cheia-linha">
+                <span class="rotulo">NÍVEL DO RIO:</span>
+                <span class="valor" id="val-nivel-rio">+1,50 m</span>
+              </div>
+              <div class="dado-cheia-linha">
+                <span class="rotulo">HORAS ATÉ PICO:</span>
+                <span class="valor" id="val-horas-cheia">18 h</span>
+              </div>
+              <div class="dado-cheia-linha status-panico">
+                <span class="rotulo">ESTADO:</span>
+                <span class="valor" id="val-status-tapacura">EM RISCO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FICHA DO DOPS / PRONTUÁRIO (Cartão Perfurado / Papel Secundário) -->
+        <div class="ficha-dops">
+          <div class="ficha-cabecalho">
+            <span class="ficha-orgao">SECRETARIA DE SEGURANÇA PÚBLICA</span>
+            <span class="ficha-titulo">PRONTUÁRIO DE IDENTIFICAÇÃO INDIVIDUAL</span>
+          </div>
+
+          <!-- CONDIÇÃO SOCIAL & PARENTESCO -->
+          <div class="ficha-secao">
+            <div class="ficha-campo-linha">
+              <span class="rotulo-campo">CONDIÇÃO SOCIAL:</span>
+              <span class="valor-campo" id="val-condicao-social">Filho de Estivador (Mocambo)</span>
+            </div>
+            <div class="ficha-campo-linha">
+              <span class="rotulo-campo">VÍNCULO PATERNO:</span>
+              <span class="valor-campo" id="val-vinculo-pai">Aliado Sindical (Nível 2)</span>
+            </div>
+            <div class="ficha-campo-linha">
+              <span class="rotulo-campo">HONRA FAMILIAR:</span>
+              <span class="valor-campo" id="val-honra-familiar">Nível 1</span>
+            </div>
+          </div>
+
+          <div class="ficha-divisor"></div>
+
+          <!-- ATRIBUTOS FIXOS (Fase 1: Juventude) -->
+          <div class="ficha-secao">
+            <div class="ficha-subtitulo">ATRIBUTOS FORMATIVOS</div>
+            <div class="grade-atributos">
+              <div class="item-atributo">
+                <span class="rotulo-attr">ASTÚCIA</span>
+                <span class="valor-attr" id="attr-astucia">2</span>
+              </div>
+              <div class="item-atributo">
+                <span class="rotulo-attr">SANGUE-FRIO</span>
+                <span class="valor-attr" id="attr-sangue-frio">1</span>
+              </div>
+              <div class="item-atributo">
+                <span class="rotulo-attr">OFÍCIO</span>
+                <span class="valor-attr" id="attr-oficio">2</span>
+              </div>
+              <div class="item-atributo">
+                <span class="rotulo-attr">PRESENÇA</span>
+                <span class="valor-attr" id="attr-presenca">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ficha-divisor"></div>
+
+          <!-- RECURSOS VOLÁTEIS (Monitoramento Policial e Político) -->
+          <div class="ficha-secao">
+            <div class="ficha-subtitulo">RECURSOS & SUSPEITAS</div>
+            <div class="grade-recursos">
+              <div class="item-recurso">
+                <span class="rotulo-recurso">CAPITAL</span>
+                <span class="valor-recurso" id="rec-capital">Cr$ 40</span>
+              </div>
+              <div class="item-recurso">
+                <span class="rotulo-recurso">INFLUÊNCIA</span>
+                <span class="valor-recurso" id="rec-influencia">1</span>
+              </div>
+              <div class="item-recurso recurso-alerta">
+                <span class="rotulo-recurso">SUSPEITA DOPS</span>
+                <span class="valor-recurso" id="rec-suspeita">2 / 10</span>
+              </div>
+              <div class="item-recurso">
+                <span class="rotulo-recurso">MORAL POPULAR</span>
+                <span class="valor-recurso" id="rec-moral">3</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ficha-rodape">
+            <span>DADOS CATALOGADOS SOB A LEI DE SEGURANÇA NACIONAL</span>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- COLUNA DA DIREITA (65% — Narrativa, Crônica e Decisões) -->
+      <section class="coluna-narrativa">
+        <article class="folha-narrativa">
+          
+          <!-- CABEÇALHO EDITORIAL DE JORNAL / DOSSIÊ -->
+          <header class="editorial-cabecalho">
+            <div id="notificacao-hot-reload" class="notificacao-hot-reload">
+              [ARQUIVO ATUALIZADO]
+            </div>
+            <div class="editorial-topo">
+              <span id="editorial-data" class="editorial-cidade">RECIFE, 1958</span>
+              <span id="editorial-edicao" class="editorial-edicao">DOSSIÊ // ANO I</span>
+            </div>
+            <div class="editorial-filete-duplo"></div>
+            <h1 id="editorial-manchete" class="editorial-manchete">Aguardando Documento...</h1>
+            <p id="editorial-lead" class="editorial-lead"></p>
+          </header>
+
+          <!-- CORPO NARRATIVO COM CAPITULAR E GRIFOS HISTÓRICOS -->
+          <div id="corpo-narrativa" class="corpo-narrativa">
+            <p>Carregando arquivos do inquérito...</p>
+          </div>
+
+          <!-- DIVISÓRIA DE DECISÕES -->
+          <div class="divisor-decisoes">
+            <span class="titulo-decisoes">RESOLUÇÃO DO INCIDENTE</span>
+          </div>
+
+          <!-- LISTA DE DECISÕES TÁTEIS -->
+          <div id="lista-decisoes" class="lista-decisoes">
+            <!-- Injetado dinamicamente via Markdown -->
+          </div>
+
+        </article>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CONSOLE DE DEPURAÇÃO RETRÁTIL (TICKET 12) -->
+  <aside class="console-depuracao" id="console-depuracao">
+    <div class="console-cabecalho">
+      <span class="console-titulo">⚙ CONSOLE DO CRIADOR // DEVTOOLS</span>
+      <button id="btn-fechar-console" class="btn-fechar-console">✕</button>
+    </div>
+    <div class="console-corpo">
+      
+      <!-- NAVEGAÇÃO RÁPIDA DE CENAS -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">SALTO DE EVENTO (.MD)</div>
+        <div class="campo-depuracao">
+          <label for="dev-seletor-evento">SELECIONAR INCIDENTE:</label>
+          <select id="dev-seletor-evento">
+            <option value="">Carregando eventos...</option>
+          </select>
+        </div>
+        <button id="btn-dev-saltar-evento" class="btn-acao-rapida" style="margin-top: 8px;">▶ ABRIR EVENTO</button>
+        <button id="btn-dev-voltar-dossie" class="btn-acao-rapida">📁 EXIBIR DOSSIÊ DA FASE</button>
+      </div>
+
+      <!-- SIMULAÇÕES RÁPIDAS DE ESTADO -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">SIMULAÇÕES INSTANTÂNEAS</div>
+        <button id="btn-dev-crise-dops" class="btn-acao-rapida btn-acao-perigo">⚠ FORÇAR BATIDA DO DOPS (SUSPEITA = 10)</button>
+        <button id="btn-dev-crise-falencia" class="btn-acao-rapida btn-acao-perigo">⚠ FORÇAR FALÊNCIA (CAPITAL = 0)</button>
+        <button id="btn-dev-pular-cheia" class="btn-acao-rapida">🌊 SALTAR PARA CHEIA DE 75 (FASE 3)</button>
+        <button id="btn-dev-reset" class="btn-acao-rapida">↺ RESETAR PARA INÍCIO DE 1958</button>
+      </div>
+
+      <!-- EDIÇÃO DE ATRIBUTOS FIXOS -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">ATRIBUTOS FORMATIVOS</div>
+        <div class="console-grid-inputs">
+          <div class="campo-depuracao">
+            <label>ASTÚCIA</label>
+            <input type="number" id="dev-input-astucia" min="0" max="10">
+          </div>
+          <div class="campo-depuracao">
+            <label>SANGUE-FRIO</label>
+            <input type="number" id="dev-input-sangue-frio" min="0" max="10">
+          </div>
+          <div class="campo-depuracao">
+            <label>OFÍCIO</label>
+            <input type="number" id="dev-input-oficio" min="0" max="10">
+          </div>
+          <div class="campo-depuracao">
+            <label>PRESENÇA</label>
+            <input type="number" id="dev-input-presenca" min="0" max="10">
+          </div>
+        </div>
+      </div>
+
+      <!-- EDIÇÃO DE RECURSOS VOLÁTEIS -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">RECURSOS VOLÁTEIS</div>
+        <div class="console-grid-inputs">
+          <div class="campo-depuracao">
+            <label>CAPITAL (CR$)</label>
+            <input type="number" id="dev-input-capital" min="0" step="5">
+          </div>
+          <div class="campo-depuracao">
+            <label>INFLUÊNCIA</label>
+            <input type="number" id="dev-input-influencia" min="0" max="10">
+          </div>
+          <div class="campo-depuracao">
+            <label>SUSPEITA DOPS</label>
+            <input type="number" id="dev-input-suspeita" min="0" max="10">
+          </div>
+          <div class="campo-depuracao">
+            <label>MORAL POPULAR</label>
+            <input type="number" id="dev-input-moral" min="0" max="20">
+          </div>
+        </div>
+      </div>
+
+      <!-- EDIÇÃO DE CONDIÇÃO SOCIAL & PARENTESCO -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">CLASSE SOCIAL & FAMÍLIA</div>
+        <div class="campo-depuracao" style="margin-bottom: 8px;">
+          <label>CONDIÇÃO SOCIAL:</label>
+          <select id="dev-input-classe">
+            <option value="Filho de Estivador (Mocambo)">Filho de Estivador (Mocambo)</option>
+            <option value="Classe Média do Derby">Classe Média do Derby</option>
+            <option value="Elite Usineira de Casa Forte">Elite Usineira de Casa Forte</option>
+          </select>
+        </div>
+        <div class="console-grid-inputs">
+          <div class="campo-depuracao">
+            <label>VÍNCULO PATERNO</label>
+            <input type="number" id="dev-input-pai" min="-5" max="5">
+          </div>
+          <div class="campo-depuracao">
+            <label>HONRA FAMILIAR</label>
+            <input type="number" id="dev-input-honra" min="-5" max="5">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <script src="state-store.js"></script>
+  <script src="engine.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
