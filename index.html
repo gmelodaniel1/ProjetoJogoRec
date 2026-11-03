@@ -15,7 +15,7 @@
 <body class="fase-1">
   <div class="mesa-viewport">
     
-    <!-- BARRA DE SISTEMA (Mesa de Arquivo) -->
+    <!-- BARRA DE SISTEMA SUPERIOR -->
     <header class="barra-sistema">
       <div class="status-sistema">
         <span class="ponto-status">●</span>
@@ -32,140 +32,252 @@
       </div>
     </header>
 
-    <!-- MESA DE INVESTIGAÇÃO (Duas Colunas Assimétricas) -->
+    <!-- ÁREA PRINCIPAL DO JOGO (Palco Central + Página de Texto Lateral) -->
     <main class="mesa-investigacao">
       
-      <!-- COLUNA DA ESQUERDA (35% — Contexto, Evidência e Prontuário) -->
-      <aside class="coluna-prontuario">
+      <!-- ESQUERDA / CENTRO: PALCO VISUAL + TELAS DE INSPEÇÃO + BARRA DE ATALHOS INFERIOR -->
+      <section class="palco-central">
         
-        <!-- MOLDURA DE EVIDÊNCIA (Recorte de Jornal / Polaroid com Fita Adesiva) -->
-        <div class="moldura-evidencia-container">
-          <div class="fita-adesiva fita-topo"></div>
-          <div class="moldura-evidencia" id="slot-moldura-evidencia">
-            <div class="placeholder-arte-procedural">
-              <div class="arte-cabecalho">REGISTRO DE INQUÉRITO N.º 412/58</div>
-              <div class="arte-carimbo-dops">D.O.P.S. / PE</div>
-              <div class="arte-detalhe-grafico">
-                <div class="linha-estilizada"></div>
-                <div class="arte-selo-confidencial">CONFIDENCIAL</div>
+        <!-- VISOR PRINCIPAL DO PALCO (Alterna entre Cenário, Atributos, Relações e Cronologia) -->
+        <div class="palco-visor">
+
+          <!-- 1. VISÃO PADRÃO: QUADRO PRINCIPAL DO CENÁRIO (FOTOGRAFIA DE ÉPOCA GRANDE) -->
+          <div class="aba-palco ativa" id="aba-cenario">
+            <div class="cenario-container">
+              <div class="fita-adesiva fita-canto-esq"></div>
+              <div class="fita-adesiva fita-canto-dir"></div>
+              
+              <div class="moldura-evidencia" id="slot-moldura-evidencia">
+                <!-- Preenchido dinamicamente pelo renderer.js com Fotografia/Cena Grande -->
               </div>
-              <div class="arte-rodape">ARQUIVO MORTO — DELEGACIA DE COSTUMES</div>
+
+              <div class="cenario-legenda-barra">
+                <span id="cenario-local" class="cenario-local">RECIFE, PERNAMBUCO — 1958</span>
+                <span id="cenario-registro" class="cenario-registro">ARQUIVO ICONOGRÁFICO</span>
+              </div>
+            </div>
+
+            <!-- PAINEL HIDROLÓGICO DA CHEIA DE 75 (Visível na Fase 3 abaixo do Cenário) -->
+            <div class="painel-cheia-75" id="painel-cheia-75">
+              <div class="cheia-cabecalho">
+                <span class="cheia-alerta-luz">▲ ALERTA HIDROLÓGICO — DEFESA CIVIL DO RECIFE</span>
+                <span class="cheia-titulo">RÉGUA DO RIO CAPIBARIBE</span>
+              </div>
+              <div class="cheia-medidor-conteudo">
+                <div class="cheia-regua-grafica">
+                  <div class="regua-nivel-agua" id="regua-barra-nivel" style="height: 33%;"></div>
+                </div>
+                <div class="cheia-dados-numericos">
+                  <div class="dado-cheia-linha">
+                    <span class="rotulo">NÍVEL DO RIO:</span>
+                    <span class="valor" id="val-nivel-rio">+1,50 m</span>
+                  </div>
+                  <div class="dado-cheia-linha">
+                    <span class="rotulo">HORAS ATÉ PICO:</span>
+                    <span class="valor" id="val-horas-cheia">18 h</span>
+                  </div>
+                  <div class="dado-cheia-linha status-panico">
+                    <span class="rotulo">ESTADO:</span>
+                    <span class="valor" id="val-status-tapacura">EM RISCO</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- 2. TELA DE ATRIBUTOS & RECURSOS (FICHA DO PRONTUÁRIO) -->
+          <div class="aba-palco" id="aba-atributos">
+            <div class="pasta-arquivo-tela">
+              <header class="pasta-cabecalho">
+                <div>
+                  <span class="pasta-Selo">SECRETARIA DE SEGURANÇA PÚBLICA // D.O.P.S. - PE</span>
+                  <h2 class="pasta-titulo">Ficha de Atributos & Recursos</h2>
+                </div>
+                <button class="btn-voltar-cenario" data-fechar-aba>← VOLTAR AO CENÁRIO</button>
+              </header>
+
+              <div class="pasta-corpo">
+                <!-- CONDIÇÃO SOCIAL -->
+                <div class="bloco-condicao-social">
+                  <div class="rotulo-secao-pasta">CONDIÇÃO SOCIAL DE ORIGEM</div>
+                  <div class="valor-condicao-destaque" id="val-condicao-social">Filho de Estivador (Mocambo)</div>
+                  <p class="desc-condicao-social" id="desc-condicao-social">
+                    Criado entre as palafitas e os armazéns do Cais de Santo Antônio. Conhece a língua dos estivadores e os atalhos do mangue, mas enfrenta portas fechadas nos salões da elite.
+                  </p>
+                </div>
+
+                <!-- ATRIBUTOS PESSOAIS FIXOS -->
+                <div class="ficha-bloco">
+                  <div class="rotulo-secao-pasta">ATRIBUTOS FORMATIVOS (PERMANENTES)</div>
+                  <div class="grade-atributos-detalhada">
+                    <div class="item-atributo-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-attr">ASTÚCIA</span>
+                        <span class="valor-attr" id="attr-astucia">2</span>
+                      </div>
+                      <p class="attr-explicacao">Leitura de rua, malícia política, dissimulação e improviso em situações de risco.</p>
+                    </div>
+
+                    <div class="item-atributo-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-attr">SANGUE-FRIO</span>
+                        <span class="valor-attr" id="attr-sangue-frio">1</span>
+                      </div>
+                      <p class="attr-explicacao">Frieza sob interrogatório policial, cerco militar ou pânico coletivo.</p>
+                    </div>
+
+                    <div class="item-atributo-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-attr">OFÍCIO</span>
+                        <span class="valor-attr" id="attr-oficio">2</span>
+                      </div>
+                      <p class="attr-explicacao">Domínio técnico do trabalho manual, máquinas, tipografia e navegação.</p>
+                    </div>
+
+                    <div class="item-atributo-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-attr">PRESENÇA</span>
+                        <span class="valor-attr" id="attr-presenca">0</span>
+                      </div>
+                      <p class="attr-explicacao">Voz de comando, oratória em assembleias e autoridade moral perante o povo.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- RECURSOS VOLÁTEIS & VIGILÂNCIA -->
+                <div class="ficha-bloco">
+                  <div class="rotulo-secao-pasta">RECURSOS VOLÁTEIS & VIGILÂNCIA</div>
+                  <div class="grade-recursos-detalhada">
+                    <div class="item-recurso-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-recurso">CAPITAL</span>
+                        <span class="valor-recurso" id="rec-capital">Cr$ 40</span>
+                      </div>
+                      <p class="attr-explicacao">Economias em Cruzeiros. Se cair a Cr$ 0, dispara crise de despejo e penúria.</p>
+                    </div>
+
+                    <div class="item-recurso-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-recurso">INFLUÊNCIA</span>
+                        <span class="valor-recurso" id="rec-influencia">1</span>
+                      </div>
+                      <p class="attr-explicacao">Favores políticos, contatos sindicais, jornalísticos e eclesiásticos no Recife.</p>
+                    </div>
+
+                    <div class="item-recurso-detalhado recurso-alerta">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-recurso">SUSPEITA DOPS</span>
+                        <span class="valor-recurso" id="rec-suspeita">2 / 10</span>
+                      </div>
+                      <p class="attr-explicacao">Atenção dos investigadores na Rua da União. Em 10/10 ocorre batida policial.</p>
+                    </div>
+
+                    <div class="item-recurso-detalhado">
+                      <div class="attr-linha-topo">
+                        <span class="rotulo-recurso">MORAL POPULAR</span>
+                        <span class="valor-recurso" id="rec-moral">3</span>
+                      </div>
+                      <p class="attr-explicacao">Confiança e solidariedade dos trabalhadores, vizinhos e companheiros.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. TELA DE RELAÇÕES & VÍNCULOS (FAMÍLIA, PERSONAGENS E FACÇÕES) -->
+          <div class="aba-palco" id="aba-relacoes">
+            <div class="pasta-arquivo-tela">
+              <header class="pasta-cabecalho">
+                <div>
+                  <span class="pasta-Selo">ARQUIVO DE VÍNCULOS // CÍRCULO ÍNTIMO & FACÇÕES</span>
+                  <h2 class="pasta-titulo">Relações, Família & Contatos</h2>
+                </div>
+                <button class="btn-voltar-cenario" data-fechar-aba>← VOLTAR AO CENÁRIO</button>
+              </header>
+
+              <div class="pasta-corpo">
+                <!-- RESUMO DE VÍNCULOS FAMILIARES -->
+                <div class="painel-familia-resumo">
+                  <div class="familia-stat-box">
+                    <span class="rotulo-campo">RELAÇÃO COM O PAI:</span>
+                    <span class="valor-campo" id="val-vinculo-pai">Nível 2 (Leal)</span>
+                  </div>
+                  <div class="familia-stat-box">
+                    <span class="rotulo-campo">HONRA FAMILIAR:</span>
+                    <span class="valor-campo" id="val-honra-familiar">Nível 1</span>
+                  </div>
+                </div>
+
+                <div class="rotulo-secao-pasta">PESSOAS & FORÇAS DO RECIFE</div>
+                <div class="galeria-personagens-relacoes" id="galeria-personagens">
+                  <!-- Preenchido dinamicamente pelo renderer.js com cartões 3x4 completos -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. TELA DE CRONOLOGIA (LINHA DO TEMPO 1958–1975 & HISTÓRICO DE ESCOLHAS) -->
+          <div class="aba-palco" id="aba-cronologia">
+            <div class="pasta-arquivo-tela">
+              <header class="pasta-cabecalho">
+                <div>
+                  <span class="pasta-Selo">MEMÓRIA HISTÓRICA // RECIFE (1958–1975)</span>
+                  <h2 class="pasta-titulo">Cronologia & Diário de Decisões</h2>
+                </div>
+                <button class="btn-voltar-cenario" data-fechar-aba>← VOLTAR AO CENÁRIO</button>
+              </header>
+
+              <div class="pasta-corpo" id="conteudo-cronologia">
+                <!-- Preenchido dinamicamente pelo renderer.js -->
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- PAINEL HIDROLÓGICO DA CHEIA DE 75 (Fase 3: Modo Sobrevivência) -->
-        <div class="painel-cheia-75" id="painel-cheia-75">
-          <div class="cheia-cabecalho">
-            <span class="cheia-alerta-luz">▲ ALERTA HIDROLÓGICO</span>
-            <span class="cheia-titulo">RIO CAPIBARIBE</span>
-          </div>
-          <div class="cheia-medidor-conteudo">
-            <div class="cheia-regua-grafica">
-              <div class="regua-nivel-agua" id="regua-barra-nivel" style="height: 33%;"></div>
+        <!-- BARRA INFERIOR DE ATALHOS DO PALCO (PASTAS DE ACESSO RÁPIDO) -->
+        <nav class="barra-atalhos-dossie" aria-label="Atalhos do Prontuário">
+          <button class="btn-atalho-pasta ativo" id="btn-aba-cenario" data-aba-alvo="aba-cenario">
+            <span class="atalho-icone">▣</span>
+            <div class="atalho-textos">
+              <span class="atalho-titulo">CENÁRIO</span>
+              <span class="atalho-subtitulo" id="resumo-atalho-cenario">Fotografia da Cena</span>
             </div>
-            <div class="cheia-dados-numericos">
-              <div class="dado-cheia-linha">
-                <span class="rotulo">NÍVEL DO RIO:</span>
-                <span class="valor" id="val-nivel-rio">+1,50 m</span>
-              </div>
-              <div class="dado-cheia-linha">
-                <span class="rotulo">HORAS ATÉ PICO:</span>
-                <span class="valor" id="val-horas-cheia">18 h</span>
-              </div>
-              <div class="dado-cheia-linha status-panico">
-                <span class="rotulo">ESTADO:</span>
-                <span class="valor" id="val-status-tapacura">EM RISCO</span>
-              </div>
+          </button>
+
+          <button class="btn-atalho-pasta" id="btn-aba-atributos" data-aba-alvo="aba-atributos">
+            <span class="atalho-icone">▤</span>
+            <div class="atalho-textos">
+              <span class="atalho-titulo">ATRIBUTOS</span>
+              <span class="atalho-subtitulo" id="resumo-atalho-atributos">Cr$ 40 • Susp. 2/10</span>
             </div>
-          </div>
-        </div>
+          </button>
 
-        <!-- FICHA DO DOPS / PRONTUÁRIO (Cartão Perfurado / Papel Secundário) -->
-        <div class="ficha-dops">
-          <div class="ficha-cabecalho">
-            <span class="ficha-orgao">SECRETARIA DE SEGURANÇA PÚBLICA</span>
-            <span class="ficha-titulo">PRONTUÁRIO DE IDENTIFICAÇÃO INDIVIDUAL</span>
-          </div>
-
-          <!-- CONDIÇÃO SOCIAL & PARENTESCO -->
-          <div class="ficha-secao">
-            <div class="ficha-campo-linha">
-              <span class="rotulo-campo">CONDIÇÃO SOCIAL:</span>
-              <span class="valor-campo" id="val-condicao-social">Filho de Estivador (Mocambo)</span>
+          <button class="btn-atalho-pasta" id="btn-aba-relacoes" data-aba-alvo="aba-relacoes">
+            <span class="atalho-icone">▥</span>
+            <div class="atalho-textos">
+              <span class="atalho-titulo">RELAÇÕES</span>
+              <span class="atalho-subtitulo" id="resumo-atalho-relacoes">Pai: Leal • Honra: 1</span>
             </div>
-            <div class="ficha-campo-linha">
-              <span class="rotulo-campo">VÍNCULO PATERNO:</span>
-              <span class="valor-campo" id="val-vinculo-pai">Aliado Sindical (Nível 2)</span>
+          </button>
+
+          <button class="btn-atalho-pasta" id="btn-aba-cronologia" data-aba-alvo="aba-cronologia">
+            <span class="atalho-icone">◷</span>
+            <div class="atalho-textos">
+              <span class="atalho-titulo">CRONOLOGIA</span>
+              <span class="atalho-subtitulo" id="resumo-atalho-cronologia">Fase 1 • 1958</span>
             </div>
-            <div class="ficha-campo-linha">
-              <span class="rotulo-campo">HONRA FAMILIAR:</span>
-              <span class="valor-campo" id="val-honra-familiar">Nível 1</span>
-            </div>
-          </div>
+          </button>
+        </nav>
 
-          <div class="ficha-divisor"></div>
+      </section>
 
-          <!-- ATRIBUTOS FIXOS (Fase 1: Juventude) -->
-          <div class="ficha-secao">
-            <div class="ficha-subtitulo">ATRIBUTOS FORMATIVOS</div>
-            <div class="grade-atributos">
-              <div class="item-atributo">
-                <span class="rotulo-attr">ASTÚCIA</span>
-                <span class="valor-attr" id="attr-astucia">2</span>
-              </div>
-              <div class="item-atributo">
-                <span class="rotulo-attr">SANGUE-FRIO</span>
-                <span class="valor-attr" id="attr-sangue-frio">1</span>
-              </div>
-              <div class="item-atributo">
-                <span class="rotulo-attr">OFÍCIO</span>
-                <span class="valor-attr" id="attr-oficio">2</span>
-              </div>
-              <div class="item-atributo">
-                <span class="rotulo-attr">PRESENÇA</span>
-                <span class="valor-attr" id="attr-presenca">0</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ficha-divisor"></div>
-
-          <!-- RECURSOS VOLÁTEIS (Monitoramento Policial e Político) -->
-          <div class="ficha-secao">
-            <div class="ficha-subtitulo">RECURSOS & SUSPEITAS</div>
-            <div class="grade-recursos">
-              <div class="item-recurso">
-                <span class="rotulo-recurso">CAPITAL</span>
-                <span class="valor-recurso" id="rec-capital">Cr$ 40</span>
-              </div>
-              <div class="item-recurso">
-                <span class="rotulo-recurso">INFLUÊNCIA</span>
-                <span class="valor-recurso" id="rec-influencia">1</span>
-              </div>
-              <div class="item-recurso recurso-alerta">
-                <span class="rotulo-recurso">SUSPEITA DOPS</span>
-                <span class="valor-recurso" id="rec-suspeita">2 / 10</span>
-              </div>
-              <div class="item-recurso">
-                <span class="rotulo-recurso">MORAL POPULAR</span>
-                <span class="valor-recurso" id="rec-moral">3</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ficha-rodape">
-            <span>DADOS CATALOGADOS SOB A LEI DE SEGURANÇA NACIONAL</span>
-          </div>
-        </div>
-
-      </aside>
-
-      <!-- COLUNA DA DIREITA (65% — Narrativa, Crônica e Decisões) -->
+      <!-- DIREITA: PÁGINA DE TEXTO E DECISÃO (FOLHA DE LIVRO / CRÔNICA) -->
       <section class="coluna-narrativa">
         <article class="folha-narrativa">
           
-          <!-- CABEÇALHO EDITORIAL DE JORNAL / DOSSIÊ -->
+          <!-- CABEÇALHO EDITORIAL DA PÁGINA -->
           <header class="editorial-cabecalho">
             <div id="notificacao-hot-reload" class="notificacao-hot-reload">
               [ARQUIVO ATUALIZADO]
@@ -179,14 +291,14 @@
             <p id="editorial-lead" class="editorial-lead"></p>
           </header>
 
-          <!-- CORPO NARRATIVO COM CAPITULAR E GRIFOS HISTÓRICOS -->
+          <!-- CORPO NARRATIVO COM FONTE AMPLIADA E CAPITULAR -->
           <div id="corpo-narrativa" class="corpo-narrativa">
             <p>Carregando arquivos do inquérito...</p>
           </div>
 
           <!-- DIVISÓRIA DE DECISÕES -->
           <div class="divisor-decisoes">
-            <span class="titulo-decisoes">RESOLUÇÃO DO INCIDENTE</span>
+            <span class="titulo-decisoes">ESCOLHE TEU CAMINHO</span>
           </div>
 
           <!-- LISTA DE DECISÕES TÁTEIS -->

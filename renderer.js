@@ -1,10 +1,12 @@
 // ==========================================================================
-// RENDERER.JS — CICLO NARRATIVO, DOSSIÊ DA FASE & HOT-RELOADING
+// RENDERER.JS — CICLO NARRATIVO, CENÁRIO, TELAS DE INSPEÇÃO & HOT-RELOADING
 // ==========================================================================
 
 let cacheEventos = {};
 let eventoAtivoId = null; // null = exibindo o Dossiê da Fase
 let modoVisual = 'dossie'; // 'dossie' | 'evento'
+let abaPalcoAtiva = 'aba-cenario';
+let diarioDecisoes = []; // Registro cronológico das decisões tomadas na sessão
 
 const store = new CharacterStateStore();
 const engine = new DeterministicEngine(store);
@@ -17,6 +19,23 @@ const elAnoAtual = document.getElementById('ano-atual');
 const elIndicadorAcoes = document.getElementById('indicador-acoes');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 
+// Referências DOM - Palco & Atalhos Inferiores
+const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
+const elCenarioLocal = document.getElementById('cenario-local');
+const elCenarioRegistro = document.getElementById('cenario-registro');
+const elGaleriaPersonagens = document.getElementById('galeria-personagens');
+const elConteudoCronologia = document.getElementById('conteudo-cronologia');
+
+const btnAbaCenario = document.getElementById('btn-aba-cenario');
+const btnAbaAtributos = document.getElementById('btn-aba-atributos');
+const btnAbaRelacoes = document.getElementById('btn-aba-relacoes');
+const btnAbaCronologia = document.getElementById('btn-aba-cronologia');
+
+const elResumoCenario = document.getElementById('resumo-atalho-cenario');
+const elResumoAtributos = document.getElementById('resumo-atalho-atributos');
+const elResumoRelacoes = document.getElementById('resumo-atalho-relacoes');
+const elResumoCronologia = document.getElementById('resumo-atalho-cronologia');
+
 // Referências DOM - Folha Editorial / Narrativa
 const elEdicao = document.getElementById('editorial-edicao');
 const elData = document.getElementById('editorial-data');
@@ -26,10 +45,10 @@ const elCorpo = document.getElementById('corpo-narrativa');
 const elListaDecisoes = document.getElementById('lista-decisoes');
 const elDivisorDecisoes = document.querySelector('.divisor-decisoes');
 const elNotificacao = document.getElementById('notificacao-hot-reload');
-const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
 
-// Referências DOM - Prontuário DOPS
+// Referências DOM - Tela de Atributos & Relações
 const elCondicaoSocial = document.getElementById('val-condicao-social');
+const elDescCondicaoSocial = document.getElementById('desc-condicao-social');
 const elVinculoPai = document.getElementById('val-vinculo-pai');
 const elHonraFamiliar = document.getElementById('val-honra-familiar');
 const elAttrAstucia = document.getElementById('attr-astucia');
@@ -49,32 +68,81 @@ const elValStatusTapacura = document.getElementById('val-status-tapacura');
 const elReguaBarraNivel = document.getElementById('regua-barra-nivel');
 
 const elementosContainers = {
-  astucia: elAttrAstucia ? elAttrAstucia.parentElement : null,
-  sangue_frio: elAttrSangueFrio ? elAttrSangueFrio.parentElement : null,
-  oficio: elAttrOficio ? elAttrOficio.parentElement : null,
-  presenca: elAttrPresenca ? elAttrPresenca.parentElement : null,
-  capital: elRecCapital ? elRecCapital.parentElement : null,
-  influencia: elRecInfluencia ? elRecInfluencia.parentElement : null,
-  suspeita_dops: elRecSuspeita ? elRecSuspeita.parentElement : null,
-  moral_popular: elRecMoral ? elRecMoral.parentElement : null,
+  astucia: elAttrAstucia ? elAttrAstucia.closest('.item-atributo-detalhado') : null,
+  sangue_frio: elAttrSangueFrio ? elAttrSangueFrio.closest('.item-atributo-detalhado') : null,
+  oficio: elAttrOficio ? elAttrOficio.closest('.item-atributo-detalhado') : null,
+  presenca: elAttrPresenca ? elAttrPresenca.closest('.item-atributo-detalhado') : null,
+  capital: elRecCapital ? elRecCapital.closest('.item-recurso-detalhado') : null,
+  influencia: elRecInfluencia ? elRecInfluencia.closest('.item-recurso-detalhado') : null,
+  suspeita_dops: elRecSuspeita ? elRecSuspeita.closest('.item-recurso-detalhado') : null,
+  moral_popular: elRecMoral ? elRecMoral.closest('.item-recurso-detalhado') : null,
   relacao_pai: elVinculoPai ? elVinculoPai.parentElement : null,
   honra_familiar: elHonraFamiliar ? elHonraFamiliar.parentElement : null
 };
 
 // ==========================================================================
+// NAVEGAÇÃO ENTRE AS TELAS DO PALCO (CENÁRIO, ATRIBUTOS, RELAÇÕES, CRONOLOGIA)
+// ==========================================================================
+function alternarAbaPalco(idAlvo) {
+  // Se clicar no atalho que já está aberto (exceto cenário), volta ao cenário
+  if (abaPalcoAtiva === idAlvo && idAlvo !== 'aba-cenario') {
+    idAlvo = 'aba-cenario';
+  }
+  abaPalcoAtiva = idAlvo;
+
+  document.querySelectorAll('.aba-palco').forEach(aba => {
+    aba.classList.toggle('ativa', aba.id === idAlvo);
+  });
+
+  document.querySelectorAll('.btn-atalho-pasta').forEach(btn => {
+    btn.classList.toggle('ativo', btn.dataset.abaAlvo === idAlvo);
+  });
+
+  if (idAlvo === 'aba-relacoes') {
+    renderizarTelaRelacoes();
+  } else if (idAlvo === 'aba-cronologia') {
+    renderizarTelaCronologia();
+  }
+}
+
+document.querySelectorAll('.btn-atalho-pasta').forEach(btn => {
+  btn.addEventListener('click', () => {
+    alternarAbaPalco(btn.dataset.abaAlvo);
+  });
+});
+
+document.querySelectorAll('[data-fechar-aba]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    alternarAbaPalco('aba-cenario');
+  });
+});
+
+// ==========================================================================
 // FEEDBACK TÁTIL & MICROINTERAÇÕES
 // ==========================================================================
-function animarDeltaBadge(chave, delta) {
-  const container = elementosContainers[chave];
+function criarBadgeElemento( container, texto, ehPositivo ) {
   if (!container) return;
-
   const badge = document.createElement('span');
-  const ehPositivo = delta > 0;
   badge.className = `delta-badge ${ehPositivo ? 'delta-positivo' : 'delta-negativo'}`;
-  badge.textContent = ehPositivo ? `+${delta}` : `${delta}`;
-
+  badge.textContent = texto;
   container.appendChild(badge);
-  setTimeout(() => badge.remove(), 1500);
+  setTimeout(() => badge.remove(), 1600);
+}
+
+function animarDeltaBadge(chave, delta) {
+  const containerInterno = elementosContainers[chave];
+  const ehPositivo = delta > 0;
+  const ehNegativoSuspeita = chave === 'suspeita_dops' ? !ehPositivo : ehPositivo;
+  const sinal = delta > 0 ? `+${delta}` : `${delta}`;
+  const nomeCurto = chave.replace(/_/g, ' ').toUpperCase();
+
+  // 1. Anima dentro da respectiva ficha (Atributos ou Relações)
+  criarBadgeElemento(containerInterno, sinal, ehNegativoSuspeita);
+
+  // 2. Anima também no botão de atalho inferior para feedback imediato durante a cena
+  const ehRelacao = chave === 'relacao_pai' || chave === 'honra_familiar';
+  const btnAtalho = ehRelacao ? btnAbaRelacoes : btnAbaAtributos;
+  criarBadgeElemento(btnAtalho, `${sinal} ${nomeCurto}`, ehNegativoSuspeita);
 }
 
 function tocarSomCarimbo() {
@@ -130,7 +198,7 @@ function executarAnimacaoCarimbo(botao, carimboTexto, callbackTransicao) {
 }
 
 // ==========================================================================
-// RENDERIZAÇÃO DO PRONTUÁRIO & BARRA DE ESTADO
+// RENDERIZAÇÃO DO PRONTUÁRIO, RESUMOS DE ATALHOS & BARRA DE ESTADO
 // ==========================================================================
 function atualizarProntuario(estado, deltas) {
   if (!estado) return;
@@ -168,9 +236,19 @@ function atualizarProntuario(estado, deltas) {
 
   // Prontuário Social e Parentesco
   if (elCondicaoSocial) elCondicaoSocial.textContent = estado.condicaoSocial;
+  if (elDescCondicaoSocial) {
+    const descricoesClasse = {
+      "Filho de Estivador (Mocambo)": "Criado entre as palafitas e os armazéns do Cais de Santo Antônio. Conhece a língua dos estivadores e os atalhos do mangue, mas enfrenta portas fechadas nos salões da elite.",
+      "Classe Média do Derby": "Filho de funcionários públicos e bacharéis das imediações do Derby e Boa Vista. Circula entre redações de jornal e faculdades, equilibrando-se entre a ordem e a crítica.",
+      "Elite Usineira de Casa Forte": "Herdeiro de famílias tradicionais ligadas aos antigos engenhos e solares de Casa Forte. Possui trânsito livre nos gabinetes oficiais, mas carrega a desconfiança dos sindicatos."
+    };
+    elDescCondicaoSocial.textContent = descricoesClasse[estado.condicaoSocial] || "";
+  }
+
+  const valPai = estado.parentesco.relacao_pai;
+  const rotuloPai = valPai >= 2 ? 'Leal' : valPai >= 0 ? 'Neutro' : 'Rompido';
   if (elVinculoPai) {
-    const valPai = estado.parentesco.relacao_pai;
-    elVinculoPai.textContent = `Nível ${valPai} (${valPai >= 2 ? 'Leal' : valPai >= 0 ? 'Neutro' : 'Rompido'})`;
+    elVinculoPai.textContent = `Nível ${valPai} (${rotuloPai})`;
   }
   if (elHonraFamiliar) {
     elHonraFamiliar.textContent = `Nível ${estado.parentesco.honra_familiar}`;
@@ -188,13 +266,24 @@ function atualizarProntuario(estado, deltas) {
   if (elRecSuspeita) {
     const susp = estado.recursosVolateis.suspeita_dops;
     elRecSuspeita.textContent = `${susp} / 10`;
-    const containerSusp = elRecSuspeita.parentElement;
+    const containerSusp = elRecSuspeita.closest('.item-recurso-detalhado');
     if (containerSusp) {
       if (susp >= 6) containerSusp.classList.add('recurso-alerta');
       else containerSusp.classList.remove('recurso-alerta');
     }
   }
   if (elRecMoral) elRecMoral.textContent = estado.recursosVolateis.moral_popular;
+
+  // Resumos nos Botões de Atalho Inferiores
+  if (elResumoAtributos) {
+    elResumoAtributos.textContent = `Cr$ ${estado.recursosVolateis.capital} • Susp. ${estado.recursosVolateis.suspeita_dops}/10`;
+  }
+  if (elResumoRelacoes) {
+    elResumoRelacoes.textContent = `Pai: ${rotuloPai} (${valPai}) • Honra: ${estado.parentesco.honra_familiar}`;
+  }
+  if (elResumoCronologia) {
+    elResumoCronologia.textContent = `Fase ${estado.faseAtual} • ${estado.anoAtual} (${estado.eventosConcluidos.length} reg.)`;
+  }
 
   // Atualização dos Indicadores da Cheia de 75 (Fase 3)
   if (estado.cheia75 && elValNivelRio) {
@@ -218,6 +307,10 @@ function atualizarProntuario(estado, deltas) {
     }
   }
 
+  // Atualiza também as telas de Relações e Cronologia caso estejam abertas
+  renderizarTelaRelacoes();
+  renderizarTelaCronologia();
+
   // Animação de Deltas
   if (deltas && typeof deltas === 'object') {
     Object.entries(deltas).forEach(([chave, info]) => {
@@ -233,38 +326,352 @@ store.subscribe((estado, deltas) => {
 });
 
 // ==========================================================================
-// MOLDURA DE EVIDÊNCIA & ESTAMPARIA PROCEDURAL (TICKET 10)
+// CENÁRIO FOTOGRÁFICO DE ÉPOCA (ABA 1)
 // ==========================================================================
+function gerarSvgCenario(evento, estado) {
+  const id = evento && evento.metadata ? evento.metadata.id : 'dossie';
+  const ehFase3 = estado.faseAtual === 3 || (id && id.includes('fase_3'));
+  const ehCrise = evento && evento.metadata && evento.metadata.tipo === 'crise_urgente';
+  const ehClimax64 = id && id.includes('marco_1964');
+  const ehVarzea = id && id.includes('varzea');
+
+  if (ehFase3) {
+    return `
+      <svg class="cenario-svg-palco" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ceuChuva" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8A8472"/>
+            <stop offset="60%" stop-color="#B8B09C"/>
+            <stop offset="100%" stop-color="#6E6958"/>
+          </linearGradient>
+          <linearGradient id="aguaBarrenta" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5E5946"/>
+            <stop offset="100%" stop-color="#383529"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="380" fill="url(#ceuChuva)"/>
+        <g stroke="#5C5749" stroke-width="1" opacity="0.45">
+          <line x1="80" y1="0" x2="40" y2="260"/><line x1="160" y1="0" x2="120" y2="260"/>
+          <line x1="250" y1="0" x2="210" y2="260"/><line x1="340" y1="0" x2="300" y2="260"/>
+          <line x1="430" y1="0" x2="390" y2="260"/><line x1="520" y1="0" x2="480" y2="260"/>
+          <line x1="610" y1="0" x2="570" y2="260"/><line x1="710" y1="0" x2="670" y2="260"/>
+        </g>
+        <polygon points="60,220 110,165 160,220" fill="#4A4538"/>
+        <rect x="70" y="220" width="80" height="60" fill="#3E3A2F"/>
+        <polygon points="210,205 275,145 340,205" fill="#423D31"/>
+        <rect x="225" y="205" width="100" height="70" fill="#363228"/>
+        <rect x="340" y="195" width="460" height="12" fill="#2E2B23"/>
+        <path d="M 360 195 Q 430 130 500 195 Q 570 130 640 195 Q 710 130 780 195" fill="none" stroke="#2E2B23" stroke-width="5"/>
+        <line x1="185" y1="120" x2="195" y2="250" stroke="#29261F" stroke-width="4"/>
+        <rect x="0" y="230" width="800" height="150" fill="url(#aguaBarrenta)"/>
+        <path d="M 20 265 Q 90 255 160 265 T 320 265 T 480 265 T 640 265 T 790 265" fill="none" stroke="#8C856E" stroke-width="2"/>
+        <path d="M 60 310 Q 150 300 240 310 T 420 310 T 600 310 T 760 310" fill="none" stroke="#78715C" stroke-width="1.5"/>
+        <polygon points="440,275 540,275 520,295 460,295" fill="#24211B"/>
+        <circle cx="475" cy="262" r="7" fill="#24211B"/>
+        <rect x="468" y="268" width="14" height="10" fill="#24211B"/>
+        <circle cx="505" cy="260" r="7" fill="#24211B"/>
+        <rect x="498" y="266" width="14" height="11" fill="#24211B"/>
+      </svg>
+    `;
+  }
+
+  if (ehClimax64 || ehCrise) {
+    return `
+      <svg class="cenario-svg-palco" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ceuTenso" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9E917B"/>
+            <stop offset="70%" stop-color="#CFC3AE"/>
+            <stop offset="100%" stop-color="#8A7E6A"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="380" fill="url(#ceuTenso)"/>
+        <rect x="30" y="90" width="170" height="210" fill="#595143"/>
+        <rect x="220" y="115" width="210" height="185" fill="#4A4337"/>
+        <rect x="450" y="80" width="190" height="220" fill="#524A3D"/>
+        <rect x="655" y="110" width="120" height="190" fill="#453E33"/>
+        <g fill="#D8C9A3" opacity="0.65">
+          <rect x="55" y="115" width="22" height="32"/><rect x="95" y="115" width="22" height="32"/><rect x="135" y="115" width="22" height="32"/>
+          <rect x="480" y="110" width="24" height="35"/><rect x="525" y="110" width="24" height="35"/><rect x="570" y="110" width="24" height="35"/>
+        </g>
+        <rect x="0" y="290" width="800" height="90" fill="#363128"/>
+        <rect x="260" y="245" width="170" height="48" fill="#26231D"/>
+        <polygon points="285,245 315,215 395,215 415,245" fill="#26231D"/>
+        <circle cx="295" cy="295" r="20" fill="#1A1814" stroke="#6E6454" stroke-width="3"/>
+        <circle cx="395" cy="295" r="20" fill="#1A1814" stroke="#6E6454" stroke-width="3"/>
+        <polygon points="430,260 760,210 760,320" fill="#EFE4C8" opacity="0.28"/>
+      </svg>
+    `;
+  }
+
+  if (ehVarzea) {
+    return `
+      <svg class="cenario-svg-palco" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="380" fill="#B5A78F"/>
+        <polygon points="150,280 165,95 190,95 205,280" fill="#473F34"/>
+        <path d="M 178 90 Q 220 55 280 70 T 390 55" fill="none" stroke="#6E6353" stroke-width="14" opacity="0.45"/>
+        <rect x="90" y="210" width="190" height="80" fill="#3D362C"/>
+        <polygon points="75,210 185,155 295,210" fill="#332D24"/>
+        <line x1="580" y1="290" x2="595" y2="130" stroke="#363027" stroke-width="7"/>
+        <path d="M 595 130 Q 540 110 510 145 M 595 130 Q 650 105 680 140 M 595 130 Q 560 85 530 95 M 595 130 Q 635 85 665 100" fill="none" stroke="#363027" stroke-width="4"/>
+        <circle cx="240" cy="245" r="35" fill="#E8D7A7" opacity="0.45"/>
+        <rect x="233" y="235" width="14" height="22" fill="#E8D7A7"/>
+        <rect x="0" y="285" width="800" height="95" fill="#2E2921"/>
+      </svg>
+    `;
+  }
+
+  return `
+    <svg class="cenario-svg-palco" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ceuRecife58" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#C2B49B"/>
+          <stop offset="65%" stop-color="#E0D5C1"/>
+          <stop offset="100%" stop-color="#B0A086"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="380" fill="url(#ceuRecife58)"/>
+      <circle cx="630" cy="95" r="42" fill="#EFE6D5" opacity="0.7"/>
+      <line x1="110" y1="230" x2="145" y2="75" stroke="#4A4236" stroke-width="5"/>
+      <line x1="145" y1="75" x2="255" y2="115" stroke="#4A4236" stroke-width="4"/>
+      <line x1="250" y1="115" x2="250" y2="185" stroke="#4A4236" stroke-width="2"/>
+      <rect x="40" y="175" width="85" height="65" fill="#5C5243"/>
+      <rect x="135" y="160" width="95" height="80" fill="#4F4639"/>
+      <rect x="245" y="180" width="110" height="60" fill="#574D3F"/>
+      <rect x="350" y="215" width="450" height="14" fill="#3D362C"/>
+      <path d="M 380 235 Q 430 205 480 235 Q 530 205 580 235 Q 630 205 680 235 Q 730 205 780 235" fill="#4A4236"/>
+      <rect x="0" y="235" width="800" height="145" fill="#7D715E"/>
+      <path d="M 0 250 L 800 250" stroke="#524A3D" stroke-width="2"/>
+      <polygon points="470,285 610,285 585,308 495,308" fill="#332D24"/>
+      <rect x="520" y="265" width="45" height="20" fill="#473F34"/>
+      <line x1="590" y1="265" x2="670" y2="265" stroke="#E0D5C1" stroke-width="2" opacity="0.6"/>
+      <line x1="605" y1="280" x2="655" y2="280" stroke="#E0D5C1" stroke-width="2" opacity="0.5"/>
+    </svg>
+  `;
+}
+
 function atualizarMolduraEvidencia(evento = null) {
   if (!elSlotEvidencia) return;
 
   const estado = store.getState();
+  const ano = evento && evento.metadata ? evento.metadata.ano : estado.anoAtual;
+  const tituloCena = evento && evento.metadata ? evento.metadata.titulo.toUpperCase() : `ARQUIVO CENTRAL — FASE ${estado.faseAtual}`;
+  const idStr = evento && evento.metadata ? evento.metadata.id : `FASE-${estado.faseAtual}`;
+  const numProcesso = Math.abs(idStr.split('').reduce((acc, c) => acc + c.charCodeAt(0), 100)) % 899 + 100;
 
-  // 1. Caso haja imagem real definida e disponível na pasta artes/
+  if (elCenarioLocal) {
+    elCenarioLocal.textContent = `${tituloCena} (RECIFE, ${ano})`;
+  }
+  if (elCenarioRegistro) {
+    elCenarioRegistro.textContent = `REGISTRO N.º ${numProcesso}/${String(ano).slice(2)}`;
+  }
+  if (elResumoCenario) {
+    elResumoCenario.textContent = evento && evento.metadata ? evento.metadata.titulo : `Recife, ${ano}`;
+  }
+
+  // 1. Caso haja fotografia real definida na pasta artes/
   if (evento && evento.metadata && evento.metadata.imagem) {
     elSlotEvidencia.innerHTML = `
       <div class="foto-jornal-wrapper">
-        <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Evidência'}">
+        <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Cenário'}">
+        <div class="selo-sobreposto-cenario">${estado.faseAtual === 3 ? 'DEFESA CIVIL / PE' : 'ARQUIVO D.O.P.S.'}</div>
       </div>
     `;
     return;
   }
 
-  // 2. Fallback Procedural em SVG/CSS
-  const ano = evento ? evento.metadata.ano : estado.anoAtual;
-  const idStr = evento ? evento.metadata.id : `F${estado.faseAtual}-G01`;
-  const numProcesso = Math.abs(idStr.split('').reduce((acc, c) => acc + c.charCodeAt(0), 100)) % 899 + 100;
-  const ehFase3 = estado.faseAtual === 3;
+  // 2. Fotografia Ilustrada de Época em Sépia/Halftone
+  const svgCena = gerarSvgCenario(evento, estado);
+  const carimboSelo = estado.faseAtual === 3
+    ? 'CALAMIDADE — CHEIA DE 75'
+    : (evento && evento.metadata && evento.metadata.tipo === 'crise_urgente' ? 'MANDADO DE CAPTURA' : 'ARQUIVO ICONOGRÁFICO // PE');
 
   elSlotEvidencia.innerHTML = `
-    <div class="placeholder-arte-procedural">
-      <div class="arte-cabecalho">REGISTRO DE INQUÉRITO N.º ${numProcesso}/${String(ano).slice(2)}</div>
-      <div class="arte-carimbo-dops">${ehFase3 ? 'DEFESA CIVIL' : 'D.O.P.S. / PE'}</div>
-      <div class="arte-detalhe-grafico">
-        <div class="linha-estilizada"></div>
-        <div class="arte-selo-confidencial">${ehFase3 ? 'CALAMIDADE CAPIBARIBE' : 'CONFIDENCIAL'}</div>
+    <div class="foto-jornal-wrapper">
+      ${svgCena}
+      <div class="selo-sobreposto-cenario">${carimboSelo}</div>
+    </div>
+  `;
+}
+
+// ==========================================================================
+// TELA DE RELAÇÕES & VÍNCULOS (ABA 3)
+// ==========================================================================
+function gerarSvgRetrato(tipoAvatar) {
+  if (tipoAvatar === 'pai') {
+    return `
+      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="72" fill="#C8BCA6"/>
+        <circle cx="30" cy="26" r="12" fill="#4A4237"/>
+        <rect x="16" y="13" width="28" height="6" fill="#2E2922"/>
+        <path d="M 10 72 Q 30 44 50 72" fill="#383229"/>
+      </svg>
+    `;
+  }
+  if (tipoAvatar === 'militar' || tipoAvatar === 'dops') {
+    return `
+      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="72" fill="#BFB29B"/>
+        <polygon points="14,18 46,18 42,10 18,10" fill="#2B3026"/>
+        <rect x="12" y="17" width="36" height="4" fill="#1E211B"/>
+        <circle cx="30" cy="29" r="11" fill="#4A4237"/>
+        <rect x="21" y="25" width="7" height="4" fill="#1E1D1B"/>
+        <rect x="32" y="25" width="7" height="4" fill="#1E1D1B"/>
+        <path d="M 8 72 Q 30 45 52 72" fill="#2B3026"/>
+      </svg>
+    `;
+  }
+  if (tipoAvatar === 'aliado') {
+    return `
+      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="72" fill="#CCC0AA"/>
+        <circle cx="30" cy="26" r="12" fill="#52483C"/>
+        <path d="M 18 20 Q 30 10 42 20" fill="#29241E"/>
+        <path d="M 10 72 Q 30 45 50 72" fill="#473E33"/>
+      </svg>
+    `;
+  }
+  return `
+    <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+      <rect width="60" height="72" fill="#D4C8B2"/>
+      <circle cx="30" cy="26" r="12" fill="#3E372E"/>
+      <path d="M 17 22 Q 30 11 43 22" fill="#24201B"/>
+      <path d="M 9 72 Q 30 44 51 72" fill="#2E3640"/>
+    </svg>
+  `;
+}
+
+function renderizarTelaRelacoes() {
+  if (!elGaleriaPersonagens) return;
+  const estado = store.getState();
+  const valPai = estado.parentesco.relacao_pai;
+  const statusPai = valPai >= 2 ? 'Leal & Próximo' : valPai >= 0 ? 'Cauteloso / Neutro' : 'Rompimento Familiar';
+
+  const listaRelacoes = [
+    {
+      papel: 'VÍNCULO PATERNO • CAIS DE SANTO ANTÔNIO',
+      nome: 'Mestre Severino (Teu Pai)',
+      status: `Afinidade: Nível ${valPai} (${statusPai})`,
+      desc: 'Veterano das docas do Recife. A sua confiança define se a família estará unida quando o cerco fechar.',
+      classe: 'personagem-aliado',
+      avatar: 'pai'
+    },
+    {
+      papel: 'MOVIMENTO ESTUDANTIL • VÁRZEA',
+      nome: 'Helena & Gráfica Clandestina',
+      status: `Influência Política: ${estado.recursosVolateis.influencia}`,
+      desc: 'Articuladora das oficinas de alfabetização e panfletagem noturna nos arredores da Várzea e Boa Vista.',
+      classe: 'personagem-aliado',
+      avatar: 'aliado'
+    },
+    {
+      papel: 'TRABALHADORES & VIZINHANÇA',
+      nome: 'Sindicato & Moradores da Madalena',
+      status: `Moral Popular: ${estado.recursosVolateis.moral_popular}`,
+      desc: 'A solidariedade acumulada entre estivadores, ferroviários e vizinhos de bairro nas horas de escassez.',
+      classe: 'personagem-protagonista',
+      avatar: 'protagonista'
+    },
+    {
+      papel: 'APARATO DE VIGILÂNCIA • RUA DA UNIÃO',
+      nome: 'Delegacia do D.O.P.S. / PE',
+      status: `Suspeita Acumulada: ${estado.recursosVolateis.suspeita_dops} / 10`,
+      desc: 'Investigadores e arquivos políticos do estado. Ao atingir 10 de suspeita, uma batida compulsória é deflagrada.',
+      classe: 'personagem-antagonista',
+      avatar: 'dops'
+    }
+  ];
+
+  elGaleriaPersonagens.innerHTML = listaRelacoes.map(p => `
+    <div class="cartao-personagem ${p.classe}">
+      <div class="retrato-moldura">
+        ${gerarSvgRetrato(p.avatar)}
       </div>
-      <div class="arte-rodape">ARQUIVO DE INVESTIGAÇÃO — RECIFE, ${ano}</div>
+      <div class="personagem-info">
+        <span class="personagem-papel-tag">${p.papel}</span>
+        <span class="personagem-nome">${p.nome}</span>
+        <span class="personagem-status">${p.status}</span>
+        <p class="personagem-desc">${p.desc}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ==========================================================================
+// TELA DE CRONOLOGIA & DIÁRIO DE DECISÕES (ABA 4)
+// ==========================================================================
+function renderizarTelaCronologia() {
+  if (!elConteudoCronologia) return;
+  const estado = store.getState();
+
+  const fasesInfo = [
+    {
+      num: 1,
+      titulo: 'Fase 1: A Formação e Efervescência Social',
+      periodo: 'Recife, 1958–1964 • Greves no Cais, Ligas Camponesas e o Golpe de Março de 64'
+    },
+    {
+      num: 2,
+      titulo: 'Fase 2: Os Anos de Chumbo',
+      periodo: 'Recife, 1968–1974 • AI-5, Vigilância do DOPS e Sobrevivência Clandestina'
+    },
+    {
+      num: 3,
+      titulo: 'Fase 3: A Grande Cheia do Capibaribe',
+      periodo: 'Recife, Julho de 1975 • Subida das Águas, Isolamento e o Pânico de Tapacurá'
+    }
+  ];
+
+  const htmlFases = fasesInfo.map(f => {
+    const ehAtiva = estado.faseAtual === f.num;
+    const ehConcluida = estado.faseAtual > f.num;
+    const classe = ehAtiva ? 'fase-ativa' : (ehConcluida ? 'fase-concluida' : '');
+    const rotuloStatus = ehAtiva ? 'EM CURSO' : (ehConcluida ? 'CONCLUÍDA' : 'FUTURO');
+
+    return `
+      <div class="cronologia-fase-card ${classe}">
+        <div>
+          <div class="cronologia-fase-titulo">${f.titulo}</div>
+          <div class="cronologia-fase-periodo">${f.periodo}</div>
+        </div>
+        <span class="cronologia-fase-badge">${rotuloStatus}</span>
+      </div>
+    `;
+  }).join('');
+
+  let htmlDiario = '';
+  if (diarioDecisoes.length === 0) {
+    htmlDiario = `
+      <div class="cronologia-registro-item">
+        <div class="cronologia-reg-topo">
+          <span>RECIFE, 1958</span>
+          <span>INÍCIO DE JORNADA</span>
+        </div>
+        <div class="cronologia-reg-titulo">Abertura do Prontuário</div>
+        <div class="cronologia-reg-escolha">Nenhuma decisão carimbada ainda. Abre um arquivo no Dossiê à direita para registrar tua história.</div>
+      </div>
+    `;
+  } else {
+    htmlDiario = diarioDecisoes.map((item, idx) => `
+      <div class="cronologia-registro-item">
+        <div class="cronologia-reg-topo">
+          <span>#${idx + 1} • RECIFE, ${item.ano}</span>
+          <span>CARIMBO: [${item.carimbo}]</span>
+        </div>
+        <div class="cronologia-reg-titulo">${item.eventoTitulo}</div>
+        <div class="cronologia-reg-escolha">↳ Decisão: <strong>${item.opcaoRotulo}</strong></div>
+      </div>
+    `).join('');
+  }
+
+  elConteudoCronologia.innerHTML = `
+    <div>
+      <div class="rotulo-secao-pasta">MARCOS HISTÓRICOS DO PERÍODO (1958–1975)</div>
+      <div class="cronologia-fases-lista">${htmlFases}</div>
+    </div>
+    <div>
+      <div class="rotulo-secao-pasta">DIÁRIO DE OCORRÊNCIAS & ESCOLHAS CARIMBADAS (${diarioDecisoes.length})</div>
+      <div class="cronologia-diario-lista">${htmlDiario}</div>
     </div>
   `;
 }
@@ -276,6 +683,8 @@ function renderizarDossie() {
   modoVisual = 'dossie';
   eventoAtivoId = null;
   atualizarMolduraEvidencia(null);
+  renderizarTelaRelacoes();
+  renderizarTelaCronologia();
 
   const estadoAtual = store.getState();
   const infoDossie = engine.obterEventosDossie(cacheEventos, estadoAtual);
@@ -289,7 +698,7 @@ function renderizarDossie() {
   if (elEdicao) elEdicao.textContent = `DOSSIÊ DE INVESTIGAÇÃO // FASE ${estadoAtual.faseAtual}`;
   if (elData) elData.textContent = `RECIFE, ${estadoAtual.anoAtual}`;
   if (elManchete) elManchete.textContent = "Índice de Incidentes & Ocorrências";
-  if (elLead) elLead.textContent = "Consulta os inquéritos e agendas abertas na cidade antes que o curso dos acontecimentos históricos se precipite.";
+  if (elLead) elLead.textContent = "Escolhe qual ocorrência enfrentar no Recife antes que o curso da História se precipite.";
 
   if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'none';
   if (elListaDecisoes) elListaDecisoes.innerHTML = '';
@@ -330,7 +739,7 @@ function renderizarDossie() {
           <div>
             ${podeAcessar ? `
               <button class="btn-abrir-evento" data-evento-id="${meta.id}">
-                ${ehClimax ? 'ENFRENTAR O DESTINO' : 'ABRIR ARQUIVO'}
+                ${ehClimax ? 'ENFRENTAR O DESTINO' : 'ABRIR PÁGINA'}
               </button>
             ` : `
               <button class="btn-abrir-evento" disabled style="opacity: 0.5; cursor: not-allowed">
@@ -346,7 +755,6 @@ function renderizarDossie() {
   htmlCorpo += `</div>`;
   if (elCorpo) elCorpo.innerHTML = htmlCorpo;
 
-  // Adiciona listeners para abrir eventos
   document.querySelectorAll('.btn-abrir-evento[data-evento-id]').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.eventoId;
@@ -388,7 +796,7 @@ function renderizarEvento(evento) {
     } else {
       elEdicao.innerHTML = `
         <button id="btn-voltar-ao-dossie" class="btn-voltar-dossie">← VOLTAR AO DOSSIÊ</button>
-        <span>DOSSIÊ N.º ${meta.id} // FASE ${meta.fase}</span>
+        <span>FASE ${meta.fase}</span>
       `;
       const btnVoltar = document.getElementById('btn-voltar-ao-dossie');
       if (btnVoltar) {
@@ -454,13 +862,20 @@ function renderizarEvento(evento) {
           if (emTransicao) return;
           try {
             executarAnimacaoCarimbo(botao, opcao.carimbo, () => {
+              // Registra na cronologia antes de executar
+              diarioDecisoes.push({
+                ano: meta.ano,
+                eventoId: meta.id,
+                eventoTitulo: meta.titulo,
+                opcaoRotulo: opcao.rotulo,
+                carimbo: opcao.carimbo || 'REGISTRADO'
+              });
+
               const res = engine.executarDecisao(evento, opcao.id);
               
-              // Se há próximo evento encadeado direto, abre ele
               if (res.proximoEventoId && cacheEventos[res.proximoEventoId]) {
                 abrirEvento(res.proximoEventoId);
               } else {
-                // Caso contrário, volta ao Dossiê (ou clímax se esgotou ações)
                 renderizarDossie();
               }
             });
@@ -512,7 +927,7 @@ async function inicializarNarrativa() {
     const dados = await window.electronAPI.getAllEvents();
     if (dados && dados.eventos) {
       cacheEventos = dados.eventos;
-      // Inicia direto na visão de Dossiê da Fase 1!
+      atualizarProntuario(store.getState(), null);
       renderizarDossie();
     }
 
@@ -670,6 +1085,7 @@ if (btnDevPularCheia) {
 
 if (btnDevReset) {
   btnDevReset.addEventListener('click', () => {
+    diarioDecisoes = [];
     store.reset();
     renderizarDossie();
     toggleConsoleDepuracao();

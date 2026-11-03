@@ -27,17 +27,17 @@ A interface NUNCA deve parecer um aplicativo web moderno, dashboard SaaS ou temp
 * **PROIBIDO** usar gradientes neon/modernos (roxo, azul-elétrico, sombras difusas `box-shadow` estilo Material Design).
 * **PROIBIDO** usar fundo branco puro (`#FFFFFF`) ou preto puro (`#000000`).
 
-### 2.2. Layout Espacial: "Mesa de Investigação" (Duas Colunas Assimétricas)
-O fundo geral da tela (`body`) deve representar uma superfície de madeira escura e gasta (`#161412`), sobre a qual repousam os documentos:
-* **Coluna da Esquerda (35% da largura — Contexto e Prontuário):**
-  * **Moldura de Evidência:** Espaço para a imagem do evento estilizada como foto Polaroid antiga ou recorte de jornal preso ao topo por um elemento visual de clipe metálico ou fita adesiva amarelada.
-  * **Ficha do DOPS / Prontuário:** Painel imitando cartão perfurado ou ficha datilografada exibindo os Atributos Fixos, o Caminho atual e os Recursos Voláteis.
-* **Coluna da Direita (65% da largura — Narrativa e Decisão):**
-  * Folha principal de leitura imitando papel jornal/ofício antigo, com margens internas generosas (`padding: 40px 60px`), cabeçalho editorial e a lista de decisões na parte inferior.
+### 2.2. Layout Espacial: "Palco Documental, Pastas de Inspeção & Página Lateral"
+O fundo geral da tela (`body`) representa uma superfície de madeira/cartolina ocre envelhecida e acolhedora (`#5C4938` a `#786049`, evitando fundos pretos ou escuros demais), sobre a qual repousam:
+* **Esquerda / Centro (~54% da largura — Palco Principal & Barra de Atalhos):**
+  * **Visor Principal do Palco:** Exibe por padrão o **Quadro Fotográfico do Cenário** em tamanho amplo e desobstruído. Ao acionar os atalhos inferiores, alterna para as fichas completas de **Atributos & Recursos**, **Relações & Família** (com retratos 3x4 e descrições de facções) ou **Cronologia (1958–1975)** (com o diário de decisões carimbadas).
+  * **Barra Inferior de Atalhos (Pastas de Arquivo):** Quatro botões táteis na base esquerda (`CENÁRIO`, `ATRIBUTOS`, `RELAÇÕES`, `CRONOLOGIA`) com resumo ao vivo e animação de impacto (`+1`/`-1`) quando atributos ou vínculos mudam.
+* **Coluna da Direita (~46% da largura — Página Única de Texto e Decisão):**
+  * Uma única página bem proporcionada (`max-width: 720px`) imitando folha de livro/crônica antiga, com cabeçalho editorial, texto narrativo e decisões na parte inferior.
 
-### 2.3. Tipografia e Conforto de Leitura
-* **Corpo da Narrativa:** Fontes serifadas editoriais clássicas (`EB Garamond`, `Lora`, `Merriweather` ou `Crimson Text`). Tamanho amplo (`18px` a `20px`), entrelinha confortável (`line-height: 1.75`) e largura máxima de linha de `65ch` para evitar fadiga visual.
-* **Capitulares (Drop Caps):** O primeiro parágrafo de cada evento deve iniciar com uma letra capitular (`::first-letter`) ocupando 3 linhas de altura, em estilo editorial do *Diario de Pernambuco* antigo.
+### 2.3. Tipografia e Conforto de Leitura (Fontes Ampliadas)
+* **Corpo da Narrativa:** Fontes serifadas editoriais clássicas (`EB Garamond`, `Lora`, `Merriweather` ou `Crimson Text`). Tamanho ampliado (`22px`), entrelinha confortável (`line-height: 1.75`) e largura máxima de linha de `62ch` para leitura fluida.
+* **Capitulares (Drop Caps):** O primeiro parágrafo de cada evento deve iniciar com uma letra capitular (`::first-letter`) de `72px` ocupando 3 linhas de altura, em estilo editorial do *Diario de Pernambuco* antigo.
 * **Dados Técnicos, Fichas e Requisitos:** Fontes monoespaçadas de máquina de escrever (`Courier Prime`, `Special Elite` ou `Cutive Mono`).
 * **Destaque Semântico:** Nomes de bairros do Recife (**Boa Vista**, **Várzea**, **Santo Antônio**), figuras ou facções (**DOPS**, **Sindicato**) devem receber grifo sutil tipo marca-texto desbotado ou sublinhado pontilhado em cor de tinta azul-caneta (`#2B3A4A`) ou vermelho-ferrugem (`#8A2522`).
 
