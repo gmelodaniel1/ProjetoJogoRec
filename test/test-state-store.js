@@ -56,5 +56,17 @@ if (store.getState().condicaoSocial !== "Líder Sindical dos Ferroviários") {
   process.exit(1);
 }
 
+// Teste 4: Espectros Qualitativos estilo Sir Brante nos Deltas
+if (
+  !deltasAplicados.astucia.espectroAnterior ||
+  deltasAplicados.astucia.espectroAnterior.rotulo !== 'Firme' ||
+  deltasAplicados.astucia.espectroNovo.rotulo !== 'Calejado' ||
+  !deltasAplicados.astucia.mudouPatamar ||
+  !deltasAplicados.astucia.subiuPatamar
+) {
+  console.error("FALHA: Cálculo de espectro qualitativo (Sir Brante) em deltas falhou!", deltasAplicados.astucia);
+  process.exit(1);
+}
+
 console.log("\n=== TESTE DO STATE STORE CONCLUÍDO COM 100% DE SUCESSO! ===");
 

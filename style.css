@@ -524,11 +524,245 @@ html, body {
   border: 1px solid #BFB29B;
   padding: 12px 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   font-family: var(--fonte-datilografada);
   font-size: 14px;
   position: relative;
+}
+
+/* ==========================================================================
+   BARRA DE ESPECTRO QUALITATIVO (ESTILO SIR BRANTE)
+   ========================================================================== */
+.slot-espectro {
+  width: 100%;
+  margin: 2px 0 4px 0;
+}
+
+.barra-espectro-brante {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  width: 100%;
+}
+
+.espectro-segmento {
+  background-color: #DCD3C0;
+  border: 1px solid #B5A892;
+  padding: 4px 2px;
+  text-align: center;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  color: #7D7465;
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.espectro-segmento.preenchido {
+  background-color: #C7BBA3;
+  color: #3D3830;
+  border-color: #8C7F6A;
+}
+
+.espectro-segmento.ativo {
+  font-weight: bold;
+  border-width: 2px;
+  transform: scaleY(1.06);
+  z-index: 2;
+}
+
+.espectro-segmento.ativo.tom-critico {
+  background-color: var(--cor-carimbo-vermelho);
+  border-color: #5C1513;
+  color: #F0EAE1;
+}
+
+.espectro-segmento.ativo.tom-fraco {
+  background-color: #8C4A27;
+  border-color: #592D16;
+  color: #F0EAE1;
+}
+
+.espectro-segmento.ativo.tom-estavel {
+  background-color: var(--cor-azul-caneta);
+  border-color: #162433;
+  color: #F0EAE1;
+}
+
+.espectro-segmento.ativo.tom-forte {
+  background-color: #2B5438;
+  border-color: #1B3623;
+  color: #F0EAE1;
+}
+
+.espectro-segmento.ativo.tom-mestre {
+  background-color: #1F472B;
+  border-color: #122B1A;
+  color: #F4EFE6;
+}
+
+/* QUADRO DE CONSEQUÊNCIAS DA DECISÃO ANTERIOR (ESTILO SIR BRANTE) */
+.painel-consequencias-decisao {
+  background-color: #E2D8C5;
+  border: 2px solid var(--cor-tinta-principal);
+  border-left: 6px solid var(--cor-azul-caneta);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(28, 20, 12, 0.18);
+}
+
+.conseq-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #8C7F6A;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.conseq-titulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: var(--cor-tinta-principal);
+}
+
+.conseq-escolha-origem {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--cor-tinta-desbotada);
+  margin-bottom: 10px;
+}
+
+.btn-fechar-conseq {
+  background: transparent;
+  border: 1px solid #7D715E;
+  color: var(--cor-tinta-desbotada);
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.btn-fechar-conseq:hover {
+  background: #D4C8B2;
+  color: var(--cor-tinta-principal);
+}
+
+.conseq-lista-mudancas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.conseq-item-linha {
+  background-color: var(--cor-papel-principal);
+  border: 1px solid #BFB29B;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.conseq-item-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--fonte-datilografada);
+  font-size: 13px;
+}
+
+.conseq-nome-delta {
+  font-weight: bold;
+  color: var(--cor-tinta-principal);
+}
+
+.conseq-delta-pilula {
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.conseq-delta-pilula.positivo {
+  background-color: #2B5438;
+  color: #F0EAE1;
+}
+
+.conseq-delta-pilula.negativo {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #F0EAE1;
+}
+
+.conseq-transicao-patamar {
+  font-family: var(--fonte-datilografada);
+  font-size: 13px;
+  color: var(--cor-tinta-desbotada);
+}
+
+.conseq-transicao-patamar strong {
+  color: var(--cor-tinta-principal);
+}
+
+.alerta-mudanca-patamar {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: bold;
+  border: 1px solid currentColor;
+}
+
+.alerta-mudanca-patamar.subiu {
+  color: #2B5438;
+  background-color: rgba(43, 84, 56, 0.1);
+}
+
+.alerta-mudanca-patamar.caiu {
+  color: var(--cor-carimbo-vermelho);
+  background-color: rgba(138, 37, 34, 0.1);
+}
+
+/* PREVISÃO DETALHADA DE MUDANÇA NOS CARTÕES DE DECISÃO */
+.efeito-transicao-item {
+  background-color: var(--cor-papel-principal);
+  border: 1px solid #B8AA93;
+  border-left: 3px solid #2B5438;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+}
+
+.efeito-transicao-item.efeito-negativo {
+  border-left-color: var(--cor-carimbo-vermelho);
+}
+
+.efeito-transicao-esq {
+  font-weight: bold;
+  color: #2B5438;
+}
+
+.efeito-transicao-item.efeito-negativo .efeito-transicao-esq {
+  color: var(--cor-carimbo-vermelho);
+}
+
+.efeito-transicao-dir {
+  color: var(--cor-tinta-desbotada);
+}
+
+.efeito-transicao-dir strong {
+  color: var(--cor-tinta-principal);
 }
 
 .familia-stat-box .rotulo-campo {
@@ -1089,6 +1323,72 @@ html, body {
 .btn-voltar-dossie:hover {
   background: #D4C8B2;
   border-color: var(--cor-tinta-principal);
+}
+
+/* ==========================================================================
+   FLUXO EM DOIS TEMPOS: TRANSIÇÃO PARA A DECISÃO (TICKET 14)
+   ========================================================================== */
+.bloco-continuar-decisao {
+  margin: 20px 0 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-continuar-decisao {
+  width: 100%;
+  background-color: #2E2720;
+  color: #F0EAE1;
+  border: 2px solid #5A4C3C;
+  border-bottom: 4px solid var(--cor-carimbo-vermelho);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--fonte-datilografada);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(28, 20, 12, 0.35);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-continuar-decisao:hover {
+  background-color: #3F352B;
+  border-color: #8C7760;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(28, 20, 12, 0.45);
+}
+
+.btn-continuar-decisao:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(28, 20, 12, 0.25);
+}
+
+.btn-continuar-decisao .seta-continuar {
+  font-size: 18px;
+  color: #E2CFA9;
+  transition: transform 0.15s ease;
+}
+
+.btn-continuar-decisao:hover .seta-continuar {
+  transform: translateX(4px);
+  color: #F0EAE1;
+}
+
+.secao-deliberacao-decisoes {
+  animation: revelarDecisoesSuave 0.25s ease-out forwards;
+}
+
+@keyframes revelarDecisoesSuave {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================

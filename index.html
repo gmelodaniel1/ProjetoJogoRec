@@ -108,13 +108,14 @@
 
                 <!-- ATRIBUTOS PESSOAIS FIXOS -->
                 <div class="ficha-bloco">
-                  <div class="rotulo-secao-pasta">ATRIBUTOS FORMATIVOS (PERMANENTES)</div>
+                  <div class="rotulo-secao-pasta">ATRIBUTOS FORMATIVOS (ESPECTRO DE CAPACIDADE)</div>
                   <div class="grade-atributos-detalhada">
                     <div class="item-atributo-detalhado">
                       <div class="attr-linha-topo">
                         <span class="rotulo-attr">ASTÚCIA</span>
                         <span class="valor-attr" id="attr-astucia">2</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-astucia"></div>
                       <p class="attr-explicacao">Leitura de rua, malícia política, dissimulação e improviso em situações de risco.</p>
                     </div>
 
@@ -123,6 +124,7 @@
                         <span class="rotulo-attr">SANGUE-FRIO</span>
                         <span class="valor-attr" id="attr-sangue-frio">1</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-sangue-frio"></div>
                       <p class="attr-explicacao">Frieza sob interrogatório policial, cerco militar ou pânico coletivo.</p>
                     </div>
 
@@ -131,6 +133,7 @@
                         <span class="rotulo-attr">OFÍCIO</span>
                         <span class="valor-attr" id="attr-oficio">2</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-oficio"></div>
                       <p class="attr-explicacao">Domínio técnico do trabalho manual, máquinas, tipografia e navegação.</p>
                     </div>
 
@@ -139,6 +142,7 @@
                         <span class="rotulo-attr">PRESENÇA</span>
                         <span class="valor-attr" id="attr-presenca">0</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-presenca"></div>
                       <p class="attr-explicacao">Voz de comando, oratória em assembleias e autoridade moral perante o povo.</p>
                     </div>
                   </div>
@@ -153,6 +157,7 @@
                         <span class="rotulo-recurso">CAPITAL</span>
                         <span class="valor-recurso" id="rec-capital">Cr$ 40</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-capital"></div>
                       <p class="attr-explicacao">Economias em Cruzeiros. Se cair a Cr$ 0, dispara crise de despejo e penúria.</p>
                     </div>
 
@@ -161,6 +166,7 @@
                         <span class="rotulo-recurso">INFLUÊNCIA</span>
                         <span class="valor-recurso" id="rec-influencia">1</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-influencia"></div>
                       <p class="attr-explicacao">Favores políticos, contatos sindicais, jornalísticos e eclesiásticos no Recife.</p>
                     </div>
 
@@ -169,6 +175,7 @@
                         <span class="rotulo-recurso">SUSPEITA DOPS</span>
                         <span class="valor-recurso" id="rec-suspeita">2 / 10</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-suspeita"></div>
                       <p class="attr-explicacao">Atenção dos investigadores na Rua da União. Em 10/10 ocorre batida policial.</p>
                     </div>
 
@@ -177,6 +184,7 @@
                         <span class="rotulo-recurso">MORAL POPULAR</span>
                         <span class="valor-recurso" id="rec-moral">3</span>
                       </div>
+                      <div class="slot-espectro" id="espectro-moral"></div>
                       <p class="attr-explicacao">Confiança e solidariedade dos trabalhadores, vizinhos e companheiros.</p>
                     </div>
                   </div>
@@ -200,12 +208,18 @@
                 <!-- RESUMO DE VÍNCULOS FAMILIARES -->
                 <div class="painel-familia-resumo">
                   <div class="familia-stat-box">
-                    <span class="rotulo-campo">RELAÇÃO COM O PAI:</span>
-                    <span class="valor-campo" id="val-vinculo-pai">Nível 2 (Leal)</span>
+                    <div class="attr-linha-topo">
+                      <span class="rotulo-campo">RELAÇÃO COM O PAI:</span>
+                      <span class="valor-campo" id="val-vinculo-pai">Nível 2 (Leal)</span>
+                    </div>
+                    <div class="slot-espectro" id="espectro-pai"></div>
                   </div>
                   <div class="familia-stat-box">
-                    <span class="rotulo-campo">HONRA FAMILIAR:</span>
-                    <span class="valor-campo" id="val-honra-familiar">Nível 1</span>
+                    <div class="attr-linha-topo">
+                      <span class="rotulo-campo">HONRA FAMILIAR:</span>
+                      <span class="valor-campo" id="val-honra-familiar">Nível 1</span>
+                    </div>
+                    <div class="slot-espectro" id="espectro-honra"></div>
                   </div>
                 </div>
 
@@ -291,19 +305,35 @@
             <p id="editorial-lead" class="editorial-lead"></p>
           </header>
 
+          <!-- QUADRO DE CONSEQUÊNCIAS DA DECISÃO ANTERIOR (ESTILO SIR BRANTE) -->
+          <section id="painel-consequencias-decisao" class="painel-consequencias-decisao" style="display: none;">
+            <!-- Preenchido dinamicamente pelo renderer.js após cada decisão -->
+          </section>
+
           <!-- CORPO NARRATIVO COM FONTE AMPLIADA E CAPITULAR -->
           <div id="corpo-narrativa" class="corpo-narrativa">
             <p>Carregando arquivos do inquérito...</p>
           </div>
 
-          <!-- DIVISÓRIA DE DECISÕES -->
-          <div class="divisor-decisoes">
-            <span class="titulo-decisoes">ESCOLHE TEU CAMINHO</span>
+          <!-- BLOCO DE TRANSIÇÃO: CONTINUAR PARA A DECISÃO (FLUXO EM DOIS TEMPOS) -->
+          <div id="bloco-continuar-decisao" class="bloco-continuar-decisao" style="display: none;">
+            <button id="btn-continuar-para-decisao" class="btn-continuar-decisao">
+              <span>PESAR AS ESCOLHAS & DELIBERAR</span>
+              <span class="seta-continuar">➔</span>
+            </button>
           </div>
 
-          <!-- LISTA DE DECISÕES TÁTEIS -->
-          <div id="lista-decisoes" class="lista-decisoes">
-            <!-- Injetado dinamicamente via Markdown -->
+          <!-- SEÇÃO DE DELIBERAÇÃO & CARTÕES DE ESCOLHA (REVELADA APÓS CONTINUAR) -->
+          <div id="secao-deliberacao-decisoes" class="secao-deliberacao-decisoes" style="display: none;">
+            <!-- DIVISÓRIA DE DECISÕES -->
+            <div class="divisor-decisoes">
+              <span class="titulo-decisoes">ESCOLHE TEU CAMINHO</span>
+            </div>
+
+            <!-- LISTA DE DECISÕES TÁTEIS -->
+            <div id="lista-decisoes" class="lista-decisoes">
+              <!-- Injetado dinamicamente via Markdown -->
+            </div>
           </div>
 
         </article>

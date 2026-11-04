@@ -1,5 +1,5 @@
 // ==========================================================================
-// RENDERER.JS — CICLO NARRATIVO, CENÁRIO, TELAS DE INSPEÇÃO & HOT-RELOADING
+// RENDERER.JS — CICLO NARRATIVO, ESPECTROS SIR BRANTE, TELAS & HOT-RELOADING
 // ==========================================================================
 
 let cacheEventos = {};
@@ -7,11 +7,26 @@ let eventoAtivoId = null; // null = exibindo o Dossiê da Fase
 let modoVisual = 'dossie'; // 'dossie' | 'evento'
 let abaPalcoAtiva = 'aba-cenario';
 let diarioDecisoes = []; // Registro cronológico das decisões tomadas na sessão
+let ultimaConsequenciaDecisao = null; // Última alteração de atributos pós-decisão
+let deliberacaoAberta = false; // Fluxo em dois tempos: false = lendo narrativa, true = deliberando escolhas
 
 const store = new CharacterStateStore();
 const engine = new DeterministicEngine(store);
 window.personagemStore = store;
 window.gameEngine = engine;
+
+const NOMES_ATRIBUTOS_UI = {
+  astucia: 'ASTÚCIA',
+  sangue_frio: 'SANGUE-FRIO',
+  oficio: 'OFÍCIO',
+  presenca: 'PRESENÇA',
+  capital: 'CAPITAL',
+  influencia: 'INFLUÊNCIA',
+  suspeita_dops: 'SUSPEITA DOPS',
+  moral_popular: 'MORAL POPULAR',
+  relacao_pai: 'RELAÇÃO COM O PAI',
+  honra_familiar: 'HONRA FAMILIAR'
+};
 
 // Referências DOM - Barra Superior
 const elEtiquetaFase = document.getElementById('etiqueta-fase');
@@ -41,7 +56,11 @@ const elEdicao = document.getElementById('editorial-edicao');
 const elData = document.getElementById('editorial-data');
 const elManchete = document.getElementById('editorial-manchete');
 const elLead = document.getElementById('editorial-lead');
+const elPainelConsequencias = document.getElementById('painel-consequencias-decisao');
 const elCorpo = document.getElementById('corpo-narrativa');
+const elBlocoContinuar = document.getElementById('bloco-continuar-decisao');
+const elBtnContinuar = document.getElementById('btn-continuar-para-decisao');
+const elSecaoDeliberacao = document.getElementById('secao-deliberacao-decisoes');
 const elListaDecisoes = document.getElementById('lista-decisoes');
 const elDivisorDecisoes = document.querySelector('.divisor-decisoes');
 const elNotificacao = document.getElementById('notificacao-hot-reload');
@@ -60,6 +79,18 @@ const elRecInfluencia = document.getElementById('rec-influencia');
 const elRecSuspeita = document.getElementById('rec-suspeita');
 const elRecMoral = document.getElementById('rec-moral');
 
+// Slots de Espectro Visual
+const elEspAstucia = document.getElementById('espectro-astucia');
+const elEspSangueFrio = document.getElementById('espectro-sangue-frio');
+const elEspOficio = document.getElementById('espectro-oficio');
+const elEspPresenca = document.getElementById('espectro-presenca');
+const elEspCapital = document.getElementById('espectro-capital');
+const elEspInfluencia = document.getElementById('espectro-influencia');
+const elEspSuspeita = document.getElementById('espectro-suspeita');
+const elEspMoral = document.getElementById('espectro-moral');
+const elEspPai = document.getElementById('espectro-pai');
+const elEspHonra = document.getElementById('espectro-honra');
+
 // Referências DOM - Painel da Cheia de 75 (Fase 3)
 const elPainelCheia = document.getElementById('painel-cheia-75');
 const elValNivelRio = document.getElementById('val-nivel-rio');
@@ -76,15 +107,38 @@ const elementosContainers = {
   influencia: elRecInfluencia ? elRecInfluencia.closest('.item-recurso-detalhado') : null,
   suspeita_dops: elRecSuspeita ? elRecSuspeita.closest('.item-recurso-detalhado') : null,
   moral_popular: elRecMoral ? elRecMoral.closest('.item-recurso-detalhado') : null,
-  relacao_pai: elVinculoPai ? elVinculoPai.parentElement : null,
-  honra_familiar: elHonraFamiliar ? elHonraFamiliar.parentElement : null
+  relacao_pai: elVinculoPai ? elVinculoPai.closest('.familia-stat-box') : null,
+  honra_familiar: elHonraFamiliar ? elHonraFamiliar.closest('.familia-stat-box') : null
 };
+
+// ==========================================================================
+// GERADOR VISUAL DA BARRA DE ESPECTRO (ESTILO SIR BRANTE)
+// ==========================================================================
+function gerarBarraEspectroHtml(chave, valor) {
+  const esp = store.obterEspectro(chave, valor);
+  const segmentos = esp.faixas.map(f => {
+    const classes = [
+      'espectro-segmento',
+      f.preenchido ? 'preenchido' : '',
+      f.ativo ? `ativo tom-${f.tom}` : ''
+    ].filter(Boolean).join(' ');
+    return `<span class="${classes}" title="${f.rotulo}">${f.rotulo}</span>`;
+  }).join('');
+
+  return `<div class="barra-espectro-brante">${segmentos}</div>`;
+}
+
+function obterValorChaveEstado(estado, chave) {
+  if (chave in estado.atributosFixos) return estado.atributosFixos[chave];
+  if (chave in estado.recursosVolateis) return estado.recursosVolateis[chave];
+  if (chave in estado.parentesco) return estado.parentesco[chave];
+  return 0;
+}
 
 // ==========================================================================
 // NAVEGAÇÃO ENTRE AS TELAS DO PALCO (CENÁRIO, ATRIBUTOS, RELAÇÕES, CRONOLOGIA)
 // ==========================================================================
 function alternarAbaPalco(idAlvo) {
-  // Se clicar no atalho que já está aberto (exceto cenário), volta ao cenário
   if (abaPalcoAtiva === idAlvo && idAlvo !== 'aba-cenario') {
     idAlvo = 'aba-cenario';
   }
@@ -120,7 +174,7 @@ document.querySelectorAll('[data-fechar-aba]').forEach(btn => {
 // ==========================================================================
 // FEEDBACK TÁTIL & MICROINTERAÇÕES
 // ==========================================================================
-function criarBadgeElemento( container, texto, ehPositivo ) {
+function criarBadgeElemento(container, texto, ehPositivo) {
   if (!container) return;
   const badge = document.createElement('span');
   badge.className = `delta-badge ${ehPositivo ? 'delta-positivo' : 'delta-negativo'}`;
@@ -129,20 +183,22 @@ function criarBadgeElemento( container, texto, ehPositivo ) {
   setTimeout(() => badge.remove(), 1600);
 }
 
-function animarDeltaBadge(chave, delta) {
+function animarDeltaBadge(chave, infoDelta) {
+  const delta = infoDelta.delta;
   const containerInterno = elementosContainers[chave];
   const ehPositivo = delta > 0;
-  const ehNegativoSuspeita = chave === 'suspeita_dops' ? !ehPositivo : ehPositivo;
+  const ehBom = chave === 'suspeita_dops' ? !ehPositivo : ehPositivo;
   const sinal = delta > 0 ? `+${delta}` : `${delta}`;
-  const nomeCurto = chave.replace(/_/g, ' ').toUpperCase();
+  const nomeCurto = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
+  const rotuloNovo = infoDelta.espectroNovo ? ` [${infoDelta.espectroNovo.rotulo}]` : '';
 
   // 1. Anima dentro da respectiva ficha (Atributos ou Relações)
-  criarBadgeElemento(containerInterno, sinal, ehNegativoSuspeita);
+  criarBadgeElemento(containerInterno, `${sinal}${rotuloNovo}`, ehBom);
 
   // 2. Anima também no botão de atalho inferior para feedback imediato durante a cena
   const ehRelacao = chave === 'relacao_pai' || chave === 'honra_familiar';
   const btnAtalho = ehRelacao ? btnAbaRelacoes : btnAbaAtributos;
-  criarBadgeElemento(btnAtalho, `${sinal} ${nomeCurto}`, ehNegativoSuspeita);
+  criarBadgeElemento(btnAtalho, `${sinal} ${nomeCurto}`, ehBom);
 }
 
 function tocarSomCarimbo() {
@@ -198,7 +254,7 @@ function executarAnimacaoCarimbo(botao, carimboTexto, callbackTransicao) {
 }
 
 // ==========================================================================
-// RENDERIZAÇÃO DO PRONTUÁRIO, RESUMOS DE ATALHOS & BARRA DE ESTADO
+// RENDERIZAÇÃO DO PRONTUÁRIO, ESPECTROS & BARRA DE ESTADO
 // ==========================================================================
 function atualizarProntuario(estado, deltas) {
   if (!estado) return;
@@ -246,43 +302,72 @@ function atualizarProntuario(estado, deltas) {
   }
 
   const valPai = estado.parentesco.relacao_pai;
-  const rotuloPai = valPai >= 2 ? 'Leal' : valPai >= 0 ? 'Neutro' : 'Rompido';
+  const espPai = store.obterEspectro('relacao_pai', valPai);
   if (elVinculoPai) {
-    elVinculoPai.textContent = `Nível ${valPai} (${rotuloPai})`;
+    elVinculoPai.textContent = `${valPai} • ${espPai.rotulo.toUpperCase()}`;
   }
+  if (elEspPai) elEspPai.innerHTML = gerarBarraEspectroHtml('relacao_pai', valPai);
+
+  const valHonra = estado.parentesco.honra_familiar;
+  const espHonra = store.obterEspectro('honra_familiar', valHonra);
   if (elHonraFamiliar) {
-    elHonraFamiliar.textContent = `Nível ${estado.parentesco.honra_familiar}`;
+    elHonraFamiliar.textContent = `${valHonra} • ${espHonra.rotulo.toUpperCase()}`;
   }
+  if (elEspHonra) elEspHonra.innerHTML = gerarBarraEspectroHtml('honra_familiar', valHonra);
 
-  // Atributos Fixos
-  if (elAttrAstucia) elAttrAstucia.textContent = estado.atributosFixos.astucia;
-  if (elAttrSangueFrio) elAttrSangueFrio.textContent = estado.atributosFixos.sangue_frio;
-  if (elAttrOficio) elAttrOficio.textContent = estado.atributosFixos.oficio;
-  if (elAttrPresenca) elAttrPresenca.textContent = estado.atributosFixos.presenca;
+  // Atributos Fixos com Rótulo de Espectro e Barra Segmentada
+  const mapAtributos = [
+    { chave: 'astucia', elVal: elAttrAstucia, elEsp: elEspAstucia },
+    { chave: 'sangue_frio', elVal: elAttrSangueFrio, elEsp: elEspSangueFrio },
+    { chave: 'oficio', elVal: elAttrOficio, elEsp: elEspOficio },
+    { chave: 'presenca', elVal: elAttrPresenca, elEsp: elEspPresenca }
+  ];
 
-  // Recursos Voláteis
-  if (elRecCapital) elRecCapital.textContent = `Cr$ ${estado.recursosVolateis.capital}`;
-  if (elRecInfluencia) elRecInfluencia.textContent = estado.recursosVolateis.influencia;
+  mapAtributos.forEach(({ chave, elVal, elEsp }) => {
+    const v = estado.atributosFixos[chave];
+    const esp = store.obterEspectro(chave, v);
+    if (elVal) elVal.textContent = `${v} • ${esp.rotulo.toUpperCase()}`;
+    if (elEsp) elEsp.innerHTML = gerarBarraEspectroHtml(chave, v);
+  });
+
+  // Recursos Voláteis com Rótulo de Espectro e Barra Segmentada
+  const vCap = estado.recursosVolateis.capital;
+  const espCap = store.obterEspectro('capital', vCap);
+  if (elRecCapital) elRecCapital.textContent = `Cr$ ${vCap} • ${espCap.rotulo.toUpperCase()}`;
+  if (elEspCapital) elEspCapital.innerHTML = gerarBarraEspectroHtml('capital', vCap);
+
+  const vInf = estado.recursosVolateis.influencia;
+  const espInf = store.obterEspectro('influencia', vInf);
+  if (elRecInfluencia) elRecInfluencia.textContent = `${vInf} • ${espInf.rotulo.toUpperCase()}`;
+  if (elEspInfluencia) elEspInfluencia.innerHTML = gerarBarraEspectroHtml('influencia', vInf);
+
+  const vSusp = estado.recursosVolateis.suspeita_dops;
+  const espSusp = store.obterEspectro('suspeita_dops', vSusp);
   if (elRecSuspeita) {
-    const susp = estado.recursosVolateis.suspeita_dops;
-    elRecSuspeita.textContent = `${susp} / 10`;
+    elRecSuspeita.textContent = `${vSusp}/10 • ${espSusp.rotulo.toUpperCase()}`;
     const containerSusp = elRecSuspeita.closest('.item-recurso-detalhado');
     if (containerSusp) {
-      if (susp >= 6) containerSusp.classList.add('recurso-alerta');
+      if (vSusp >= 5) containerSusp.classList.add('recurso-alerta');
       else containerSusp.classList.remove('recurso-alerta');
     }
   }
-  if (elRecMoral) elRecMoral.textContent = estado.recursosVolateis.moral_popular;
+  if (elEspSuspeita) elEspSuspeita.innerHTML = gerarBarraEspectroHtml('suspeita_dops', vSusp);
+
+  const vMor = estado.recursosVolateis.moral_popular;
+  const espMor = store.obterEspectro('moral_popular', vMor);
+  if (elRecMoral) elRecMoral.textContent = `${vMor} • ${espMor.rotulo.toUpperCase()}`;
+  if (elEspMoral) elEspMoral.innerHTML = gerarBarraEspectroHtml('moral_popular', vMor);
 
   // Resumos nos Botões de Atalho Inferiores
   if (elResumoAtributos) {
-    elResumoAtributos.textContent = `Cr$ ${estado.recursosVolateis.capital} • Susp. ${estado.recursosVolateis.suspeita_dops}/10`;
+    elResumoAtributos.textContent = `Cr$ ${vCap} (${espCap.rotulo}) • Susp. ${vSusp}/10`;
   }
   if (elResumoRelacoes) {
-    elResumoRelacoes.textContent = `Pai: ${rotuloPai} (${valPai}) • Honra: ${estado.parentesco.honra_familiar}`;
+    elResumoRelacoes.textContent = `Pai: ${espPai.rotulo} (${valPai}) • Honra: ${espHonra.rotulo}`;
   }
   if (elResumoCronologia) {
-    elResumoCronologia.textContent = `Fase ${estado.faseAtual} • ${estado.anoAtual} (${estado.eventosConcluidos.length} reg.)`;
+    const totalReg = Array.isArray(estado.historicoDecisoes) ? estado.historicoDecisoes.length : 0;
+    elResumoCronologia.textContent = `Fase ${estado.faseAtual} • ${estado.anoAtual} (${totalReg} reg.)`;
   }
 
   // Atualização dos Indicadores da Cheia de 75 (Fase 3)
@@ -307,7 +392,6 @@ function atualizarProntuario(estado, deltas) {
     }
   }
 
-  // Atualiza também as telas de Relações e Cronologia caso estejam abertas
   renderizarTelaRelacoes();
   renderizarTelaCronologia();
 
@@ -315,7 +399,7 @@ function atualizarProntuario(estado, deltas) {
   if (deltas && typeof deltas === 'object') {
     Object.entries(deltas).forEach(([chave, info]) => {
       if (info && typeof info.delta === 'number') {
-        animarDeltaBadge(chave, info.delta);
+        animarDeltaBadge(chave, info);
       }
     });
   }
@@ -324,6 +408,162 @@ function atualizarProntuario(estado, deltas) {
 store.subscribe((estado, deltas) => {
   atualizarProntuario(estado, deltas);
 });
+
+// ==========================================================================
+// QUADRO DE CONSEQUÊNCIAS DA DECISÃO ANTERIOR (ESTILO SIR BRANTE)
+// ==========================================================================
+function renderizarPainelConsequencias() {
+  if (!elPainelConsequencias) return;
+
+  if (!ultimaConsequenciaDecisao || !ultimaConsequenciaDecisao.deltas) {
+    elPainelConsequencias.style.display = 'none';
+    elPainelConsequencias.innerHTML = '';
+    return;
+  }
+
+  const entradas = Object.entries(ultimaConsequenciaDecisao.deltas).filter(
+    ([, info]) => info && typeof info.delta === 'number' && info.espectroAnterior && info.espectroNovo
+  );
+
+  if (entradas.length === 0) {
+    elPainelConsequencias.style.display = 'none';
+    return;
+  }
+
+  const linhasHtml = entradas.map(([chave, info]) => {
+    const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
+    const sinal = info.delta > 0 ? `+${info.delta}` : `${info.delta}`;
+    const ehBom = chave === 'suspeita_dops' ? info.delta < 0 : info.delta > 0;
+    const classePilula = ehBom ? 'positivo' : 'negativo';
+
+    const valAnt = chave === 'capital' ? `Cr$ ${info.anterior}` : info.anterior;
+    const valNov = chave === 'capital' ? `Cr$ ${info.novo}` : info.novo;
+
+    let badgeMudancaPatamar = '';
+    if (info.mudouPatamar) {
+      const subiuBom = chave === 'suspeita_dops' ? !info.subiuPatamar : info.subiuPatamar;
+      const icone = info.subiuPatamar ? '▲' : '▼';
+      const verbo = info.subiuPatamar ? 'SUBIU PARA' : 'CAIU PARA';
+      badgeMudancaPatamar = `
+        <span class="alerta-mudanca-patamar ${subiuBom ? 'subiu' : 'caiu'}">
+          ${icone} ${verbo} ${info.espectroNovo.rotulo.toUpperCase()}!
+        </span>
+      `;
+    }
+
+    return `
+      <div class="conseq-item-linha">
+        <div class="conseq-item-topo">
+          <div>
+            <span class="conseq-nome-delta">${nome}</span>
+            <span class="conseq-delta-pilula ${classePilula}">${sinal}</span>
+            ${badgeMudancaPatamar}
+          </div>
+          <div class="conseq-transicao-patamar">
+            ${valAnt} [${info.espectroAnterior.rotulo}] ➔ <strong>${valNov} [${info.espectroNovo.rotulo}]</strong>
+          </div>
+        </div>
+        ${gerarBarraEspectroHtml(chave, info.novo)}
+      </div>
+    `;
+  }).join('');
+
+  elPainelConsequencias.style.display = 'block';
+  elPainelConsequencias.innerHTML = `
+    <div class="conseq-cabecalho">
+      <span class="conseq-titulo">❖ IMPACTO DA TUA ÚLTIMA DECISÃO — CARIMBO [${ultimaConsequenciaDecisao.carimbo}]</span>
+      <button class="btn-fechar-conseq" id="btn-fechar-conseq">✕ OCULTAR</button>
+    </div>
+    <div class="conseq-escolha-origem">
+      "${ultimaConsequenciaDecisao.opcaoRotulo}" (${ultimaConsequenciaDecisao.eventoTitulo})
+    </div>
+    <div class="conseq-lista-mudancas">
+      ${linhasHtml}
+    </div>
+  `;
+
+  const btnFechar = document.getElementById('btn-fechar-conseq');
+  if (btnFechar) {
+    btnFechar.addEventListener('click', () => {
+      ultimaConsequenciaDecisao = null;
+      renderizarPainelConsequencias();
+    });
+  }
+}
+
+// ==========================================================================
+// PREVISÃO DE REQUISITOS & MUDANÇAS NOS CARTÕES DE DECISÃO
+// ==========================================================================
+function gerarRequisitosDetalhadosHtml(opcao, avaliacao, estadoAtual) {
+  let itens = [];
+
+  if (avaliacao.requisitos && avaliacao.requisitos.length > 0) {
+    avaliacao.requisitos.forEach(req => {
+      const espAtual = store.obterEspectro(req.chave, req.valorAtual);
+      if (req.atendido) {
+        itens.push(`
+          <div class="req-item req-atendido">
+            ✓ EXIGE ${req.rotulo} — Tens <strong>${req.valorAtual} [${espAtual.rotulo}]</strong>
+          </div>
+        `);
+      } else {
+        itens.push(`
+          <div class="req-item req-falho">
+            ✗ BLOQUEADO: Exige ${req.rotulo} — Tens apenas <strong>${req.valorAtual} [${espAtual.rotulo}]</strong>
+          </div>
+        `);
+      }
+    });
+  }
+
+  if (avaliacao.disponivel) {
+    itens.push(`
+      <div class="req-item req-atendido">
+        ✓ CARIMBO DE REGISTRO: <strong>[${opcao.carimbo || 'REGISTRADO'}]</strong>
+      </div>
+    `);
+  }
+
+  return itens.join('');
+}
+
+function gerarPrevisaoEfeitosHtml(efeitos, estadoAtual) {
+  if (!efeitos || Object.keys(efeitos).length === 0) return '';
+
+  return Object.entries(efeitos).map(([chave, deltaVal]) => {
+    const delta = Number(deltaVal) || 0;
+    if (delta === 0) return '';
+
+    const atual = obterValorChaveEstado(estadoAtual, chave);
+    let futuro = atual + delta;
+    if (chave === 'suspeita_dops') futuro = Math.max(0, Math.min(10, futuro));
+    else if (chave === 'capital' || chave in estadoAtual.atributosFixos) futuro = Math.max(0, futuro);
+
+    const espAtual = store.obterEspectro(chave, atual);
+    const espFuturo = store.obterEspectro(chave, futuro);
+    const mudouPatamar = espAtual.indice !== espFuturo.indice;
+
+    const sinal = delta > 0 ? `+${delta}` : `${delta}`;
+    const ehNegativo = (delta < 0 && chave !== 'suspeita_dops') || (delta > 0 && chave === 'suspeita_dops');
+    const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
+
+    const strAtual = chave === 'capital' ? `Cr$ ${atual}` : atual;
+    const strFuturo = chave === 'capital' ? `Cr$ ${futuro}` : futuro;
+
+    const tagMudanca = mudouPatamar
+      ? ` <strong>(${espFuturo.indice > espAtual.indice ? '▲' : '▼'} Muda p/ ${espFuturo.rotulo.toUpperCase()})</strong>`
+      : '';
+
+    return `
+      <div class="efeito-transicao-item ${ehNegativo ? 'efeito-negativo' : ''}">
+        <span class="efeito-transicao-esq">${ehNegativo ? '▼' : '▲'} ${nome} (${sinal})</span>
+        <span class="efeito-transicao-dir">
+          ${strAtual} [${espAtual.rotulo}] ➔ <strong>${strFuturo} [${espFuturo.rotulo}]</strong>${tagMudanca}
+        </span>
+      </div>
+    `;
+  }).join('');
+}
 
 // ==========================================================================
 // CENÁRIO FOTOGRÁFICO DE ÉPOCA (ABA 1)
@@ -469,7 +709,6 @@ function atualizarMolduraEvidencia(evento = null) {
     elResumoCenario.textContent = evento && evento.metadata ? evento.metadata.titulo : `Recife, ${ano}`;
   }
 
-  // 1. Caso haja fotografia real definida na pasta artes/
   if (evento && evento.metadata && evento.metadata.imagem) {
     elSlotEvidencia.innerHTML = `
       <div class="foto-jornal-wrapper">
@@ -480,7 +719,6 @@ function atualizarMolduraEvidencia(evento = null) {
     return;
   }
 
-  // 2. Fotografia Ilustrada de Época em Sépia/Halftone
   const svgCena = gerarSvgCenario(evento, estado);
   const carimboSelo = estado.faseAtual === 3
     ? 'CALAMIDADE — CHEIA DE 75'
@@ -545,13 +783,16 @@ function renderizarTelaRelacoes() {
   if (!elGaleriaPersonagens) return;
   const estado = store.getState();
   const valPai = estado.parentesco.relacao_pai;
-  const statusPai = valPai >= 2 ? 'Leal & Próximo' : valPai >= 0 ? 'Cauteloso / Neutro' : 'Rompimento Familiar';
+  const espPai = store.obterEspectro('relacao_pai', valPai);
+  const espInf = store.obterEspectro('influencia', estado.recursosVolateis.influencia);
+  const espMor = store.obterEspectro('moral_popular', estado.recursosVolateis.moral_popular);
+  const espSusp = store.obterEspectro('suspeita_dops', estado.recursosVolateis.suspeita_dops);
 
   const listaRelacoes = [
     {
       papel: 'VÍNCULO PATERNO • CAIS DE SANTO ANTÔNIO',
       nome: 'Mestre Severino (Teu Pai)',
-      status: `Afinidade: Nível ${valPai} (${statusPai})`,
+      status: `Nível ${valPai} • ${espPai.rotulo.toUpperCase()}`,
       desc: 'Veterano das docas do Recife. A sua confiança define se a família estará unida quando o cerco fechar.',
       classe: 'personagem-aliado',
       avatar: 'pai'
@@ -559,7 +800,7 @@ function renderizarTelaRelacoes() {
     {
       papel: 'MOVIMENTO ESTUDANTIL • VÁRZEA',
       nome: 'Helena & Gráfica Clandestina',
-      status: `Influência Política: ${estado.recursosVolateis.influencia}`,
+      status: `Influência: ${estado.recursosVolateis.influencia} • ${espInf.rotulo.toUpperCase()}`,
       desc: 'Articuladora das oficinas de alfabetização e panfletagem noturna nos arredores da Várzea e Boa Vista.',
       classe: 'personagem-aliado',
       avatar: 'aliado'
@@ -567,7 +808,7 @@ function renderizarTelaRelacoes() {
     {
       papel: 'TRABALHADORES & VIZINHANÇA',
       nome: 'Sindicato & Moradores da Madalena',
-      status: `Moral Popular: ${estado.recursosVolateis.moral_popular}`,
+      status: `Moral Popular: ${estado.recursosVolateis.moral_popular} • ${espMor.rotulo.toUpperCase()}`,
       desc: 'A solidariedade acumulada entre estivadores, ferroviários e vizinhos de bairro nas horas de escassez.',
       classe: 'personagem-protagonista',
       avatar: 'protagonista'
@@ -575,7 +816,7 @@ function renderizarTelaRelacoes() {
     {
       papel: 'APARATO DE VIGILÂNCIA • RUA DA UNIÃO',
       nome: 'Delegacia do D.O.P.S. / PE',
-      status: `Suspeita Acumulada: ${estado.recursosVolateis.suspeita_dops} / 10`,
+      status: `Suspeita: ${estado.recursosVolateis.suspeita_dops}/10 • ${espSusp.rotulo.toUpperCase()}`,
       desc: 'Investigadores e arquivos políticos do estado. Ao atingir 10 de suspeita, uma batida compulsória é deflagrada.',
       classe: 'personagem-antagonista',
       avatar: 'dops'
@@ -685,11 +926,11 @@ function renderizarDossie() {
   atualizarMolduraEvidencia(null);
   renderizarTelaRelacoes();
   renderizarTelaCronologia();
+  renderizarPainelConsequencias();
 
   const estadoAtual = store.getState();
   const infoDossie = engine.obterEventosDossie(cacheEventos, estadoAtual);
 
-  // SEQUESTRO DE AGENDA POR CRISE URGENTE (TICKET 09)
   if (infoDossie.tipoDossie === 'crise_sequestrada' && infoDossie.eventosDisponiveis.length > 0) {
     abrirEvento(infoDossie.eventosDisponiveis[0].metadata.id);
     return;
@@ -700,6 +941,8 @@ function renderizarDossie() {
   if (elManchete) elManchete.textContent = "Índice de Incidentes & Ocorrências";
   if (elLead) elLead.textContent = "Escolhe qual ocorrência enfrentar no Recife antes que o curso da História se precipite.";
 
+  if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+  if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
   if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'none';
   if (elListaDecisoes) elListaDecisoes.innerHTML = '';
 
@@ -776,12 +1019,18 @@ function abrirEvento(eventoId) {
 
   modoVisual = 'evento';
   eventoAtivoId = eventoId;
-  renderizarEvento(evento);
+  deliberacaoAberta = false;
+  renderizarEvento(evento, false);
 }
 
-function renderizarEvento(evento) {
+function renderizarEvento(evento, deliberacaoAbertaParam = null) {
   if (!evento || !evento.metadata) return;
+  if (deliberacaoAbertaParam !== null) {
+    deliberacaoAberta = deliberacaoAbertaParam;
+  }
+
   atualizarMolduraEvidencia(evento);
+  renderizarPainelConsequencias();
 
   const meta = evento.metadata;
   const estadoAtual = store.getState();
@@ -818,9 +1067,38 @@ function renderizarEvento(evento) {
   }
   if (elCorpo) elCorpo.innerHTML = evento.corpoHtml;
 
+  // Configuração do Fluxo em Dois Tempos (Exposição ➔ Continuar ➔ Decisão)
+  if (elBlocoContinuar) {
+    elBlocoContinuar.style.display = deliberacaoAberta ? 'none' : 'flex';
+    if (elBtnContinuar) {
+      if (meta.tipo === 'climax_obrigatorio') {
+        elBtnContinuar.innerHTML = `<span>ENFRENTAR O DESTINO HISTÓRICO</span><span class="seta-continuar">➔</span>`;
+      } else if (meta.tipo === 'crise_urgente') {
+        elBtnContinuar.innerHTML = `<span>RESPONDER À EMERGÊNCIA COMPULSÓRIA</span><span class="seta-continuar">➔</span>`;
+      } else {
+        elBtnContinuar.innerHTML = `<span>PESAR AS ESCOLHAS & DELIBERAR</span><span class="seta-continuar">➔</span>`;
+      }
+
+      elBtnContinuar.onclick = () => {
+        tocarSomCarimbo();
+        deliberacaoAberta = true;
+        if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+        if (elSecaoDeliberacao) {
+          elSecaoDeliberacao.style.display = 'block';
+          setTimeout(() => {
+            elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 40);
+        }
+      };
+    }
+  }
+
+  if (elSecaoDeliberacao) {
+    elSecaoDeliberacao.style.display = deliberacaoAberta ? 'block' : 'none';
+  }
   if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
 
-  // Renderiza opções determinísticas
+  // Renderiza opções determinísticas com previsão de espectro estilo Sir Brante
   if (elListaDecisoes) {
     elListaDecisoes.innerHTML = '';
     const algarismosRomanos = ['I.', 'II.', 'III.', 'IV.', 'V.'];
@@ -830,15 +1108,8 @@ function renderizarEvento(evento) {
       const custoAcao = meta.custo_acoes || 1;
       const avaliacao = engine.avaliarOpcao(opcao, estadoAtual);
 
-      let efeitosHtml = '';
-      if (opcao.efeitos) {
-        efeitosHtml = Object.entries(opcao.efeitos).map(([chave, val]) => {
-          const sinal = val > 0 ? `+${val}` : `${val}`;
-          const classeNegativa = (val < 0 && chave !== 'suspeita_dops') || (val > 0 && chave === 'suspeita_dops') ? 'efeito-negativo' : '';
-          const nomeFormatado = chave.replace(/_/g, ' ').toUpperCase();
-          return `<span class="efeito-item ${classeNegativa}">${sinal} ${nomeFormatado}</span>`;
-        }).join('');
-      }
+      const requisitosHtml = gerarRequisitosDetalhadosHtml(opcao, avaliacao, estadoAtual);
+      const efeitosHtml = gerarPrevisaoEfeitosHtml(opcao.efeitos, estadoAtual);
 
       if (avaliacao.disponivel) {
         const botao = document.createElement('button');
@@ -853,7 +1124,7 @@ function renderizarEvento(evento) {
           </div>
           ${opcao.descricao ? `<div class="decisao-descricao">${opcao.descricao}</div>` : ''}
           <div class="decisao-requisitos">
-            <span class="req-item req-atendido">✓ CARIMBO: [${opcao.carimbo || 'REGISTRADO'}]</span>
+            ${requisitosHtml}
           </div>
           ${efeitosHtml ? `<div class="decisao-efeitos">${efeitosHtml}</div>` : ''}
         `;
@@ -862,7 +1133,6 @@ function renderizarEvento(evento) {
           if (emTransicao) return;
           try {
             executarAnimacaoCarimbo(botao, opcao.carimbo, () => {
-              // Registra na cronologia antes de executar
               diarioDecisoes.push({
                 ano: meta.ano,
                 eventoId: meta.id,
@@ -873,6 +1143,13 @@ function renderizarEvento(evento) {
 
               const res = engine.executarDecisao(evento, opcao.id);
               
+              ultimaConsequenciaDecisao = {
+                eventoTitulo: meta.titulo,
+                opcaoRotulo: opcao.rotulo,
+                carimbo: res.carimbo,
+                deltas: res.deltas
+              };
+
               if (res.proximoEventoId && cacheEventos[res.proximoEventoId]) {
                 abrirEvento(res.proximoEventoId);
               } else {
@@ -899,8 +1176,9 @@ function renderizarEvento(evento) {
           </div>
           ${opcao.descricao ? `<div class="decisao-descricao">${opcao.descricao}</div>` : ''}
           <div class="decisao-requisitos">
-            <span class="req-item req-falho">✗ BLOQUEADO: ${avaliacao.motivoBloqueio}</span>
+            ${requisitosHtml}
           </div>
+          ${efeitosHtml ? `<div class="decisao-efeitos">${efeitosHtml}</div>` : ''}
         `;
 
         elListaDecisoes.appendChild(itemBloqueado);
@@ -938,7 +1216,7 @@ async function inicializarNarrativa() {
         cacheEventos = dadosAtualizados.eventos;
 
         if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
-          renderizarEvento(cacheEventos[eventoAtivoId]);
+          renderizarEvento(cacheEventos[eventoAtivoId], deliberacaoAberta);
           exibirNotificacaoHotReload(cacheEventos[eventoAtivoId].metadata.titulo);
         } else {
           renderizarDossie();
@@ -1033,7 +1311,6 @@ function toggleConsoleDepuracao() {
 if (btnDevtools) btnDevtools.addEventListener('click', toggleConsoleDepuracao);
 if (btnFecharConsole) btnFecharConsole.addEventListener('click', toggleConsoleDepuracao);
 
-// Atalho de Teclado F1
 window.addEventListener('keydown', (e) => {
   if (e.key === 'F1') {
     e.preventDefault();
@@ -1041,7 +1318,6 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-// Ações Rápidas de Simulação
 if (btnDevSaltarEvento) {
   btnDevSaltarEvento.addEventListener('click', () => {
     const id = devSeletorEvento.value;
@@ -1086,13 +1362,13 @@ if (btnDevPularCheia) {
 if (btnDevReset) {
   btnDevReset.addEventListener('click', () => {
     diarioDecisoes = [];
+    ultimaConsequenciaDecisao = null;
     store.reset();
     renderizarDossie();
     toggleConsoleDepuracao();
   });
 }
 
-// Binds de inputs manuais no devtools
 function bindInputNumerico(input, chaveStore, categoria) {
   if (!input) return;
   input.addEventListener('change', () => {

@@ -7,7 +7,7 @@
   * **Fase 1 (Infância/Adolescência - Fim dos anos 50 a 1964):** Eventos de formação que definem e travam os **Atributos Fixos** (`Astúcia`, `Sangue-Frio`, `Ofício`, `Presença`).
   * **Fase 2 (Vida Adulta / Anos de Chumbo - 1968 a 1974):** Escolha de um dos 3 Caminhos (`Militar`, `Burguês`, `Líder Trabalhador`). Gestão de **Recursos Voláteis** (`Capital`, `Influência`, `Suspeita do DOPS`, `Moral Popular`).
   * **Fase 3 (O Ponto de Ruptura - Julho de 1975):** A Cheia de 75 e o pânico de Tapacurá. Queima de recursos acumulados para sobreviver ao caos político e climático.
-* **Determinismo Estrito:** Sem rolagens de dados aleatórias. Escolhas dependem de checagem direta de atributos e recursos, sempre transparentes ao jogador.
+* **Determinismo Estrito & Espectro Qualitativo (Estilo *Sir Brante*):** Sem rolagens de dados aleatórias. Todos os atributos, recursos e vínculos possuem uma **escala de patamares nomeados em 5 faixas** (ex: `Cru` ▸ `Vacilante` ▸ `Firme` ▸ `Calejado` ▸ `Inabalável` para habilidades; `Miséria` ▸ `Cambaleante` ▸ `Modesto` ▸ `Firme` ▸ `Abastado` para Capital; `Rompido` ▸ `Cambaleante` ▸ `Distante` ▸ `Firme` ▸ `Leal` para vínculos). Cada decisão exibe antes do clique a transição exata (`2 [Firme] ➔ 3 [Calejado]`) e, após o clique, um **Quadro de Impacto da Decisão** detalha todas as alterações e mudanças de patamar com barras de espectro visuais.
 * **Condição Social:** Estrato socioeconômico da família do protagonista (ex: *Mocambo/Operário*, *Pequena Burguesia*, *Elite Tradicional*), definindo facilidades de acesso e preconceitos institucionais.
 * **Parentesco (Vínculos Familiares):** Estado relacional com figuras do círculo íntimo (ex: `relacao_pai`, `relacao_irmao`, `honra_familiar`), que cobram lealdade ou oferecem refúgio.
 * **Dossiê da Fase:** Conjunto de eventos/investigações disponíveis no período. O jogador possui uma cota limitada de ações por fase antes do disparo do evento histórico de clímax.
@@ -58,6 +58,7 @@ Toda imagem renderizada no jogo deve passar obrigatoriamente por uma classe CSS 
 * Sobreposição (`::after`) de textura pontilhada (*halftone*/reticulado de impressão) ou granulação fina, mais vinheta escura nas bordas para que qualquer imagem pareça impressa em jornal de 1975.
 
 ### 2.6. Microinterações e "Game Feel" Tátil
+* **Fluxo Narrativo em Dois Tempos:** Ao abrir qualquer ocorrência, o texto narrativo é apresentado de forma isolada e limpa. O jogador processa o contexto sem atolamento de informação antes de clicar no botão táctil (`PESAR AS ESCOLHAS & DELIBERAR ➔`) para revelar suavemente a divisória e as opções de decisão com previsão de espectros.
 * **Efeito de Carimbo no Clique:** Ao selecionar uma decisão válida, exibir um carimbo visual (`[DEFERIDO]`, `[REGISTRADO]`, `[SUBVERSIVO]`) batendo sobre a opção com uma leve animação de impacto (`screen shake` de `100ms`) antes da transição de texto.
 * **Censura Interativa (Opções Bloqueadas):** Opções cujos requisitos o jogador não atende NÃO devem ficar apenas cinzas. Devem exibir uma tarja preta de censura riscando parte do texto ou um carimbo diagonal em vermelho-ferrugem: `[BLOQUEADO — REQUER SANGUE-FRIO 3]`.
 * **Bordas Tipográficas:** Uso de filetes duplos (`border-top: 3px double #1E1D1B`) e divisórias de jornal antigo entre o texto narrativo e a área de escolhas.
