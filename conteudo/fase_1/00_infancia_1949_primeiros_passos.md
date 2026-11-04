@@ -34,3 +34,4 @@ opcoes:
 Com um ano de idade, o mundo para ti resumia-se aos limites daquela palafita e ao rumor incessante da maré batendo contra as estacas de sustentação. Teu pai retornava das oficinas com o macacão impregnado de fuligem, jogando sobre a esteira as peças que consertava à noite para render alguns trocados a mais.
 
 Foi ali, entre pregos de barco e caixotes de feira, que tuas pernas miúdas sustentaram pela primeira vez o peso do teu corpo, sob o olhar atento e severo de Mestre Severino.
+

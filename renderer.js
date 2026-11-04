@@ -39,6 +39,7 @@ const elOverlayViradaAno = document.getElementById('overlay-virada-ano');
 const elViradaAnoDe = document.getElementById('virada-ano-de');
 const elViradaAnoPara = document.getElementById('virada-ano-para');
 const elViradaIdadeInfo = document.getElementById('virada-idade-info');
+const elBtnContinuarViradaAno = document.getElementById('btn-continuar-virada-ano');
 
 // Referências DOM - Palco & Atalhos Inferiores
 const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
@@ -419,7 +420,16 @@ function atualizarProntuario(estado, deltas) {
   }
 }
 
-let timerViradaAno = null;
+function fecharTransicaoViradaAno() {
+  if (!elOverlayViradaAno || elOverlayViradaAno.style.display === 'none') return;
+  
+  elOverlayViradaAno.classList.add('saindo');
+  setTimeout(() => {
+    elOverlayViradaAno.style.display = 'none';
+    elOverlayViradaAno.classList.remove('saindo');
+  }, 220);
+}
+
 function exibirTransicaoViradaAno(anoDe, anoPara, idade) {
   if (!elOverlayViradaAno) return;
 
@@ -431,19 +441,41 @@ function exibirTransicaoViradaAno(anoDe, anoPara, idade) {
       : `O protagonista completa ${idade} ${idade === 1 ? 'ano' : 'anos'} de idade`;
   }
 
+  elOverlayViradaAno.classList.remove('saindo');
   elOverlayViradaAno.style.display = 'flex';
   tocarSomCarimbo();
 
-  if (timerViradaAno) clearTimeout(timerViradaAno);
-  timerViradaAno = setTimeout(() => {
-    elOverlayViradaAno.style.display = 'none';
-  }, 2400);
-
-  elOverlayViradaAno.onclick = () => {
-    if (timerViradaAno) clearTimeout(timerViradaAno);
-    elOverlayViradaAno.style.display = 'none';
-  };
+  // Foco no botão de continuar para permitir assimilação deliberada e avanço por teclado
+  if (elBtnContinuarViradaAno) {
+    setTimeout(() => {
+      try { elBtnContinuarViradaAno.focus(); } catch (_) {}
+    }, 50);
+  }
 }
+
+if (elBtnContinuarViradaAno) {
+  elBtnContinuarViradaAno.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fecharTransicaoViradaAno();
+  });
+}
+
+if (elOverlayViradaAno) {
+  elOverlayViradaAno.addEventListener('click', (e) => {
+    if (e.target === elOverlayViradaAno) {
+      fecharTransicaoViradaAno();
+    }
+  });
+}
+
+window.addEventListener('keydown', (e) => {
+  if (elOverlayViradaAno && elOverlayViradaAno.style.display === 'flex') {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      e.preventDefault();
+      fecharTransicaoViradaAno();
+    }
+  }
+});
 
 store.subscribe((estado, deltas) => {
   atualizarProntuario(estado, deltas);

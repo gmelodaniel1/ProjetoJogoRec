@@ -34,3 +34,4 @@ opcoes:
 Aos dois anos, a água deixava de ser apenas um som sob as tábuas para se tornar a presença mais viva do teu cotidiano. O inverno no Recife chegava sem pedir licença, e o Capibaribe transbordava sobre o lodo dos quintais, obrigando as famílias a erguer móveis e esteiras sobre tijolos improvisados.
 
 As crianças da viela corriam à beira do canalete, observando os caranguejos que subiam pelo manguezal enquanto as mães gritavam advertências contra a correnteza escura.
+

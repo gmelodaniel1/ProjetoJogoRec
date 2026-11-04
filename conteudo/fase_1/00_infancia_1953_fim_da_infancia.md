@@ -44,3 +44,4 @@ opcoes:
 Aos cinco anos de idade, a infância descalça começava a ceder espaço às obrigações que a sobrevivência impunha aos filhos da classe trabalhadora no Recife. Mestre Severino olhou nos teus olhos e decretou que já tinhas tamanho para compreender o peso do trabalho e o custo da dignidade.
 
 Os anos seguintes correriam velozes como a maré do Capibaribe. A cidade crescia vertiginosamente, engolindo os mocambos e abrindo avenidas de asfalto sob os governos do pós-guerra, enquanto a efervescência política das oficinas preparava o terreno para os grandes embates do final da década de 50.
+

@@ -1949,6 +1949,50 @@ body.fase-3 .folha-narrativa {
   color: var(--cor-tinta-desbotada);
 }
 
+.virada-rodape-acao {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-continuar-virada {
+  font-family: var(--fonte-datilografada);
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #F8F2E4;
+  background-color: var(--cor-tinta-principal);
+  border: 2px solid var(--cor-carimbo-vermelho);
+  padding: 12px 26px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-continuar-virada:hover {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.btn-continuar-virada:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.overlay-virada-ano.saindo {
+  animation: fadeOutVirada 0.22s ease-in forwards;
+}
+
+@keyframes fadeOutVirada {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 /* DESTAQUE TEMPORAL NA BARRA SUPERIOR */
 .ano-atual {
   transition: all 0.3s ease;

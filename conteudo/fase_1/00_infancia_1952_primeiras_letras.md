@@ -34,3 +34,4 @@ opcoes:
 Aos quatro anos, as notícias do mundo chegavam ao mocambo impressas nos jornais amarelados que tua família usava para tapar os buracos do vento nas paredes de tábua. Entre anúncios de remédios e discursos de Getúlio Vargas, aprendeste a decifrar contornos de letras usando carvão de fogareiro.
 
 Na calçada, a meninada disputava lascas de madeira e restos de cana caídos dos vagões da Great Western, ensaiando as primeiras regras de respeito e lealdade da vizinhança.
+

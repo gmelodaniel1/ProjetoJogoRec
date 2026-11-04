@@ -34,3 +34,4 @@ opcoes:
 Com três anos de idade, teus passos já alcançavam a entrada da feira de São José. O burburinho das carroças de mulas, o chiar do óleo quente nas frigideiras de acarajé e o badalo dos bondes elétricos formavam a música da cidade.
 
 Os pregoeiros gritavam seus fardos de maxixe, farinha de mandioca e querosene, enquanto os homens falavam em voz baixa sobre o preço dos gêneros e as promessas do novo governo na capital.
+

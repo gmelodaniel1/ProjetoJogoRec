@@ -34,3 +34,4 @@ opcoes:
 A noite de 1948 caía pesada sobre a lama do Capibaribe. No interior estreito do mocambo, erguido sobre estacas de mangue nas cercanias de São José, o ar cheirava a maresia, querosene e fumaça de candeeiro. 
 
 Tua mãe ofegava sobre o catre de palha enquanto as parteiras da vizinhança trocavam sussurros apressados. Do lado de fora, a maré subia rente ao assoalho de tábuas frouxas, trazendo o marulhar lento das barcaças que cruzavam as pontes do Recife. Foi naquele instante de penumbra que vieste ao mundo.
+
