@@ -785,7 +785,7 @@ function atualizarMolduraEvidencia(evento = null) {
     elSlotEvidencia.innerHTML = `
       <div class="foto-jornal-wrapper">
         <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Cenário'}">
-        <div class="selo-sobreposto-cenario">${estado.faseAtual === 3 ? 'DEFESA CIVIL / PE' : 'ARQUIVO D.O.P.S.'}</div>
+        <div class="selo-sobreposto-cenario">${estado.faseAtual === 3 ? 'DEFESA CIVIL / PE' : 'REGISTRO DE ACERVO'}</div>
       </div>
     `;
     return;
@@ -1064,10 +1064,10 @@ function renderizarDossie() {
   }
 
   const etapaVida = store.getEtapaVida();
-  if (elEdicao) elEdicao.textContent = `DOSSIÊ DE INVESTIGAÇÃO // ${etapaVida.nome.toUpperCase()}`;
+  if (elEdicao) elEdicao.textContent = `ACERVO HISTÓRICO // ${etapaVida.nome.toUpperCase()}`;
   if (elData) elData.textContent = `RECIFE, ${estadoAtual.anoAtual}`;
-  if (elManchete) elManchete.textContent = "Índice de Incidentes & Ocorrências";
-  if (elLead) elLead.textContent = "Escolhe qual ocorrência enfrentar no Recife antes que o curso da História se precipite.";
+  if (elManchete) elManchete.textContent = "Índice de Documentos & Ocorrências";
+  if (elLead) elLead.textContent = "Consulta aos registros do acervo histórico do Recife antes que o curso do tempo se precipite.";
 
   if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
   if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
@@ -1090,7 +1090,7 @@ function renderizarDossie() {
   htmlCorpo += `<div class="lista-dossie-itens">`;
 
   if (infoDossie.eventosDisponiveis.length === 0) {
-    htmlCorpo += `<p class="dossie-vazio">Nenhum inquérito pendente neste momento. Todos os arquivos foram arquivados.</p>`;
+    htmlCorpo += `<p class="dossie-vazio">Nenhum documento pendente neste momento. Todos os registros foram catalogados.</p>`;
   } else {
     infoDossie.eventosDisponiveis.forEach(ev => {
       const meta = ev.metadata;
