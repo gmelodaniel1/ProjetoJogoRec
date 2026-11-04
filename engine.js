@@ -162,7 +162,16 @@ class DeterministicEngine {
     // 2. Aplica efeitos nas variáveis
     const deltas = this.store.aplicarEfeitos(opcao.efeitos || {});
 
-    // 2.1 Se for na Fase 3 (Cheia de 75), aplica o avanço do rio e das horas
+    // 2.1 Se o evento especificar avanço ou alvo de ano sem estar nos efeitos
+    if (!opcao.efeitos?.avanco_ano && !opcao.efeitos?.ano_alvo) {
+      if (evento.metadata.avanco_ano) {
+        this.store.avancarAno(evento.metadata.avanco_ano);
+      } else if (evento.metadata.ano_alvo) {
+        this.store.setAnoAtual(evento.metadata.ano_alvo);
+      }
+    }
+
+    // 2.2 Se for na Fase 3 (Cheia de 75), aplica o avanço do rio e das horas
     if (evento.metadata.consumo_tempo_horas || evento.metadata.elevacao_rio) {
       this.store.aplicarConsumoCheia(
         evento.metadata.consumo_tempo_horas || 0,

@@ -63,6 +63,11 @@ Toda imagem renderizada no jogo deve passar obrigatoriamente por uma classe CSS 
 * **Censura Interativa (Opções Bloqueadas):** Opções cujos requisitos o jogador não atende NÃO devem ficar apenas cinzas. Devem exibir uma tarja preta de censura riscando parte do texto ou um carimbo diagonal em vermelho-ferrugem: `[BLOQUEADO — REQUER SANGUE-FRIO 3]`.
 * **Bordas Tipográficas:** Uso de filetes duplos (`border-top: 3px double #1E1D1B`) e divisórias de jornal antigo entre o texto narrativo e a área de escolhas.
 
+### 2.7. Motor de Avanço Cronológico e Virada de Calendário (Ano a Ano)
+* **Calendário & Idade Determinística:** O protagonista nasce em 1948 nas margens do Capibaribe. A idade é calculada dinamicamente (`anoAtual - anoNascimento`).
+* **Vinheta Editorial de Virada de Ano:** Decisões ou metadados de eventos que concluem um ano (`avanco_ano: 1` ou `ano_alvo`) disparam uma vinheta com moldura de jornal de época (*"CRÔNICA DE PERNAMBUCO // O TEMPO PASSA"*, destacando a transição de anos, a nova idade do protagonista e a atualização visual na barra superior).
+* **Depuração Dinâmica:** Console F1 permite inspecionar e alterar ano atual e ano de nascimento, com sincronização imediata no prontuário e nos cálculos.
+
 ---
 
 ## 3. ARQUITETURA TÉCNICA E MODULARIDADE

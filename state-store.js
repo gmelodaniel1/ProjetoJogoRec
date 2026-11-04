@@ -6,6 +6,7 @@
 const ESTADO_INICIAL_PADRAO = {
   condicaoSocial: "Filho de Estivador (Mocambo)",
   faseAtual: 1,
+  anoNascimento: 1948,
   anoAtual: 1958,
   acoesRestantesFase: 4,
   acoesTotaisFase: 4,
@@ -126,7 +127,19 @@ function obterEspectro(chave, valor) {
 
 class CharacterStateStore {
   constructor(estadoInicial = null) {
-    this.estado = JSON.parse(JSON.stringify(estadoInicial || ESTADO_INICIAL_PADRAO));
+    const base = JSON.parse(JSON.stringify(ESTADO_INICIAL_PADRAO));
+    if (estadoInicial) {
+      this.estado = {
+        ...base,
+        ...estadoInicial,
+        atributosFixos: { ...base.atributosFixos, ...(estadoInicial.atributosFixos || {}) },
+        recursosVolateis: { ...base.recursosVolateis, ...(estadoInicial.recursosVolateis || {}) },
+        parentesco: { ...base.parentesco, ...(estadoInicial.parentesco || {}) },
+        historicoDecisoes: estadoInicial.historicoDecisoes ? [...estadoInicial.historicoDecisoes] : [...base.historicoDecisoes]
+      };
+    } else {
+      this.estado = base;
+    }
     this.ouvintes = [];
   }
 
@@ -197,6 +210,31 @@ class CharacterStateStore {
         this.estado.parentesco[chave] = novo;
         tipo = 'parentesco';
       }
+      // 4. Calendário e Avanço Cronológico
+      else if (chave === 'avanco_ano') {
+        anterior = this.estado.anoAtual;
+        novo = anterior + valorDelta;
+        this.estado.anoAtual = novo;
+        deltas['anoAtual'] = {
+          anterior,
+          novo,
+          delta: valorDelta,
+          idade: this.getIdade(),
+          tipo: 'ano'
+        };
+      }
+      else if (chave === 'ano_alvo') {
+        anterior = this.estado.anoAtual;
+        novo = Number(deltaNum);
+        this.estado.anoAtual = novo;
+        deltas['anoAtual'] = {
+          anterior,
+          novo,
+          delta: novo - anterior,
+          idade: this.getIdade(),
+          tipo: 'ano'
+        };
+      }
 
       if (tipo !== null) {
         const espectroAnterior = obterEspectro(chave, anterior);
@@ -233,6 +271,44 @@ class CharacterStateStore {
     this.estado.acoesRestantesFase = novo;
     this.notificar({ acoesRestantesFase: { anterior, novo, delta: -quantidade, tipo: 'acoes' } });
     return novo;
+  }
+
+  // Idade do protagonista
+  getIdade() {
+    const nasc = Number(this.estado.anoNascimento) || 1948;
+    const atual = Number(this.estado.anoAtual) || 1958;
+    return Math.max(0, atual - nasc);
+  }
+
+  // Define o ano atual do jogo de forma determinística
+  setAnoAtual(novoAno) {
+    const anterior = this.estado.anoAtual;
+    const ano = Number(novoAno);
+    if (isNaN(ano) || ano === anterior) return anterior;
+    this.estado.anoAtual = ano;
+    this.notificar({
+      anoAtual: {
+        anterior,
+        novo: ano,
+        delta: ano - anterior,
+        idade: this.getIdade(),
+        tipo: 'ano'
+      }
+    });
+    return ano;
+  }
+
+  // Define o ano de nascimento do protagonista
+  setAnoNascimento(anoNasc) {
+    this.estado.anoNascimento = Number(anoNasc) || 1948;
+    this.notificar({
+      anoNascimento: { novo: this.estado.anoNascimento, idade: this.getIdade(), tipo: 'ano' }
+    });
+  }
+
+  // Avança o calendário em N anos
+  avancarAno(quantidade = 1) {
+    return this.setAnoAtual(this.estado.anoAtual + (Number(quantidade) || 1));
   }
 
   // Avança para a próxima fase histórica do jogo

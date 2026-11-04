@@ -68,5 +68,45 @@ if (
   process.exit(1);
 }
 
+// Teste 5: Cronologia Ano a Ano & Rastreamento de Idade (Ticket 15)
+const storeCrono = new CharacterStateStore({
+  anoNascimento: 1948,
+  anoAtual: 1948
+});
+
+if (storeCrono.getIdade() !== 0) {
+  console.error(`FALHA: Idade em 1948 deveria ser 0, retornou: ${storeCrono.getIdade()}`);
+  process.exit(1);
+}
+
+// Avança 1 ano via avancarAno
+storeCrono.avancarAno(1);
+if (storeCrono.getState().anoAtual !== 1949 || storeCrono.getIdade() !== 1) {
+  console.error(`FALHA: Avanço de ano incorreto! Ano: ${storeCrono.getState().anoAtual}, Idade: ${storeCrono.getIdade()}`);
+  process.exit(1);
+}
+
+// Avança via aplicarEfeitos({ avanco_ano: 2 })
+const deltasAno = storeCrono.aplicarEfeitos({ avanco_ano: 2 });
+if (
+  storeCrono.getState().anoAtual !== 1951 ||
+  storeCrono.getIdade() !== 3 ||
+  !deltasAno.anoAtual ||
+  deltasAno.anoAtual.delta !== 2 ||
+  deltasAno.anoAtual.idade !== 3
+) {
+  console.error("FALHA: avanco_ano via aplicarEfeitos incorreto!", deltasAno);
+  process.exit(1);
+}
+
+// Define ano alvo diretamente
+storeCrono.aplicarEfeitos({ ano_alvo: 1958 });
+if (storeCrono.getState().anoAtual !== 1958 || storeCrono.getIdade() !== 10) {
+  console.error(`FALHA: ano_alvo via aplicarEfeitos incorreto! Ano: ${storeCrono.getState().anoAtual}, Idade: ${storeCrono.getIdade()}`);
+  process.exit(1);
+}
+
+console.log("\n[OK] Cronologia & Cálculo de Idade validados com sucesso!");
+
 console.log("\n=== TESTE DO STATE STORE CONCLUÍDO COM 100% DE SUCESSO! ===");
 

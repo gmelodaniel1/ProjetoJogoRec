@@ -34,6 +34,12 @@ const elAnoAtual = document.getElementById('ano-atual');
 const elIndicadorAcoes = document.getElementById('indicador-acoes');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 
+// Referências DOM - Transição de Virada de Ano (Ticket 15)
+const elOverlayViradaAno = document.getElementById('overlay-virada-ano');
+const elViradaAnoDe = document.getElementById('virada-ano-de');
+const elViradaAnoPara = document.getElementById('virada-ano-para');
+const elViradaIdadeInfo = document.getElementById('virada-idade-info');
+
 // Referências DOM - Palco & Atalhos Inferiores
 const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
 const elCenarioLocal = document.getElementById('cenario-local');
@@ -272,7 +278,9 @@ function atualizarProntuario(estado, deltas) {
   }
 
   if (elAnoAtual) {
-    elAnoAtual.textContent = `RECIFE, ${estado.anoAtual}`;
+    const idade = store.getIdade();
+    const rotuloIdade = idade === 0 ? 'NASCIMENTO' : `${idade} ${idade === 1 ? 'ANO' : 'ANOS'}`;
+    elAnoAtual.textContent = `RECIFE, ${estado.anoAtual} • ${rotuloIdade}`;
   }
 
   // Medidor Visual de Ações
@@ -398,11 +406,43 @@ function atualizarProntuario(estado, deltas) {
   // Animação de Deltas
   if (deltas && typeof deltas === 'object') {
     Object.entries(deltas).forEach(([chave, info]) => {
-      if (info && typeof info.delta === 'number') {
+      if (chave === 'anoAtual' && info && typeof info.delta === 'number' && info.delta !== 0) {
+        if (elAnoAtual) {
+          elAnoAtual.classList.add('ano-destaque');
+          setTimeout(() => elAnoAtual.classList.remove('ano-destaque'), 1800);
+        }
+        exibirTransicaoViradaAno(info.anterior, info.novo, info.idade);
+      } else if (info && typeof info.delta === 'number') {
         animarDeltaBadge(chave, info);
       }
     });
   }
+}
+
+let timerViradaAno = null;
+function exibirTransicaoViradaAno(anoDe, anoPara, idade) {
+  if (!elOverlayViradaAno) return;
+
+  if (elViradaAnoDe) elViradaAnoDe.textContent = anoDe;
+  if (elViradaAnoPara) elViradaAnoPara.textContent = anoPara;
+  if (elViradaIdadeInfo) {
+    elViradaIdadeInfo.textContent = idade === 0
+      ? 'O protagonista acaba de nascer nas margens do Capibaribe'
+      : `O protagonista completa ${idade} ${idade === 1 ? 'ano' : 'anos'} de idade`;
+  }
+
+  elOverlayViradaAno.style.display = 'flex';
+  tocarSomCarimbo();
+
+  if (timerViradaAno) clearTimeout(timerViradaAno);
+  timerViradaAno = setTimeout(() => {
+    elOverlayViradaAno.style.display = 'none';
+  }, 2400);
+
+  elOverlayViradaAno.onclick = () => {
+    if (timerViradaAno) clearTimeout(timerViradaAno);
+    elOverlayViradaAno.style.display = 'none';
+  };
 }
 
 store.subscribe((estado, deltas) => {
@@ -1017,6 +1057,14 @@ function abrirEvento(eventoId) {
     return;
   }
 
+  // Sincroniza o ano histórico se o evento definir um ano específico
+  if (evento.metadata && evento.metadata.ano) {
+    const anoEvento = Number(evento.metadata.ano);
+    if (!isNaN(anoEvento) && anoEvento !== store.getState().anoAtual) {
+      store.setAnoAtual(anoEvento);
+    }
+  }
+
   modoVisual = 'evento';
   eventoAtivoId = eventoId;
   deliberacaoAberta = false;
@@ -1269,9 +1317,13 @@ const devInpMoral = document.getElementById('dev-input-moral');
 const devInpClasse = document.getElementById('dev-input-classe');
 const devInpPai = document.getElementById('dev-input-pai');
 const devInpHonra = document.getElementById('dev-input-honra');
+const devInpAnoAtual = document.getElementById('dev-input-ano-atual');
+const devInpAnoNasc = document.getElementById('dev-input-ano-nasc');
 
 function sincronizarCamposConsole() {
   const est = store.getState();
+  if (devInpAnoAtual) devInpAnoAtual.value = est.anoAtual;
+  if (devInpAnoNasc) devInpAnoNasc.value = est.anoNascimento || 1948;
   if (devInpAstucia) devInpAstucia.value = est.atributosFixos.astucia;
   if (devInpSangueFrio) devInpSangueFrio.value = est.atributosFixos.sangue_frio;
   if (devInpOficio) devInpOficio.value = est.atributosFixos.oficio;
@@ -1405,6 +1457,24 @@ bindInputNumerico(devInpHonra, 'honra_familiar', 'parentesco');
 if (devInpClasse) {
   devInpClasse.addEventListener('change', () => {
     store.setCondicaoSocial(devInpClasse.value);
+    if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
+      renderizarEvento(cacheEventos[eventoAtivoId]);
+    }
+  });
+}
+
+if (devInpAnoAtual) {
+  devInpAnoAtual.addEventListener('change', () => {
+    store.setAnoAtual(devInpAnoAtual.value);
+    if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
+      renderizarEvento(cacheEventos[eventoAtivoId]);
+    }
+  });
+}
+
+if (devInpAnoNasc) {
+  devInpAnoNasc.addEventListener('change', () => {
+    store.setAnoNascimento(devInpAnoNasc.value);
     if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
       renderizarEvento(cacheEventos[eventoAtivoId]);
     }

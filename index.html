@@ -15,6 +15,21 @@
 <body class="fase-1">
   <div class="mesa-viewport">
     
+    <!-- BANNER DE TRANSIÇÃO CRONOLÓGICA / VIRADA DE ANO (TICKET 15) -->
+    <div id="overlay-virada-ano" class="overlay-virada-ano" style="display: none;">
+      <div class="cartao-virada-ano">
+        <span class="virada-selo-topo">CRÔNICA DE PERNAMBUCO // O TEMPO PASSA</span>
+        <div class="virada-titulo">UMA NOVA FOLHA NO CALENDÁRIO</div>
+        <div class="virada-anos-linha">
+          <span class="ano-origem" id="virada-ano-de">1948</span>
+          <span class="virada-seta">➔</span>
+          <span class="ano-destino" id="virada-ano-para">1949</span>
+        </div>
+        <div class="virada-idade-linha" id="virada-idade-info">O protagonista completa 1 ano de idade</div>
+        <div class="virada-subtitulo">O curso da vida e da cidade segue inexorável</div>
+      </div>
+    </div>
+
     <!-- BARRA DE SISTEMA SUPERIOR -->
     <header class="barra-sistema">
       <div class="status-sistema">
@@ -370,6 +385,21 @@
         <button id="btn-dev-crise-falencia" class="btn-acao-rapida btn-acao-perigo">⚠ FORÇAR FALÊNCIA (CAPITAL = 0)</button>
         <button id="btn-dev-pular-cheia" class="btn-acao-rapida">🌊 SALTAR PARA CHEIA DE 75 (FASE 3)</button>
         <button id="btn-dev-reset" class="btn-acao-rapida">↺ RESETAR PARA INÍCIO DE 1958</button>
+      </div>
+
+      <!-- EDIÇÃO DE CRONOLOGIA & TEMPO (TICKET 15) -->
+      <div class="console-secao">
+        <div class="console-secao-titulo">CRONOLOGIA & IDADE</div>
+        <div class="console-grid-inputs">
+          <div class="campo-depuracao">
+            <label>ANO ATUAL</label>
+            <input type="number" id="dev-input-ano-atual" min="1940" max="1980">
+          </div>
+          <div class="campo-depuracao">
+            <label>ANO DE NASCIMENTO</label>
+            <input type="number" id="dev-input-ano-nasc" min="1940" max="1980">
+          </div>
+        </div>
       </div>
 
       <!-- EDIÇÃO DE ATRIBUTOS FIXOS -->

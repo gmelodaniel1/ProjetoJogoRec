@@ -1841,3 +1841,122 @@ body.fase-3 .folha-narrativa {
   background: #613930;
   border-color: #D46660;
 }
+
+/* ==========================================================================
+   VINHETA / OVERLAY DE TRANSIÇÃO HISTÓRICA (TICKET 15)
+   ========================================================================== */
+.overlay-virada-ano {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(22, 17, 12, 0.78);
+  backdrop-filter: blur(3px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeInVirada 0.25s ease-out forwards;
+}
+
+@keyframes fadeInVirada {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cartao-virada-ano {
+  background-color: var(--cor-papel-secundario);
+  border: 3px double var(--cor-tinta-principal);
+  padding: 34px 48px;
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+  animation: viradaAnoSlam 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes viradaAnoSlam {
+  0% {
+    transform: scale(0.92) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.virada-selo-topo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--cor-carimbo-vermelho);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.virada-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cor-tinta-principal);
+  margin-bottom: 12px;
+}
+
+.virada-anos-linha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-family: var(--fonte-editorial);
+  font-size: 46px;
+  font-weight: bold;
+  margin: 14px 0;
+  border-top: 1px dashed #9E917B;
+  border-bottom: 1px dashed #9E917B;
+  padding: 12px 0;
+}
+
+.ano-origem {
+  color: var(--cor-tinta-desbotada);
+}
+
+.virada-seta {
+  color: var(--cor-carimbo-vermelho);
+  font-size: 32px;
+}
+
+.ano-destino {
+  color: var(--cor-carimbo-vermelho);
+}
+
+.virada-idade-linha {
+  font-family: var(--fonte-datilografada);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--cor-azul-caneta);
+  margin-bottom: 6px;
+}
+
+.virada-subtitulo {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--cor-tinta-desbotada);
+}
+
+/* DESTAQUE TEMPORAL NA BARRA SUPERIOR */
+.ano-atual {
+  transition: all 0.3s ease;
+  padding: 2px 6px;
+}
+
+.ano-atual.ano-destaque {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #F0EAE1 !important;
+  transform: scale(1.08);
+}

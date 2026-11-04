@@ -105,5 +105,32 @@ if (
   process.exit(1);
 }
 
+// Teste 6: Avanço de ano via metadados do evento (Ticket 15)
+const eventoComAvancoAno = {
+  metadata: {
+    id: "ev_anual_1948",
+    titulo: "Primeiro Ano de Vida",
+    custo_acoes: 1,
+    avanco_ano: 1,
+    opcoes: [
+      {
+        id: "sobreviver",
+        rotulo: "Chorar alto para chamar atenção",
+        efeitos: { astucia: 1 }
+      }
+    ]
+  }
+};
+
+const anoAntes = store.getState().anoAtual;
+engine.executarDecisao(eventoComAvancoAno, "sobreviver");
+const anoDepois = store.getState().anoAtual;
+
+if (anoDepois !== anoAntes + 1) {
+  console.error(`FALHA: Evento com avanco_ano não incrementou o ano! Antes: ${anoAntes}, Depois: ${anoDepois}`);
+  process.exit(1);
+}
+console.log(`[OK] Avanço anual via evento validado: ${anoAntes} ➔ ${anoDepois}`);
+
 console.log("\n=== TESTE DO MOTOR DETERMINÍSTICO CONCLUÍDO COM 100% DE SUCESSO! ===");
 
