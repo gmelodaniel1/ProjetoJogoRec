@@ -106,7 +106,33 @@ if (storeCrono.getState().anoAtual !== 1958 || storeCrono.getIdade() !== 10) {
   process.exit(1);
 }
 
-console.log("\n[OK] Cronologia & Cálculo de Idade validados com sucesso!");
+// Teste 6: Etapas da Vida (Ticket 17)
+if (storeCrono.getEtapaVida().id !== 'juventude') {
+  console.error("FALHA: Etapa em 1958 deveria ser 'juventude', retornou:", storeCrono.getEtapaVida());
+  process.exit(1);
+}
+
+storeCrono.setAnoAtual(1948);
+if (storeCrono.getEtapaVida().id !== 'infancia') {
+  console.error("FALHA: Etapa em 1948 deveria ser 'infancia', retornou:", storeCrono.getEtapaVida());
+  process.exit(1);
+}
+
+storeCrono.setAnoAtual(1970);
+storeCrono.estado.faseAtual = 2;
+if (storeCrono.getEtapaVida().id !== 'adulta') {
+  console.error("FALHA: Etapa em 1970 deveria ser 'adulta', retornou:", storeCrono.getEtapaVida());
+  process.exit(1);
+}
+
+storeCrono.setAnoAtual(1975);
+storeCrono.estado.faseAtual = 3;
+if (storeCrono.getEtapaVida().id !== 'ruptura') {
+  console.error("FALHA: Etapa em 1975 deveria ser 'ruptura', retornou:", storeCrono.getEtapaVida());
+  process.exit(1);
+}
+
+console.log("\n[OK] Cronologia, Cálculo de Idade & Etapas de Vida validados com sucesso!");
 
 console.log("\n=== TESTE DO STATE STORE CONCLUÍDO COM 100% DE SUCESSO! ===");
 

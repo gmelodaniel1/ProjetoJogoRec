@@ -11,7 +11,8 @@ const SUITES = [
   { nome: "Motor Determinístico & Checagem de Requisitos", arquivo: "test-engine.js" },
   { nome: "Sistema de Dossiê, Economia de Ações & Clímax", arquivo: "test-dossie.js" },
   { nome: "Sequestro de Agenda & Eventos de Crise Forçados", arquivo: "test-crise.js" },
-  { nome: "Modo Sobrevivência da Cheia de 75 & Régua do Rio", arquivo: "test-cheia75.js" }
+  { nome: "Modo Sobrevivência da Cheia de 75 & Régua do Rio", arquivo: "test-cheia75.js" },
+  { nome: "Progressão Cronológica da Infância (1948–1953)", arquivo: "test-progressao-infancia.js" }
 ];
 
 console.log("=================================================================");

@@ -7,7 +7,7 @@ const ESTADO_INICIAL_PADRAO = {
   condicaoSocial: "Filho de Estivador (Mocambo)",
   faseAtual: 1,
   anoNascimento: 1948,
-  anoAtual: 1958,
+  anoAtual: 1948,
   acoesRestantesFase: 4,
   acoesTotaisFase: 4,
   
@@ -276,8 +276,58 @@ class CharacterStateStore {
   // Idade do protagonista
   getIdade() {
     const nasc = Number(this.estado.anoNascimento) || 1948;
-    const atual = Number(this.estado.anoAtual) || 1958;
+    const atual = Number(this.estado.anoAtual) || 1948;
     return Math.max(0, atual - nasc);
+  }
+
+  // Retorna a etapa da vida atual do protagonista com base no ano e na idade
+  getEtapaVida() {
+    const idade = this.getIdade();
+    const ano = Number(this.estado.anoAtual) || 1948;
+    const fase = Number(this.estado.faseAtual) || 1;
+
+    if (fase === 3 || ano >= 1975) {
+      return {
+        id: 'ruptura',
+        nome: 'O Ponto de Ruptura',
+        subtitulo: 'A Grande Cheia do Capibaribe',
+        periodo: 'Julho de 1975 • 27 Anos',
+        faixaIdade: '27 Anos',
+        fase: 3,
+        ativa: true
+      };
+    }
+    if (fase === 2 || (ano >= 1968 && ano <= 1974)) {
+      return {
+        id: 'adulta',
+        nome: 'Vida Adulta / Anos de Chumbo',
+        subtitulo: 'AI-5, Sobrevivência e Vigilância do DOPS',
+        periodo: '1968–1974 • 20 aos 26 Anos',
+        faixaIdade: '20 aos 26 Anos',
+        fase: 2,
+        ativa: true
+      };
+    }
+    if (ano >= 1954 || idade >= 6) {
+      return {
+        id: 'juventude',
+        nome: 'Juventude & Formação Política',
+        subtitulo: 'Greves no Cais, Alfabetização e Golpe de 64',
+        periodo: '1954–1964 • 6 aos 16 Anos',
+        faixaIdade: '6 aos 16 Anos',
+        fase: 1,
+        ativa: true
+      };
+    }
+    return {
+      id: 'infancia',
+      nome: 'Infância & Primeiros Passos',
+      subtitulo: 'O Mocambo, a Família e as Margens do Capibaribe',
+      periodo: '1948–1953 • 0 aos 5 Anos',
+      faixaIdade: '0 aos 5 Anos',
+      fase: 1,
+      ativa: true
+    };
   }
 
   // Define o ano atual do jogo de forma determinística

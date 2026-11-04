@@ -2,11 +2,12 @@
 
 ## 1. Identidade e Mecânica Central
 * **Gênero:** RPG narrativo determinístico de escolhas e consequências (inspirado em *The Life and Suffering of Sir Brante*).
-* **Cenário:** Recife, Pernambuco. Acompanha a trajetória do protagonista até o estopim da Grande Cheia de Julho de 1975 sob a Ditadura Militar (AI-5 / DOPS).
-* **Estrutura de Jogo (3 Fases):**
-  * **Fase 1 (Infância/Adolescência - Fim dos anos 50 a 1964):** Eventos de formação que definem e travam os **Atributos Fixos** (`Astúcia`, `Sangue-Frio`, `Ofício`, `Presença`).
-  * **Fase 2 (Vida Adulta / Anos de Chumbo - 1968 a 1974):** Escolha de um dos 3 Caminhos (`Militar`, `Burguês`, `Líder Trabalhador`). Gestão de **Recursos Voláteis** (`Capital`, `Influência`, `Suspeita do DOPS`, `Moral Popular`).
-  * **Fase 3 (O Ponto de Ruptura - Julho de 1975):** A Cheia de 75 e o pânico de Tapacurá. Queima de recursos acumulados para sobreviver ao caos político e climático.
+* **Cenário:** Recife, Pernambuco. Acompanha a trajetória do protagonista desde o nascimento em 1948 até o estopim da Grande Cheia de Julho de 1975 sob a Ditadura Militar (AI-5 / DOPS).
+* **Estrutura de Jogo (4 Etapas Formativas):**
+  * **Etapa 1 — Infância (1948 a 1953 • 0 aos 5 Anos):** Eventos de formação ano a ano (nascimento no mocambo, primeiros passos nas palafitas, convivência no mangue, feira de São José, primeiras letras e travessia para o cais), construindo a base moral e os laços familiares sem consumir cotas de ação política.
+  * **Etapa 2 — Juventude & Formação Política (1954 a 1964 • 6 aos 16 Anos):** Efervescência social, oficinas ferroviárias, greves dos estivadores, alfabetização popular e o clímax inevitável do Golpe Militar de 1964.
+  * **Etapa 3 — Vida Adulta / Anos de Chumbo (1968 a 1974 • 20 aos 26 Anos):** Escolha de um dos 3 Caminhos (`Militar`, `Burguês`, `Líder Trabalhador`). Gestão de **Recursos Voláteis** (`Capital`, `Influência`, `Suspeita do DOPS`, `Moral Popular`) sob o AI-5.
+  * **Etapa 4 — O Ponto de Ruptura (Julho de 1975 • 27 Anos):** A Cheia de 75 e o pânico de Tapacurá. Modo sobrevivência onde os recursos acumulados são consumidos contra o relógio e a subida do rio.
 * **Determinismo Estrito & Espectro Qualitativo (Estilo *Sir Brante*):** Sem rolagens de dados aleatórias. Todos os atributos, recursos e vínculos possuem uma **escala de patamares nomeados em 5 faixas** (ex: `Cru` ▸ `Vacilante` ▸ `Firme` ▸ `Calejado` ▸ `Inabalável` para habilidades; `Miséria` ▸ `Cambaleante` ▸ `Modesto` ▸ `Firme` ▸ `Abastado` para Capital; `Rompido` ▸ `Cambaleante` ▸ `Distante` ▸ `Firme` ▸ `Leal` para vínculos). Cada decisão exibe antes do clique a transição exata (`2 [Firme] ➔ 3 [Calejado]`) e, após o clique, um **Quadro de Impacto da Decisão** detalha todas as alterações e mudanças de patamar com barras de espectro visuais.
 * **Condição Social:** Estrato socioeconômico da família do protagonista (ex: *Mocambo/Operário*, *Pequena Burguesia*, *Elite Tradicional*), definindo facilidades de acesso e preconceitos institucionais.
 * **Parentesco (Vínculos Familiares):** Estado relacional com figuras do círculo íntimo (ex: `relacao_pai`, `relacao_irmao`, `honra_familiar`), que cobram lealdade ou oferecem refúgio.

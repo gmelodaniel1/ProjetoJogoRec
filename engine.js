@@ -155,9 +155,11 @@ class DeterministicEngine {
       throw new Error(`Escolha bloqueada: ${avaliacao.motivoBloqueio}`);
     }
 
-    // 1. Gasta ações do dossiê
-    const custoAcao = evento.metadata.custo_acoes || 1;
-    this.store.consumirAcao(custoAcao);
+    // 1. Gasta ações do dossiê (se o evento consumir cotas de ação)
+    const custoAcao = evento.metadata.custo_acoes !== undefined ? Number(evento.metadata.custo_acoes) : 1;
+    if (custoAcao > 0) {
+      this.store.consumirAcao(custoAcao);
+    }
 
     // 2. Aplica efeitos nas variáveis
     const deltas = this.store.aplicarEfeitos(opcao.efeitos || {});
@@ -280,16 +282,31 @@ class DeterministicEngine {
     }
 
     // Se ainda há ações, lista os eventos de dossiê pendentes
-    const eventosDisponiveis = eventosFase
+    // Aplica filtragem temporal determinística:
+    // 1. Eventos com ano definido maior que o ano atual NUNCA são exibidos antecipadamente
+    // 2. Se existirem eventos pendentes cujo ano corresponde exatamente ao ano atual, prioriza esses (progressão ano a ano)
+    // 3. Caso não haja eventos para o ano exato, exibe os eventos pendentes com ano <= anoAtual ordenados cronologicamente
+    const anoAtual = Number(estadoAtual.anoAtual) || 1948;
+
+    let pendentesFase = eventosFase
       .filter(ev => ev.metadata.tipo === 'dossie' && !concluidosIds.has(ev.metadata.id))
-      .map(ev => {
-        const acesso = this.verificarAcessoEvento(ev, estadoAtual);
-        return {
-          ...ev,
-          acessoPermitido: acesso.permitido,
-          motivoBloqueioAcesso: acesso.motivo
-        };
-      });
+      .filter(ev => !ev.metadata.ano || Number(ev.metadata.ano) <= anoAtual);
+
+    const eventosAnoAtual = pendentesFase.filter(ev => Number(ev.metadata.ano) === anoAtual);
+    if (eventosAnoAtual.length > 0) {
+      pendentesFase = eventosAnoAtual;
+    } else {
+      pendentesFase.sort((a, b) => (Number(a.metadata.ano) || 0) - (Number(b.metadata.ano) || 0));
+    }
+
+    const eventosDisponiveis = pendentesFase.map(ev => {
+      const acesso = this.verificarAcessoEvento(ev, estadoAtual);
+      return {
+        ...ev,
+        acessoPermitido: acesso.permitido,
+        motivoBloqueioAcesso: acesso.motivo
+      };
+    });
 
     return {
       tipoDossie: 'agenda',

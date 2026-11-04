@@ -879,33 +879,80 @@ function renderizarTelaRelacoes() {
 }
 
 // ==========================================================================
-// TELA DE CRONOLOGIA & DIÁRIO DE DECISÕES (ABA 4)
+// TELA DE CRONOLOGIA & DIÁRIO DE DECISÕES (ABA 4 - TICKET 17)
 // ==========================================================================
 function renderizarTelaCronologia() {
   if (!elConteudoCronologia) return;
   const estado = store.getState();
+  const etapaAtual = store.getEtapaVida();
+  const idadeAtual = store.getIdade();
 
-  const fasesInfo = [
+  const etapasInfo = [
     {
-      num: 1,
-      titulo: 'Fase 1: A Formação e Efervescência Social',
-      periodo: 'Recife, 1958–1964 • Greves no Cais, Ligas Camponesas e o Golpe de Março de 64'
+      id: 'infancia',
+      titulo: 'Infância & Primeiros Passos',
+      faixaAnos: '1948–1953',
+      faixaIdade: '0 aos 5 Anos',
+      periodo: 'Recife, 1948–1953 • O mocambo, as palafitas e os primeiros laços de sangue'
     },
     {
-      num: 2,
-      titulo: 'Fase 2: Os Anos de Chumbo',
-      periodo: 'Recife, 1968–1974 • AI-5, Vigilância do DOPS e Sobrevivência Clandestina'
+      id: 'juventude',
+      titulo: 'Juventude & Formação Política',
+      faixaAnos: '1954–1964',
+      faixaIdade: '6 aos 16 Anos',
+      periodo: 'Recife, 1954–1964 • Cais do porto, comícios, alfabetização e o Golpe de 64'
     },
     {
-      num: 3,
-      titulo: 'Fase 3: A Grande Cheia do Capibaribe',
-      periodo: 'Recife, Julho de 1975 • Subida das Águas, Isolamento e o Pânico de Tapacurá'
+      id: 'adulta',
+      titulo: 'Vida Adulta / Anos de Chumbo',
+      faixaAnos: '1968–1974',
+      faixaIdade: '20 aos 26 Anos',
+      periodo: 'Recife, 1968–1974 • AI-5, escolhas de carreira e sobrevivência sob o DOPS'
+    },
+    {
+      id: 'ruptura',
+      titulo: 'O Ponto de Ruptura / A Cheia',
+      faixaAnos: 'Julho de 1975',
+      faixaIdade: '27 Anos',
+      periodo: 'Recife, Julho de 1975 • A cheia histórica do Capibaribe e o colapso'
     }
   ];
 
-  const htmlFases = fasesInfo.map(f => {
-    const ehAtiva = estado.faseAtual === f.num;
-    const ehConcluida = estado.faseAtual > f.num;
+  const ordemEtapas = ['infancia', 'juventude', 'adulta', 'ruptura'];
+  const indiceAtual = ordemEtapas.indexOf(etapaAtual.id);
+
+  // RÉGUA VISUAL DA VIDA
+  const htmlRegua = `
+    <div class="regua-vida-container">
+      <div class="regua-vida-cabecalho">
+        <span class="regua-titulo">RÉGUA DA VIDA // PROGRESSÃO FORMATIVA</span>
+        <span class="regua-marcador-idade">RECIFE, ${estado.anoAtual} • ${idadeAtual === 0 ? 'NASCIMENTO' : `${idadeAtual} ${idadeAtual === 1 ? 'ANO' : 'ANOS'}`}</span>
+      </div>
+      <div class="regua-vida-trilho">
+        ${etapasInfo.map((e, idx) => {
+          const ehAtiva = e.id === etapaAtual.id;
+          const ehPassada = idx < indiceAtual;
+          const classe = ehAtiva ? 'etapa-ativa' : (ehPassada ? 'etapa-passada' : 'etapa-futura');
+          const badgeTxt = ehAtiva ? 'EM CURSO' : (ehPassada ? 'VIVIDA' : 'FUTURO');
+          return `
+            <div class="regua-segmento ${classe}">
+              <div class="regua-segmento-topo">
+                <span class="regua-segmento-anos">${e.faixaAnos}</span>
+                <span class="regua-segmento-badge">${badgeTxt}</span>
+              </div>
+              <div class="regua-segmento-nome">${e.titulo}</div>
+              <div class="regua-segmento-idade">${e.faixaIdade}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  // LISTA DE PERÍODOS HISTÓRICOS
+  const htmlFases = etapasInfo.map((f, idx) => {
+    const ehAtiva = f.id === etapaAtual.id;
+    const ehConcluida = idx < indiceAtual;
     const classe = ehAtiva ? 'fase-ativa' : (ehConcluida ? 'fase-concluida' : '');
     const rotuloStatus = ehAtiva ? 'EM CURSO' : (ehConcluida ? 'CONCLUÍDA' : 'FUTURO');
 
@@ -920,12 +967,14 @@ function renderizarTelaCronologia() {
     `;
   }).join('');
 
+  // DIÁRIO DE ESCOLHAS
   let htmlDiario = '';
   if (diarioDecisoes.length === 0) {
+    const idadeTxt = idadeAtual === 0 ? 'NASCIMENTO' : `${idadeAtual} ANOS`;
     htmlDiario = `
       <div class="cronologia-registro-item">
         <div class="cronologia-reg-topo">
-          <span>RECIFE, 1958</span>
+          <span>RECIFE, ${estado.anoAtual} • ${idadeTxt}</span>
           <span>INÍCIO DE JORNADA</span>
         </div>
         <div class="cronologia-reg-titulo">Abertura do Prontuário</div>
@@ -933,21 +982,27 @@ function renderizarTelaCronologia() {
       </div>
     `;
   } else {
-    htmlDiario = diarioDecisoes.map((item, idx) => `
-      <div class="cronologia-registro-item">
-        <div class="cronologia-reg-topo">
-          <span>#${idx + 1} • RECIFE, ${item.ano}</span>
-          <span>CARIMBO: [${item.carimbo}]</span>
+    htmlDiario = diarioDecisoes.map((item, idx) => {
+      const rotIdade = item.idade === 0 ? 'NASCIMENTO' : `${item.idade} ${item.idade === 1 ? 'ANO' : 'ANOS'}`;
+      return `
+        <div class="cronologia-registro-item">
+          <div class="cronologia-reg-topo">
+            <span>#${idx + 1} • RECIFE, ${item.ano} (${rotIdade})</span>
+            <span>CARIMBO: [${item.carimbo}]</span>
+          </div>
+          <div class="cronologia-reg-titulo">${item.eventoTitulo}</div>
+          <div class="cronologia-reg-escolha">↳ Decisão: <strong>${item.opcaoRotulo}</strong></div>
         </div>
-        <div class="cronologia-reg-titulo">${item.eventoTitulo}</div>
-        <div class="cronologia-reg-escolha">↳ Decisão: <strong>${item.opcaoRotulo}</strong></div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   elConteudoCronologia.innerHTML = `
     <div>
-      <div class="rotulo-secao-pasta">MARCOS HISTÓRICOS DO PERÍODO (1958–1975)</div>
+      ${htmlRegua}
+    </div>
+    <div>
+      <div class="rotulo-secao-pasta">MARCOS HISTÓRICOS & ETAPAS DA VIDA</div>
       <div class="cronologia-fases-lista">${htmlFases}</div>
     </div>
     <div>
@@ -976,7 +1031,8 @@ function renderizarDossie() {
     return;
   }
 
-  if (elEdicao) elEdicao.textContent = `DOSSIÊ DE INVESTIGAÇÃO // FASE ${estadoAtual.faseAtual}`;
+  const etapaVida = store.getEtapaVida();
+  if (elEdicao) elEdicao.textContent = `DOSSIÊ DE INVESTIGAÇÃO // ${etapaVida.nome.toUpperCase()}`;
   if (elData) elData.textContent = `RECIFE, ${estadoAtual.anoAtual}`;
   if (elManchete) elManchete.textContent = "Índice de Incidentes & Ocorrências";
   if (elLead) elLead.textContent = "Escolhe qual ocorrência enfrentar no Recife antes que o curso da História se precipite.";
@@ -1091,9 +1147,10 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
         </span>
       `;
     } else {
+      const etapaVida = store.getEtapaVida();
       elEdicao.innerHTML = `
         <button id="btn-voltar-ao-dossie" class="btn-voltar-dossie">← VOLTAR AO DOSSIÊ</button>
-        <span>FASE ${meta.fase}</span>
+        <span>${etapaVida.nome.toUpperCase()} // ${meta.ano}</span>
       `;
       const btnVoltar = document.getElementById('btn-voltar-ao-dossie');
       if (btnVoltar) {
@@ -1183,6 +1240,7 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
             executarAnimacaoCarimbo(botao, opcao.carimbo, () => {
               diarioDecisoes.push({
                 ano: meta.ano,
+                idade: store.getIdade(),
                 eventoId: meta.id,
                 eventoTitulo: meta.titulo,
                 opcaoRotulo: opcao.rotulo,

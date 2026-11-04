@@ -1960,3 +1960,132 @@ body.fase-3 .folha-narrativa {
   color: #F0EAE1 !important;
   transform: scale(1.08);
 }
+
+/* ==========================================================================
+   RÉGUA DA VIDA & PROGRESSÃO FORMATIVA (TICKET 17)
+   ========================================================================== */
+.regua-vida-container {
+  background-color: var(--cor-papel-secundario);
+  border: 1px solid var(--cor-tinta-principal);
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.regua-vida-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #9E917B;
+}
+
+.regua-titulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: var(--cor-tinta-desbotada);
+}
+
+.regua-marcador-idade {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--cor-tinta-principal);
+  color: #F5EFEB;
+  padding: 3px 8px;
+}
+
+.regua-vida-trilho {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.regua-segmento {
+  padding: 10px 12px;
+  border: 1px solid #B0A490;
+  background-color: #E6DCBE;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.regua-segmento-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.regua-segmento-anos {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--cor-tinta-desbotada);
+}
+
+.regua-segmento-badge {
+  font-family: var(--fonte-datilografada);
+  font-size: 9px;
+  font-weight: bold;
+  padding: 1px 4px;
+  letter-spacing: 0.5px;
+}
+
+.regua-segmento-nome {
+  font-family: var(--fonte-editorial);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--cor-tinta-principal);
+}
+
+.regua-segmento-idade {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: var(--cor-tinta-desbotada);
+}
+
+/* Estado: Etapa Ativa */
+.regua-segmento.etapa-ativa {
+  border: 2px solid var(--cor-carimbo-vermelho);
+  background-color: #F8F2E4;
+  box-shadow: inset 0 0 0 1px var(--cor-carimbo-vermelho);
+}
+
+.regua-segmento.etapa-ativa .regua-segmento-badge {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #FFF;
+}
+
+.regua-segmento.etapa-ativa .regua-segmento-nome {
+  color: var(--cor-carimbo-vermelho);
+}
+
+/* Estado: Etapa Concluída/Passada */
+.regua-segmento.etapa-passada {
+  border-color: #8C7D6B;
+  background-color: #DDD2BA;
+  opacity: 0.85;
+}
+
+.regua-segmento.etapa-passada .regua-segmento-badge {
+  background-color: #5C4938;
+  color: #F0EAE1;
+}
+
+/* Estado: Etapa Futura */
+.regua-segmento.etapa-futura {
+  opacity: 0.5;
+  border-style: dashed;
+  background-color: transparent;
+}
+
+.regua-segmento.etapa-futura .regua-segmento-badge {
+  background-color: #A0937F;
+  color: #29241E;
+}
