@@ -1199,7 +1199,9 @@ if (btnGaveteiroExportar) {
     a.href = url;
     a.download = `prontuario_recife_${store.getState().anoAtual || 1948}.json`;
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 1000);
   });
 }
 
@@ -2210,6 +2212,11 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
   const meta = evento.metadata;
   const estadoAtual = store.getState();
 
+  // Áudio diegético de tensão para eventos de crise
+  if (meta.tipo === 'crise_urgente' && audioManager) {
+    audioManager.somAlertaTenso();
+  }
+
   if (elEdicao) {
     if (meta.tipo === 'crise_urgente') {
       elEdicao.innerHTML = `
@@ -2341,6 +2348,10 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
           </div>
           ${efeitosHtml ? `<div class="decisao-efeitos">${efeitosHtml}</div>` : ''}
         `;
+
+        itemBloqueado.addEventListener('click', () => {
+          if (audioManager) audioManager.somAlertaTenso();
+        });
 
         elListaDecisoes.appendChild(itemBloqueado);
       }

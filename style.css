@@ -3661,7 +3661,7 @@ body.fase-3 .folha-narrativa {
 .pasta-menu-capa {
   background-color: #D8CBAC;
   background-image: 
-    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.12) 100%),
+    radial-gradient(ellipse at 50% 50%, rgba(248, 245, 238, 0.05) 0%, rgba(0, 0, 0, 0.12) 100%),
     var(--textura-papel-grao);
   background-repeat: no-repeat, repeat;
   background-size: 100% 100%, 256px 256px;
