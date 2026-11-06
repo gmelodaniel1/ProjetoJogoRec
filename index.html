@@ -15,6 +15,141 @@
 <body class="fase-1">
   <div class="mesa-viewport">
     
+    <!-- TELA DE ABERTURA — MENU PRINCIPAL DIEGÉTICO (TICKET 28) -->
+    <div id="tela-menu-principal" class="tela-menu-principal" role="dialog" aria-modal="true" aria-label="Menu Principal - Arquivo Geral do Recife" style="display: flex;">
+      <div class="pasta-menu-capa">
+        <div class="reforco-aba-pasta" aria-hidden="true">
+          <span class="aba-pasta-codigo">DOPS-PE // PRONTUÁRIO GERAL • REF: REC-1948/1975</span>
+        </div>
+        <div class="grampo-metalico-pasta" aria-hidden="true"></div>
+        <div class="carimbo-confidencial-pasta" aria-hidden="true">CONFIDENCIAL // ARQUIVO MORTO</div>
+        
+        <div class="menu-cabecalho">
+          <span class="menu-orgao-oficial">ESTADO DE PERNAMBUCO • DEPARTAMENTO DE ORDEM POLÍTICA E SOCIAL</span>
+          <div class="menu-filete-duplo"></div>
+          <h1 class="menu-titulo-jogo">ÁGUAS DE FERRO</h1>
+          <p class="menu-subtitulo-jogo">Crônicas do Recife sob o Capibaribe e a Ditadura (1948–1975)</p>
+          <div class="menu-filete-simples"></div>
+        </div>
+
+        <div class="menu-opcoes-lista">
+          <button id="btn-menu-continuar" class="btn-menu-opcao" disabled>
+            <div class="menu-opcao-corpo">
+              <span class="menu-opcao-tecla">[ENTER]</span>
+              <div class="menu-opcao-textos">
+                <span class="menu-opcao-titulo">CONTINUAR INVESTIGAÇÃO</span>
+                <span id="menu-continuar-subtitulo" class="menu-opcao-subtitulo">Nenhum prontuário registrado no arquivo</span>
+              </div>
+            </div>
+            <span class="menu-opcao-seta">➔</span>
+          </button>
+
+          <button id="btn-menu-novo-jogo" class="btn-menu-opcao">
+            <div class="menu-opcao-corpo">
+              <span class="menu-opcao-tecla">[N]</span>
+              <div class="menu-opcao-textos">
+                <span class="menu-opcao-titulo">NOVO PRONTUÁRIO</span>
+                <span class="menu-opcao-subtitulo">Iniciar a crônica a partir do nascimento (Recife, 1948)</span>
+              </div>
+            </div>
+            <span class="menu-opcao-seta">+</span>
+          </button>
+
+          <button id="btn-menu-gaveteiro" class="btn-menu-opcao">
+            <div class="menu-opcao-corpo">
+              <span class="menu-opcao-tecla">[G]</span>
+              <div class="menu-opcao-textos">
+                <span class="menu-opcao-titulo">GAVETEIRO DE ARQUIVOS</span>
+                <span class="menu-opcao-subtitulo">Consultar fichas salvas, auto-save e gerenciar slots</span>
+              </div>
+            </div>
+            <span class="menu-opcao-seta">▤</span>
+          </button>
+
+          <button id="btn-menu-manual" class="btn-menu-opcao">
+            <div class="menu-opcao-corpo">
+              <span class="menu-opcao-tecla">[M]</span>
+              <div class="menu-opcao-textos">
+                <span class="menu-opcao-titulo">MANUAL DE PROCEDIMENTOS</span>
+                <span class="menu-opcao-subtitulo">Instruções de inquérito, mecânicas do prontuário e diretrizes</span>
+              </div>
+            </div>
+            <span class="menu-opcao-seta">?</span>
+          </button>
+        </div>
+
+        <div class="menu-rodape">
+          <span class="menu-aviso-dops">REPRODUÇÃO OU EXTRAVIO DESTE DOCUMENTO É CRIME CONTRA A SEGURANÇA NACIONAL</span>
+          <span class="menu-versao-build">ED. 1958-1975 • VERSÃO TÉCNICA 1.0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DO GAVETEIRO DE ARQUIVOS (SLOTS DE SAVE/LOAD) (TICKET 28) -->
+    <div id="modal-gaveteiro-arquivos" class="modal-gaveteiro-arquivos" role="dialog" aria-modal="true" aria-labelledby="gaveteiro-titulo-cabecalho" style="display: none;">
+      <div class="gaveteiro-painel-metalico">
+        <div class="gaveteiro-puxador-metalico" aria-hidden="true"></div>
+        
+        <div class="gaveteiro-cabecalho">
+          <div class="gaveteiro-cabecalho-esq">
+            <span class="gaveteiro-tag-metal">GAVETEIRO CENTRAL // DIVISÃO DE ARQUIVO</span>
+            <h2 id="gaveteiro-titulo-cabecalho" class="gaveteiro-titulo">FICHÁRIO DE PRONTUÁRIOS SALVOS</h2>
+          </div>
+          <button id="btn-fechar-gaveteiro" class="btn-fechar-gaveteiro" title="Fechar Gaveteiro [ESC]">✕</button>
+        </div>
+
+        <div class="gaveteiro-divisor"></div>
+
+        <div id="gaveteiro-lista-slots" class="gaveteiro-grid-slots">
+          <!-- Injetado dinamicamente via renderer.js -->
+        </div>
+
+        <div class="gaveteiro-rodape">
+          <div class="gaveteiro-rodape-acoes">
+            <button id="btn-gaveteiro-voltar-menu" class="btn-gaveteiro-acao">⮌ RETORNAR AO MENU PRINCIPAL</button>
+            <button id="btn-gaveteiro-exportar" class="btn-gaveteiro-acao">💾 EXPORTAR PRONTUÁRIO ATUAL</button>
+          </div>
+          <span class="gaveteiro-ajuda-teclado">[ESC] FECHAR GAVETEIRO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE MANUAL DE PROCEDIMENTOS (TICKET 28) -->
+    <div id="modal-manual-regras" class="modal-manual-regras" role="dialog" aria-modal="true" aria-labelledby="manual-titulo" style="display: none;">
+      <div class="manual-papel">
+        <div class="manual-cabecalho">
+          <div>
+            <span class="manual-tag">DIRETRIZES DO INQUÉRITO</span>
+            <h2 id="manual-titulo" class="manual-titulo">MANUAL DE PROCEDIMENTOS DO RECIFE</h2>
+          </div>
+          <button id="btn-fechar-manual" class="btn-fechar-gaveteiro" title="Fechar Manual [ESC]">✕</button>
+        </div>
+        <div class="manual-conteudo">
+          <p><strong>1. DO FLUXO DO TEMPO:</strong> Tua jornada avança cronologicamente de 1948 a 1975 pelas margens do Rio Capibaribe. Cada decisão sela o destino do protagonista e molda a cidade.</p>
+          <p><strong>2. DOS ATRIBUTOS & RECURSOS:</strong> Inspirado nas crônicas de <em>The Life and Suffering of Sir Brante</em>, teus atos desenvolvem Astúcia, Sangue-Frio, Ofício e Presença, além de influenciar Capital, Moral Popular e Suspeita Policial.</p>
+          <p><strong>3. DO MOMENTO DE LEITURA & RESPOSTA:</strong> O inquérito separa a assimilação dos fatos da deliberação. Lê com calma os parágrafos até a Ordem de Despacho antes de selar tua escolha.</p>
+          <p><strong>4. DO SALVAMENTO:</strong> Teus passos são arquivados automaticamente a cada ocorrência. Tu podes registrar até 3 prontuários manuais no Gaveteiro a qualquer momento pressionando [ESC].</p>
+        </div>
+        <div class="manual-rodape">
+          <button id="btn-entendido-manual" class="btn-dymo btn-dymo-preto">ENTENDIDO // RETORNAR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO DE NOVO JOGO (TICKET 28) -->
+    <div id="modal-confirmacao-novo-jogo" class="modal-confirmacao" role="dialog" aria-modal="true" style="display: none;">
+      <div class="confirmacao-cartao">
+        <div class="confirmacao-titulo">⚠ ABERTURA DE NOVO PRONTUÁRIO</div>
+        <div class="confirmacao-mensagem">
+          Iniciar uma nova investigação reiniciará a narrativa em 1948. Teus registros salvos nos slots manuais serão preservados, mas o prontuário em andamento será substituído. Desejas prosseguir?
+        </div>
+        <div class="confirmacao-botoes">
+          <button id="btn-confirmar-novo-jogo" class="btn-confirmar-novo">INICIAR NOVO PRONTUÁRIO ➔</button>
+          <button id="btn-cancelar-novo-jogo" class="btn-cancelar-novo">CANCELAR & MANTER ARQUIVO</button>
+        </div>
+      </div>
+    </div>
+
     <!-- BANNER DE TRANSIÇÃO CRONOLÓGICA / VIRADA DE ANO — EDIÇÃO EXTRAORDINÁRIA (TICKET 21) -->
     <div id="overlay-virada-ano" class="overlay-virada-ano" style="display: none;">
       <div class="cartao-virada-ano">
@@ -119,6 +254,7 @@
       </div>
 
       <div class="comandos-sistema">
+        <button id="btn-menu-arquivo" class="btn-dymo btn-dymo-ambar" title="Gaveteiro de Arquivos & Menu [ESC]">[ESC] ARQUIVO</button>
         <span class="atalho-guia">[F11] TELA CHEIA</span>
         <button id="btn-devtools" class="btn-dymo btn-dymo-vermelho" title="Console de Depuração [F1]">[F1] DEVTOOLS</button>
         <button id="btn-fullscreen" class="btn-dymo btn-dymo-preto" title="Alternar Tela Cheia">TELA CHEIA</button>

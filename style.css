@@ -3572,7 +3572,7 @@ body.fase-3 .folha-narrativa {
 
 .regua-segmento.etapa-ativa .regua-segmento-badge {
   background-color: var(--cor-carimbo-vermelho);
-  color: #FFF;
+  color: #F8F5EE;
 }
 
 .regua-segmento.etapa-ativa .regua-segmento-nome {
@@ -3602,3 +3602,737 @@ body.fase-3 .folha-narrativa {
   background-color: #A0937F;
   color: #29241E;
 }
+
+/* Fita Dymo Âmbar / Arquivo (Controle de Save/Menu) */
+.btn-dymo-ambar {
+  background: linear-gradient(180deg, #A8782E 0%, #7D561C 55%, #593D11 100%);
+  border: 1px solid #3A2609;
+  color: #F8F5EE;
+}
+
+/* ==========================================================================
+   TICKET 28: MENU PRINCIPAL DIEGÉTICO & GAVETEIRO DE ARQUIVOS
+   ========================================================================== */
+
+/* Overlay Principal do Menu */
+.tela-menu-principal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse 95% 85% at 50% 50%, rgba(22, 16, 11, 0.94) 0%, rgba(8, 6, 4, 0.98) 100%);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeInMenu 0.3s ease-out forwards;
+}
+
+.tela-menu-principal.saindo {
+  animation: fadeOutMenu 0.25s ease-in forwards;
+}
+
+@keyframes fadeInMenu {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOutMenu {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.98); }
+}
+
+/* Pasta Confidencial de Inquérito sobre a Mesa */
+.pasta-menu-capa {
+  background-color: #D8CBAC;
+  background-image: 
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.12) 100%),
+    var(--textura-papel-grao);
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 256px 256px;
+  border: 4px solid #5A4E3E;
+  outline: 1px dashed rgba(90, 78, 62, 0.5);
+  outline-offset: -7px;
+  padding: 44px 56px;
+  max-width: 840px;
+  width: 95vw;
+  max-height: 94vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 32px 80px rgba(6, 4, 2, 0.95), 
+    0 8px 16px rgba(6, 4, 2, 0.7),
+    inset 0 0 50px rgba(120, 95, 65, 0.16);
+  position: relative;
+  transform: rotate(-0.3deg);
+}
+
+/* Reforço de aba superior da pasta */
+.reforco-aba-pasta {
+  position: absolute;
+  top: -14px;
+  left: 36px;
+  background-color: #C7B58E;
+  border: 2px solid #5A4E3E;
+  border-bottom: none;
+  padding: 3px 18px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.aba-pasta-codigo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #382E22;
+}
+
+/* Grampo metálico da pasta */
+.grampo-metalico-pasta {
+  position: absolute;
+  top: -8px;
+  right: 64px;
+  width: 72px;
+  height: 15px;
+  background: linear-gradient(180deg, #6B7275 0%, #353B3E 100%);
+  border: 1px solid #1E2224;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Carimbo oficial inclinado */
+.carimbo-confidencial-pasta {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  border: 3px solid var(--cor-carimbo-vermelho);
+  padding: 6px 14px;
+  font-family: var(--fonte-datilografada);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--cor-carimbo-vermelho);
+  transform: rotate(4deg);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+/* Cabeçalho Oficial do Menu */
+.menu-cabecalho {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.menu-orgao-oficial {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: #6E5F4C;
+  text-transform: uppercase;
+}
+
+.menu-filete-duplo {
+  border-top: 4px double #3D3528;
+  margin: 12px 0 16px 0;
+}
+
+.menu-filete-simples {
+  border-top: 1px solid #9C8C74;
+  margin: 14px 0 20px 0;
+}
+
+.menu-titulo-jogo {
+  font-family: var(--fonte-editorial);
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #211B14;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.menu-subtitulo-jogo {
+  font-family: var(--fonte-editorial);
+  font-size: 20px;
+  font-style: italic;
+  color: #4D3F30;
+  margin: 6px 0 0 0;
+}
+
+/* Lista de Opções do Menu */
+.menu-opcoes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.btn-menu-opcao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background-color: #E6DCBF;
+  border: 2px solid #6E5F4C;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-menu-opcao:hover:not(:disabled) {
+  background-color: #2A241D;
+  border-color: var(--cor-carimbo-vermelho);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transform: translateX(4px);
+}
+
+.btn-menu-opcao:hover:not(:disabled) .menu-opcao-titulo {
+  color: #F8F5EE;
+}
+
+.btn-menu-opcao:hover:not(:disabled) .menu-opcao-subtitulo {
+  color: #C8BBA8;
+}
+
+.btn-menu-opcao:hover:not(:disabled) .menu-opcao-tecla {
+  background-color: #4A3E31;
+  color: #F8F5EE;
+  border-color: #7D6B56;
+}
+
+.btn-menu-opcao:hover:not(:disabled) .menu-opcao-seta {
+  color: var(--cor-carimbo-vermelho);
+}
+
+.btn-menu-opcao:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.menu-opcao-corpo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-opcao-tecla {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  background-color: #C9BBA0;
+  border: 1px solid #7D6B56;
+  color: #2A241D;
+}
+
+.menu-opcao-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-opcao-titulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #262017;
+  text-transform: uppercase;
+}
+
+.menu-opcao-subtitulo {
+  font-family: var(--fonte-editorial);
+  font-size: 15px;
+  color: #5C4D3C;
+}
+
+.menu-opcao-seta {
+  font-family: var(--fonte-datilografada);
+  font-size: 18px;
+  font-weight: 900;
+  color: #4D3F30;
+  padding-left: 12px;
+}
+
+/* Rodapé do Menu */
+.menu-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px dotted #8C7C66;
+}
+
+.menu-aviso-dops {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  color: #7D6B56;
+  text-transform: uppercase;
+}
+
+.menu-versao-build {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  color: #4A3E31;
+}
+
+/* ==========================================================================
+   MODAL DO GAVETEIRO DE ARQUIVOS (SLOTS DE SAVE/LOAD)
+   ========================================================================== */
+.modal-gaveteiro-arquivos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse 95% 85% at 50% 50%, rgba(18, 14, 10, 0.94) 0%, rgba(6, 4, 3, 0.98) 100%);
+  z-index: 3100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeInMenu 0.25s ease-out forwards;
+}
+
+.gaveteiro-painel-metalico {
+  background-color: #26211C;
+  border: 4px solid #4D4133;
+  outline: 1px dashed rgba(160, 140, 110, 0.4);
+  outline-offset: -7px;
+  padding: 36px 44px;
+  max-width: 1060px;
+  width: 95vw;
+  max-height: 94vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 32px 80px rgba(0, 0, 0, 0.95),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.gaveteiro-puxador-metalico {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 18px;
+  background: linear-gradient(180deg, #7A8084 0%, #3C4246 60%, #202426 100%);
+  border: 2px solid #141618;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.gaveteiro-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gaveteiro-tag-metal {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #B59B75;
+  text-transform: uppercase;
+}
+
+.gaveteiro-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #EFE8DC;
+  margin: 4px 0 0 0;
+}
+
+.btn-fechar-gaveteiro {
+  background: #382E24;
+  border: 2px solid #6E5A44;
+  color: #EFE8DC;
+  font-family: var(--fonte-datilografada);
+  font-size: 16px;
+  font-weight: 900;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-fechar-gaveteiro:hover {
+  background: var(--cor-carimbo-vermelho);
+  border-color: #A32E2A;
+  color: #F8F5EE;
+}
+
+.gaveteiro-divisor {
+  border-top: 2px solid #4D4133;
+  margin: 10px 0 24px 0;
+}
+
+/* Grid de Slots */
+.gaveteiro-grid-slots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* Cartão do Slot de Arquivo */
+.cartao-slot-arquivo {
+  background-color: #D8CBAC;
+  background-image: var(--textura-papel-grao);
+  background-size: 256px 256px;
+  border: 2px solid #5A4E3E;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.cartao-slot-arquivo.slot-vazio {
+  background-color: #383129;
+  border-style: dashed;
+  border-color: #6E5F4C;
+  color: #A69782;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.slot-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #7A6C58;
+}
+
+.slot-tag-identificador {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 8px;
+  background-color: #C7B58E;
+  border: 1px solid #5A4E3E;
+  color: #241D17;
+  letter-spacing: 1px;
+}
+
+.cartao-slot-arquivo.slot-auto .slot-tag-identificador {
+  background-color: #962824;
+  border-color: #521412;
+  color: #F8F5EE;
+}
+
+.slot-data-salvamento {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: #5C4D3C;
+}
+
+.slot-titulo-cena {
+  font-family: var(--fonte-editorial);
+  font-size: 18px;
+  font-weight: 700;
+  color: #241D17;
+  margin-bottom: 6px;
+}
+
+.slot-detalhes-linha {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  color: #4D3F30;
+  margin-bottom: 10px;
+}
+
+.slot-chips-resumo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.slot-chip-atributo {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  background-color: #ECE3CF;
+  border: 1px solid #8C7B65;
+  color: #2B2319;
+}
+
+.slot-acoes-botoes {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px solid #B8A88E;
+}
+
+.btn-slot-carregar {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 6px 14px;
+  background-color: #241D17;
+  color: #F8F5EE;
+  border: 1px solid #141210;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-slot-carregar:hover {
+  background-color: var(--cor-carimbo-vermelho);
+  border-color: #A32E2A;
+}
+
+.btn-slot-salvar {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  background-color: #C9BBA0;
+  color: #262017;
+  border: 1px solid #7D6B56;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-slot-salvar:hover {
+  background-color: #DFD3BA;
+}
+
+.btn-slot-excluir {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 10px;
+  background-color: transparent;
+  color: #7D2825;
+  border: 1px solid #7D2825;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-slot-excluir:hover {
+  background-color: #7D2825;
+  color: #F8F5EE;
+}
+
+/* Rodapé do Gaveteiro */
+.gaveteiro-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid #4D4133;
+}
+
+.gaveteiro-rodape-acoes {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-gaveteiro-acao {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 16px;
+  background-color: #382F24;
+  color: #EFE8DC;
+  border: 1px solid #6E5A44;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-gaveteiro-acao:hover {
+  background-color: #524434;
+  border-color: #9C8365;
+}
+
+.gaveteiro-ajuda-teclado {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: #8C7B65;
+}
+
+/* ==========================================================================
+   MODAL DE MANUAL DE PROCEDIMENTOS
+   ========================================================================== */
+.modal-manual-regras {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse 95% 85% at 50% 50%, rgba(18, 14, 10, 0.94) 0%, rgba(6, 4, 3, 0.98) 100%);
+  z-index: 3200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.manual-papel {
+  background-color: #EFE8DC;
+  background-image: var(--textura-papel-grao);
+  border: 3px solid #5A4E3E;
+  padding: 36px 44px;
+  max-width: 720px;
+  width: 94vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+}
+
+.manual-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #5A4E3E;
+}
+
+.manual-tag {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--cor-carimbo-vermelho);
+}
+
+.manual-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 24px;
+  font-weight: 800;
+  color: #241D17;
+  margin: 4px 0 0 0;
+}
+
+.manual-conteudo {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  line-height: 1.6;
+  color: #29241E;
+  margin-bottom: 24px;
+}
+
+.manual-conteudo p {
+  margin-bottom: 14px;
+}
+
+.manual-rodape {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   MODAL DE CONFIRMAÇÃO DE NOVO JOGO
+   ========================================================================== */
+.modal-confirmacao {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(8, 6, 4, 0.92);
+  z-index: 3300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.confirmacao-cartao {
+  background-color: #E8DECA;
+  border: 3px solid #751F1C;
+  padding: 28px 36px;
+  max-width: 540px;
+  width: 92vw;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+  text-align: center;
+}
+
+.confirmacao-titulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #751F1C;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.confirmacao-mensagem {
+  font-family: var(--fonte-editorial);
+  font-size: 18px;
+  color: #262017;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+.confirmacao-botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-confirmar-novo {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 10px 20px;
+  background-color: #8A2522;
+  color: #F8F5EE;
+  border: 1px solid #4D1210;
+  cursor: pointer;
+}
+
+.btn-confirmar-novo:hover {
+  background-color: #AA2E2A;
+}
+
+.btn-cancelar-novo {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 10px 18px;
+  background-color: #C9BBA0;
+  color: #262017;
+  border: 1px solid #7D6B56;
+  cursor: pointer;
+}
+
+.btn-cancelar-novo:hover {
+  background-color: #DDD0B5;
+}
+
+@media (max-width: 900px) {
+  .gaveteiro-grid-slots {
+    grid-template-columns: 1fr;
+  }
+  .pasta-menu-capa {
+    padding: 32px 24px;
+  }
+  .menu-titulo-jogo {
+    font-size: 32px;
+  }
+}
+

@@ -76,6 +76,29 @@ const NOMES_ATRIBUTOS_UI = {
 const elEtiquetaFase = document.getElementById('etiqueta-fase');
 const elAnoAtual = document.getElementById('ano-atual');
 const btnFullscreen = document.getElementById('btn-fullscreen');
+const btnMenuArquivo = document.getElementById('btn-menu-arquivo');
+
+// Referências DOM - Menu Principal & Gaveteiro de Arquivos (Ticket 28)
+const elTelaMenuPrincipal = document.getElementById('tela-menu-principal');
+const btnMenuContinuar = document.getElementById('btn-menu-continuar');
+const elMenuContinuarSubtitulo = document.getElementById('menu-continuar-subtitulo');
+const btnMenuNovoJogo = document.getElementById('btn-menu-novo-jogo');
+const btnMenuGaveteiro = document.getElementById('btn-menu-gaveteiro');
+const btnMenuManual = document.getElementById('btn-menu-manual');
+
+const elModalGaveteiro = document.getElementById('modal-gaveteiro-arquivos');
+const btnFecharGaveteiro = document.getElementById('btn-fechar-gaveteiro');
+const elGaveteiroListaSlots = document.getElementById('gaveteiro-lista-slots');
+const btnGaveteiroVoltarMenu = document.getElementById('btn-gaveteiro-voltar-menu');
+const btnGaveteiroExportar = document.getElementById('btn-gaveteiro-exportar');
+
+const elModalManual = document.getElementById('modal-manual-regras');
+const btnFecharManual = document.getElementById('btn-fechar-manual');
+const btnEntendidoManual = document.getElementById('btn-entendido-manual');
+
+const elModalConfirmacaoNovo = document.getElementById('modal-confirmacao-novo-jogo');
+const btnConfirmarNovoJogo = document.getElementById('btn-confirmar-novo-jogo');
+const btnCancelarNovoJogo = document.getElementById('btn-cancelar-novo-jogo');
 
 // Referências DOM - Transição de Virada de Ano (Ticket 15)
 const elOverlayViradaAno = document.getElementById('overlay-virada-ano');
@@ -795,6 +818,7 @@ if (elOverlayViradaAno) {
 }
 
 window.addEventListener('keydown', (e) => {
+  // 1. Resolução de consequências e virada de ano
   if (elOverlayResolucaoConsequencia && elOverlayResolucaoConsequencia.style.display === 'flex') {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -806,9 +830,337 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
       e.preventDefault();
       fecharTransicaoViradaAno();
+      return;
+    }
+  }
+
+  // 2. Tecla Escape para modais e gaveteiro
+  if (e.key === 'Escape') {
+    if (elModalManual && elModalManual.style.display === 'flex') {
+      fecharManualRegras();
+      return;
+    }
+    if (elModalConfirmacaoNovo && elModalConfirmacaoNovo.style.display === 'flex') {
+      fecharConfirmacaoNovoJogo();
+      return;
+    }
+    if (elModalGaveteiro && elModalGaveteiro.style.display === 'flex') {
+      fecharGaveteiroArquivos();
+      return;
+    }
+    // Se nenhum modal estiver ativo e o menu principal não estiver visível, abre gaveteiro
+    const resolucaoAberta = elOverlayResolucaoConsequencia && elOverlayResolucaoConsequencia.style.display === 'flex';
+    const viradaAberta = elOverlayViradaAno && elOverlayViradaAno.style.display === 'flex';
+    const menuAberto = elTelaMenuPrincipal && elTelaMenuPrincipal.style.display === 'flex';
+
+    if (!resolucaoAberta && !viradaAberta && !menuAberto) {
+      abrirGaveteiroArquivos();
+      return;
+    }
+  }
+
+  // 3. Atalhos no Menu Principal (quando ativo e sem outros modais)
+  if (elTelaMenuPrincipal && elTelaMenuPrincipal.style.display === 'flex') {
+    const nenhumModalAberto = (!elModalGaveteiro || elModalGaveteiro.style.display === 'none') &&
+                              (!elModalManual || elModalManual.style.display === 'none') &&
+                              (!elModalConfirmacaoNovo || elModalConfirmacaoNovo.style.display === 'none');
+
+    if (nenhumModalAberto) {
+      if (e.key === 'Enter' && btnMenuContinuar && !btnMenuContinuar.disabled) {
+        btnMenuContinuar.click();
+      } else if (e.key === 'n' || e.key === 'N') {
+        abrirConfirmacaoNovoJogo();
+      } else if (e.key === 'g' || e.key === 'G') {
+        abrirGaveteiroArquivos();
+      } else if (e.key === 'm' || e.key === 'M') {
+        abrirManualRegras();
+      }
     }
   }
 });
+
+// ==========================================================================
+// CONTROLADOR DO MENU PRINCIPAL & GAVETEIRO DE ARQUIVOS (TICKET 28)
+// ==========================================================================
+function atualizarStatusMenuPrincipal() {
+  if (!btnMenuContinuar || !saveManager) return;
+  const maisRecente = saveManager.obterSlotMaisRecente();
+
+  if (maisRecente && maisRecente.metadados) {
+    const meta = maisRecente.metadados;
+    btnMenuContinuar.disabled = false;
+    if (elMenuContinuarSubtitulo) {
+      elMenuContinuarSubtitulo.textContent = 
+        `${meta.anoAtual} (${meta.idade} anos) • ${meta.condicaoSocial} • ${meta.tituloCena}`;
+    }
+  } else {
+    btnMenuContinuar.disabled = true;
+    if (elMenuContinuarSubtitulo) {
+      elMenuContinuarSubtitulo.textContent = "Nenhum prontuário registrado no arquivo";
+    }
+  }
+}
+window.atualizarStatusMenuPrincipal = atualizarStatusMenuPrincipal;
+
+function fecharMenuPrincipal(callback = null) {
+  if (!elTelaMenuPrincipal || elTelaMenuPrincipal.style.display === 'none') {
+    if (callback) callback();
+    return;
+  }
+  elTelaMenuPrincipal.classList.add('saindo');
+  setTimeout(() => {
+    elTelaMenuPrincipal.style.display = 'none';
+    elTelaMenuPrincipal.classList.remove('saindo');
+    if (callback) callback();
+  }, 220);
+}
+window.fecharMenuPrincipal = fecharMenuPrincipal;
+
+function abrirMenuPrincipal() {
+  if (!elTelaMenuPrincipal) return;
+  atualizarStatusMenuPrincipal();
+  elTelaMenuPrincipal.classList.remove('saindo');
+  elTelaMenuPrincipal.style.display = 'flex';
+  tocarSomCarimbo();
+}
+window.abrirMenuPrincipal = abrirMenuPrincipal;
+
+function iniciarNovoProntuario() {
+  diarioDecisoes = [];
+  ultimaConsequenciaDecisao = null;
+  deliberacaoAberta = false;
+  store.reset();
+  renderizarDossie();
+  executarAutoSave('Nascimento do Protagonista (1948)');
+  fecharMenuPrincipal();
+  tocarSomCarimbo();
+}
+window.iniciarNovoProntuario = iniciarNovoProntuario;
+
+function abrirGaveteiroArquivos() {
+  if (!elModalGaveteiro) return;
+  renderizarSlotsGaveteiro();
+  elModalGaveteiro.style.display = 'flex';
+  tocarSomCarimbo();
+}
+window.abrirGaveteiroArquivos = abrirGaveteiroArquivos;
+
+function fecharGaveteiroArquivos() {
+  if (!elModalGaveteiro) return;
+  elModalGaveteiro.style.display = 'none';
+}
+window.fecharGaveteiroArquivos = fecharGaveteiroArquivos;
+
+function renderizarSlotsGaveteiro() {
+  if (!elGaveteiroListaSlots || !saveManager) return;
+  elGaveteiroListaSlots.innerHTML = '';
+
+  const slots = saveManager.listarSlots();
+
+  slots.forEach(slot => {
+    const card = document.createElement('div');
+    const ehAuto = slot.slotId === 'auto_save';
+    card.className = `cartao-slot-arquivo ${ehAuto ? 'slot-auto' : ''} ${!slot.preenchido ? 'slot-vazio' : ''}`;
+    card.dataset.slotId = slot.slotId;
+
+    if (!slot.preenchido) {
+      card.innerHTML = `
+        <div class="slot-cabecalho" style="width: 100%;">
+          <span class="slot-tag-identificador">${ehAuto ? 'AUTO-SAVE' : slot.nomePadrao.toUpperCase()}</span>
+          <span class="slot-data-salvamento">VAZIO</span>
+        </div>
+        <p style="font-family: var(--fonte-editorial); font-size: 16px; margin: 18px 0; color: #8C7B65;">
+          Ficha arquivística disponível para registro de prontuário.
+        </p>
+        ${!ehAuto ? `
+          <div class="slot-acoes-botoes" style="width: 100%;">
+            <button class="btn-slot-salvar" data-acao="salvar-slot" data-slot="${slot.slotId}">
+              ARQUIVAR ESTADO ATUAL 💾
+            </button>
+          </div>
+        ` : ''}
+      `;
+    } else {
+      const meta = slot.metadados;
+      const attrs = meta.resumoAtributos || {};
+      card.innerHTML = `
+        <div class="slot-cabecalho">
+          <span class="slot-tag-identificador">${ehAuto ? 'SALVAMENTO AUTOMÁTICO' : slot.nomePadrao.toUpperCase()}</span>
+          <span class="slot-data-salvamento">${meta.dataFormatada || ''}</span>
+        </div>
+        <div class="slot-titulo-cena">${escaparHtml(meta.tituloCena || 'Ocorrência Histórica')}</div>
+        <div class="slot-detalhes-linha">
+          <strong>${meta.anoAtual}</strong> (${meta.idade} anos) • Fase ${meta.faseAtual} • ${escaparHtml(meta.condicaoSocial)}
+        </div>
+        <div class="slot-chips-resumo">
+          <span class="slot-chip-atributo">ASTÚCIA: ${attrs.astucia ?? 0}</span>
+          <span class="slot-chip-atributo">SANGUE-FRIO: ${attrs.sangue_frio ?? 0}</span>
+          <span class="slot-chip-atributo">CAPITAL: ${attrs.capital ?? 0}</span>
+          <span class="slot-chip-atributo">DOPS: ${attrs.suspeita_dops ?? 0}</span>
+        </div>
+        <div class="slot-acoes-botoes">
+          ${!ehAuto ? `
+            <button class="btn-slot-excluir" data-acao="excluir-slot" data-slot="${slot.slotId}" title="Destruir Ficha">
+              EXCLUIR ✖
+            </button>
+            <button class="btn-slot-salvar" data-acao="salvar-slot" data-slot="${slot.slotId}">
+              SOBRESCREVER 💾
+            </button>
+          ` : ''}
+          <button class="btn-slot-carregar" data-acao="carregar-slot" data-slot="${slot.slotId}">
+            REQUISITAR & CONTINUAR ➔
+          </button>
+        </div>
+      `;
+    }
+
+    elGaveteiroListaSlots.appendChild(card);
+  });
+
+  elGaveteiroListaSlots.querySelectorAll('[data-acao="carregar-slot"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slotId = btn.dataset.slot;
+      const ok = restaurarSessaoSalva(slotId);
+      if (ok) {
+        fecharGaveteiroArquivos();
+        fecharMenuPrincipal();
+        tocarSomCarimbo();
+      }
+    });
+  });
+
+  elGaveteiroListaSlots.querySelectorAll('[data-acao="salvar-slot"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slotId = btn.dataset.slot;
+      const etapa = store.getEtapaVida();
+      const tituloCena = modoVisual === 'evento' && eventoAtivoId ? `Evento: ${eventoAtivoId}` : `Dossiê — ${etapa.nome}`;
+      saveManager.salvar(slotId, {
+        eventoAtivoId,
+        modoVisual,
+        deliberacaoAberta,
+        abaPalcoAtiva,
+        diarioDecisoes,
+        tituloCena
+      });
+      tocarSomCarimbo();
+      renderizarSlotsGaveteiro();
+      atualizarStatusMenuPrincipal();
+    });
+  });
+
+  elGaveteiroListaSlots.querySelectorAll('[data-acao="excluir-slot"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slotId = btn.dataset.slot;
+      saveManager.excluirSlot(slotId);
+      tocarSomCarimbo();
+      renderizarSlotsGaveteiro();
+      atualizarStatusMenuPrincipal();
+    });
+  });
+}
+
+function abrirManualRegras() {
+  if (!elModalManual) return;
+  elModalManual.style.display = 'flex';
+  tocarSomCarimbo();
+}
+
+function fecharManualRegras() {
+  if (!elModalManual) return;
+  elModalManual.style.display = 'none';
+}
+
+function abrirConfirmacaoNovoJogo() {
+  if (!elModalConfirmacaoNovo) {
+    iniciarNovoProntuario();
+    return;
+  }
+  const estadoAtual = store.getState();
+  if (estadoAtual.historicoDecisoes.length === 0 && !saveManager.existeSlot('auto_save')) {
+    iniciarNovoProntuario();
+    return;
+  }
+  elModalConfirmacaoNovo.style.display = 'flex';
+}
+
+function fecharConfirmacaoNovoJogo() {
+  if (!elModalConfirmacaoNovo) return;
+  elModalConfirmacaoNovo.style.display = 'none';
+}
+
+if (btnMenuContinuar) {
+  btnMenuContinuar.addEventListener('click', () => {
+    const maisRecente = saveManager.obterSlotMaisRecente();
+    if (maisRecente) {
+      restaurarSessaoSalva(maisRecente.slotId);
+      fecharMenuPrincipal();
+      tocarSomCarimbo();
+    }
+  });
+}
+
+if (btnMenuNovoJogo) {
+  btnMenuNovoJogo.addEventListener('click', () => {
+    abrirConfirmacaoNovoJogo();
+  });
+}
+
+if (btnConfirmarNovoJogo) {
+  btnConfirmarNovoJogo.addEventListener('click', () => {
+    fecharConfirmacaoNovoJogo();
+    iniciarNovoProntuario();
+  });
+}
+
+if (btnCancelarNovoJogo) {
+  btnCancelarNovoJogo.addEventListener('click', () => {
+    fecharConfirmacaoNovoJogo();
+  });
+}
+
+if (btnMenuGaveteiro) {
+  btnMenuGaveteiro.addEventListener('click', () => {
+    abrirGaveteiroArquivos();
+  });
+}
+
+if (btnMenuArquivo) {
+  btnMenuArquivo.addEventListener('click', () => {
+    if (elModalGaveteiro && elModalGaveteiro.style.display === 'flex') {
+      fecharGaveteiroArquivos();
+    } else {
+      abrirGaveteiroArquivos();
+    }
+  });
+}
+
+if (btnFecharGaveteiro) {
+  btnFecharGaveteiro.addEventListener('click', fecharGaveteiroArquivos);
+}
+
+if (btnGaveteiroVoltarMenu) {
+  btnGaveteiroVoltarMenu.addEventListener('click', () => {
+    fecharGaveteiroArquivos();
+    abrirMenuPrincipal();
+  });
+}
+
+if (btnGaveteiroExportar) {
+  btnGaveteiroExportar.addEventListener('click', () => {
+    const jsonStr = saveManager.exportarParaJson('auto_save') || JSON.stringify(store.getState(), null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `prontuario_recife_${store.getState().anoAtual || 1948}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+if (btnMenuManual) btnMenuManual.addEventListener('click', abrirManualRegras);
+if (btnFecharManual) btnFecharManual.addEventListener('click', fecharManualRegras);
+if (btnEntendidoManual) btnEntendidoManual.addEventListener('click', fecharManualRegras);
 
 store.subscribe((estado, deltas) => {
   atualizarProntuario(estado, deltas);
@@ -2222,4 +2574,5 @@ if (devInpAnoNasc) {
 window.addEventListener('DOMContentLoaded', () => {
   atualizarStatusFullscreen();
   inicializarNarrativa();
+  atualizarStatusMenuPrincipal();
 });
