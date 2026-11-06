@@ -31,7 +31,6 @@ const NOMES_ATRIBUTOS_UI = {
 // Referências DOM - Barra Superior
 const elEtiquetaFase = document.getElementById('etiqueta-fase');
 const elAnoAtual = document.getElementById('ano-atual');
-const elIndicadorAcoes = document.getElementById('indicador-acoes');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 
 // Referências DOM - Transição de Virada de Ano (Ticket 15)
@@ -1112,10 +1111,7 @@ function renderizarTelaCronologia() {
 // RENDERIZAÇÃO DO DOSSIÊ DA FASE & SEQUESTRO DE CRISE (TICKETS 08 & 09)
 // ==========================================================================
 function renderizarDossie() {
-  if (handlerTecladoLeitura) {
-    window.removeEventListener('keydown', handlerTecladoLeitura);
-    handlerTecladoLeitura = null;
-  }
+  removerListenerTecladoLeitura();
   if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
 
   modoVisual = 'dossie';
@@ -1231,16 +1227,20 @@ function abrirEvento(eventoId) {
 
 let handlerTecladoLeitura = null;
 
-// ==========================================================================
-// PROGRESSÃO CADENCIADA DE TEXTO — ESTILO DISCO ELYSIUM (TICKET 24)
-// ==========================================================================
-function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
-  if (!elCorpo) return;
-
+function removerListenerTecladoLeitura() {
   if (handlerTecladoLeitura) {
     window.removeEventListener('keydown', handlerTecladoLeitura);
     handlerTecladoLeitura = null;
   }
+}
+
+// ==========================================================================
+// PROGRESSÃO CADENCIADA DE TEXTO — ESTILO DISCO ELYSIUM (TICKET 24)
+// ==========================================================================
+function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
+  if (!elCorpo) return;
+
+  removerListenerTecladoLeitura();
 
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = corpoHtml;
@@ -1255,19 +1255,36 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
   }
 
   elCorpo.innerHTML = '';
-  blocos.forEach(b => {
-    b.classList.add('paragrafo-beat');
-    elCorpo.appendChild(b);
+  blocos.forEach(bloco => {
+    bloco.classList.add('paragrafo-beat');
+    elCorpo.appendChild(bloco);
   });
 
-  if (deliberacaoAbertaParam || blocos.length <= 1) {
-    blocos.forEach(b => {
-      b.classList.remove('oculto');
-      b.classList.add('revelado');
-    });
+  function finalizarLeitura(scrollParaDecisoes = true) {
+    removerListenerTecladoLeitura();
     if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
-    if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
-    if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'block';
+    deliberacaoAberta = true;
+    if (elSecaoDeliberacao) {
+      elSecaoDeliberacao.style.display = 'block';
+      if (scrollParaDecisoes) {
+        setTimeout(() => {
+          elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+  }
+
+  function revelarTodosParagrafos(tocarSom = true) {
+    blocos.forEach(bloco => {
+      bloco.classList.remove('oculto');
+      bloco.classList.add('revelado');
+    });
+    if (tocarSom) tocarSomCarimbo();
+    finalizarLeitura(tocarSom);
+  }
+
+  if (deliberacaoJaAberta || blocos.length <= 1) {
+    revelarTodosParagrafos(false);
     return;
   }
 
@@ -1287,13 +1304,13 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
   function progredirLeitura() {
     if (indiceAtual < blocos.length - 1) {
       indiceAtual++;
-      const p = blocos[indiceAtual];
-      p.classList.remove('oculto');
-      p.classList.add('revelado');
+      const blocoAtual = blocos[indiceAtual];
+      blocoAtual.classList.remove('oculto');
+      blocoAtual.classList.add('revelado');
       tocarSomCarimbo();
 
       setTimeout(() => {
-        p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        blocoAtual.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 30);
 
       if (indiceAtual === blocos.length - 1) {
@@ -1302,32 +1319,6 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
     } else {
       finalizarLeitura(false);
     }
-  }
-
-  function finalizarLeitura(scrollParaDecisoes = true) {
-    if (handlerTecladoLeitura) {
-      window.removeEventListener('keydown', handlerTecladoLeitura);
-      handlerTecladoLeitura = null;
-    }
-    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
-    deliberacaoAberta = true;
-    if (elSecaoDeliberacao) {
-      elSecaoDeliberacao.style.display = 'block';
-      if (scrollParaDecisoes) {
-        setTimeout(() => {
-          elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-      }
-    }
-  }
-
-  function revelarTodosParagrafos() {
-    blocos.forEach(b => {
-      b.classList.remove('oculto');
-      b.classList.add('revelado');
-    });
-    tocarSomCarimbo();
-    finalizarLeitura(true);
   }
 
   if (elBtnProgredirLeitura) {
@@ -1340,7 +1331,7 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
   if (elBtnLerTudo) {
     elBtnLerTudo.onclick = (e) => {
       e.stopPropagation();
-      revelarTodosParagrafos();
+      revelarTodosParagrafos(true);
     };
   }
 

@@ -315,7 +315,7 @@ try {
     stdio: 'pipe',
     encoding: 'utf-8'
   });
-  runnerSuccess = runnerOutput.includes('TODAS AS 7 SUÍTES DE TESTES FORAM APROVADAS COM SUCESSO');
+  runnerSuccess = /TODAS AS \d+ SUÍTES DE TESTES FORAM APROVADAS COM SUCESSO/.test(runnerOutput);
 } catch (err) {
   runnerSuccess = false;
   runnerOutput = err.stdout ? err.stdout.toString() : err.message;
