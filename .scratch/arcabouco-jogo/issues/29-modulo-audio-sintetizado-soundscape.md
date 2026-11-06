@@ -18,3 +18,4 @@ Centralizar e expandir a arquitetura sonora do jogo através de um `AudioManager
 - [ ] Controle visual de áudio na barra superior (`#btn-audio-toggle`) permitindo alternar entre Áudio Ativo e Silenciado, com persistência da preferência no `localStorage`.
 - [ ] Conexão direta dos eventos táteis do jogo (`progredirLeitura`, troca de abas, exibição de desfecho) com os novos efeitos sintetizados.
 - [ ] Suíte de testes automatizada `test/test_audio_manager_ticket29.js` aprovada com 100% de sucesso.
+

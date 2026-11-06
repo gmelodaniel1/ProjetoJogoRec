@@ -15,3 +15,4 @@ Criar a tela de abertura do jogo (Menu Principal) e o modal de gerenciamento de 
 - [ ] Botão `#btn-menu-arquivo` na barra superior vintage e gatilho de atalho de teclado via tecla `Escape` (quando nenhum outro overlay modal estiver ativo).
 - [ ] Feedback tátil com animações mecânicas de abertura/fechamento de gaveta e carimbos de arquivo.
 - [ ] Suíte de testes automatizada `test/test_menu_gaveteiro_ticket28.js` aprovada com 100% de sucesso.
+

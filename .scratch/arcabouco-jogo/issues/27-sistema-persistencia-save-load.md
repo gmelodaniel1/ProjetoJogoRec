@@ -15,3 +15,4 @@ Implementar o arcabouço técnico de serialização, armazenamento e recuperaç�
 - [ ] Mecanismo de restauração determinística (`carregarSlot(slotId)`) que reidrata a interface e o dossiê/evento ativo com precisão.
 - [ ] Tratamento defensivo de erros (corrupção de dados, fallback gracioso e versionamento de schema `versaoSchema: 1`).
 - [ ] Suíte de testes automatizada `test/test_persistencia_save_load_ticket27.js` aprovada com 100% de sucesso.
+
