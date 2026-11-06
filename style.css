@@ -2864,8 +2864,331 @@ body.fase-3 .folha-narrativa {
 }
 
 /* ==========================================================================
-   VINHETA / OVERLAY DE TRANSIÇÃO HISTÓRICA (TICKET 15)
+   TELA ESPECIAL DE RESOLUÇÃO & CONSEQUÊNCIAS — PAPEL SOBREPOSTO (TICKET 26)
    ========================================================================== */
+.overlay-resolucao-consequencia {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse 95% 85% at 50% 50%, rgba(18, 14, 10, 0.92) 0%, rgba(8, 6, 4, 0.98) 100%);
+  z-index: 2200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeInVirada 0.25s ease-out forwards;
+}
+
+.overlay-resolucao-consequencia.saindo {
+  animation: fadeOutVirada 0.22s ease-in forwards;
+}
+
+/* Folha de Laudo de Ocorrência sobreposta ao centro da mesa */
+.cartao-resolucao-papel {
+  background-color: #ECE5D8;
+  background-image: 
+    radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.25) 0%, rgba(110, 90, 65, 0.10) 100%),
+    var(--textura-papel-grao);
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 256px 256px;
+  border: 2px solid #5A4E3E;
+  outline: 1px dashed rgba(90, 78, 62, 0.45);
+  outline-offset: -5px;
+  padding: 28px 36px;
+  max-width: 780px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 24px 68px rgba(6, 4, 2, 0.92), 
+    0 4px 8px rgba(6, 4, 2, 0.6),
+    inset 0 0 35px rgba(120, 95, 65, 0.12);
+  position: relative;
+  transform: rotate(-0.35deg);
+  animation: resolucaoPapelSlam 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes resolucaoPapelSlam {
+  0% {
+    transform: scale(0.92) translateY(24px) rotate(-1.5deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(-0.35deg);
+    opacity: 1;
+  }
+}
+
+/* Grampo metálico mecânico central no topo */
+.grampo-metalico-resolucao {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 12px;
+  background: linear-gradient(180deg, #6B7275 0%, #353B3E 100%);
+  border: 1px solid #1E2224;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Fitas adesivas gomadas nos cantos */
+.fita-resolucao-canto-esq {
+  position: absolute;
+  top: -8px;
+  left: 18px;
+  width: 44px;
+  height: 18px;
+  background-color: rgba(212, 196, 155, 0.72);
+  border: 1px solid rgba(138, 120, 80, 0.4);
+  transform: rotate(-8deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.fita-resolucao-canto-dir {
+  position: absolute;
+  top: -8px;
+  right: 18px;
+  width: 44px;
+  height: 18px;
+  background-color: rgba(212, 196, 155, 0.72);
+  border: 1px solid rgba(138, 120, 80, 0.4);
+  transform: rotate(8deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.resolucao-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.resolucao-cabecalho-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resolucao-selo-oficial {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--cor-carimbo-vermelho);
+  text-transform: uppercase;
+}
+
+.resolucao-data-ano {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: #6E5F4C;
+  letter-spacing: 0.8px;
+}
+
+.resolucao-carimbo-box {
+  border: 2px solid var(--cor-carimbo-vermelho);
+  padding: 3px 12px;
+  transform: rotate(1.5deg);
+  box-shadow: inset 0 0 4px rgba(138, 37, 34, 0.15);
+}
+
+.resolucao-carimbo-texto {
+  font-family: var(--fonte-datilografada);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--cor-carimbo-vermelho);
+  text-transform: uppercase;
+}
+
+.resolucao-filete-duplo {
+  border-top: 3px double #3D3528;
+  margin: 8px 0 16px 0;
+}
+
+/* Layout em duas colunas: Moldura fotográfica à esquerda + Crônica à direita */
+.resolucao-corpo {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.resolucao-imagem-container {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+.resolucao-moldura-foto {
+  border: 3px solid #2B241C;
+  background-color: #141210;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  max-height: 180px;
+}
+
+.resolucao-foto-epoca {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+  filter: contrast(115%) brightness(95%) sepia(20%);
+}
+
+.resolucao-foto-legenda {
+  margin-top: 6px;
+  font-family: var(--fonte-datilografada);
+  font-size: 9px;
+  color: #6E5F4C;
+  letter-spacing: 0.6px;
+  text-align: center;
+}
+
+.resolucao-conteudo-narrativo {
+  flex: 1;
+}
+
+.resolucao-titulo-acao {
+  font-family: var(--fonte-editorial);
+  font-size: 18px;
+  font-weight: bold;
+  font-style: italic;
+  color: #241D17;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dotted #A89B84;
+}
+
+.resolucao-texto-acontecimentos {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  line-height: 1.6;
+  color: #1F1B16;
+  text-align: justify;
+}
+
+.resolucao-texto-acontecimentos p {
+  margin-bottom: 10px;
+}
+
+.resolucao-divisor-balanco {
+  text-align: center;
+  position: relative;
+  margin: 16px 0 12px 0;
+}
+
+.resolucao-divisor-balanco::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed #A89B84;
+  z-index: 1;
+}
+
+.resolucao-rotulo-balanco {
+  position: relative;
+  z-index: 2;
+  background-color: #ECE5D8;
+  padding: 0 12px;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  color: #6E5F4C;
+}
+
+/* Pílulas Táteis de Balanço de Atributos */
+.resolucao-balanco-atributos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background-color: rgba(220, 210, 192, 0.45);
+  border: 1px solid #B8AB96;
+}
+
+.resolucao-chip-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: #E2DAC9;
+  border: 1px solid #756754;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  color: #241D17;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.resolucao-chip-delta.positivo {
+  border-left: 3px solid #2B5A35;
+}
+
+.resolucao-chip-delta.negativo {
+  border-left: 3px solid #8A2522;
+}
+
+.resolucao-badge-patamar {
+  font-size: 9px;
+  padding: 2px 5px;
+  background-color: #D5C9B3;
+  color: #2E251A;
+  letter-spacing: 0.5px;
+}
+
+.resolucao-badge-patamar.subiu {
+  background-color: rgba(43, 90, 53, 0.18);
+  color: #1A3E22;
+}
+
+.resolucao-badge-patamar.caiu {
+  background-color: rgba(138, 37, 34, 0.18);
+  color: #5E1816;
+}
+
+.resolucao-rodape {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.btn-continuar-resolucao {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #F8F2E4;
+  background-color: var(--cor-tinta-principal);
+  border: 2px solid var(--cor-carimbo-vermelho);
+  padding: 12px 28px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-continuar-resolucao:hover {
+  background-color: var(--cor-carimbo-vermelho);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+}
+
+.btn-continuar-resolucao:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
 /* ==========================================================================
    TRANSIÇÃO HISTÓRICA & VIRADA DE ANO — EDIÇÃO EXTRAORDINÁRIA (TICKET 21)
    ========================================================================== */

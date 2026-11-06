@@ -40,6 +40,20 @@ const elViradaAnoPara = document.getElementById('virada-ano-para');
 const elViradaIdadeInfo = document.getElementById('virada-idade-info');
 const elBtnContinuarViradaAno = document.getElementById('btn-continuar-virada-ano');
 
+// Referências DOM - Tela Especial de Resolução & Consequências (Ticket 26)
+const elOverlayResolucaoConsequencia = document.getElementById('overlay-resolucao-consequencia');
+const elCartaoResolucaoPapel = document.getElementById('cartao-resolucao-papel');
+const elResolucaoDataAno = document.getElementById('resolucao-data-ano');
+const elResolucaoCarimboBox = document.getElementById('resolucao-carimbo-box');
+const elResolucaoCarimboTexto = document.getElementById('resolucao-carimbo-texto');
+const elResolucaoMolduraFoto = document.getElementById('resolucao-moldura-foto');
+const elResolucaoImgFoto = document.getElementById('resolucao-img-foto');
+const elResolucaoTomboLegenda = document.getElementById('resolucao-tombo-legenda');
+const elResolucaoTituloAcao = document.getElementById('resolucao-titulo-acao');
+const elResolucaoTextoAcontecimentos = document.getElementById('resolucao-texto-acontecimentos');
+const elResolucaoBalancoAtributos = document.getElementById('resolucao-balanco-atributos');
+const btnContinuarResolucao = document.getElementById('btn-continuar-resolucao');
+
 // Referências DOM - Palco & Atalhos Inferiores
 const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
 const elCenarioLocal = document.getElementById('cenario-local');
@@ -406,12 +420,177 @@ function atualizarProntuario(estado, deltas) {
           elAnoAtual.classList.add('ano-destaque');
           setTimeout(() => elAnoAtual.classList.remove('ano-destaque'), 1800);
         }
-        exibirTransicaoViradaAno(info.anterior, info.novo, info.idade);
+        if (resolucaoEmExibicao) {
+          viradaAnoPendente = { anterior: info.anterior, novo: info.novo, idade: info.idade };
+        } else {
+          exibirTransicaoViradaAno(info.anterior, info.novo, info.idade);
+        }
       } else if (info && typeof info.delta === 'number') {
         animarDeltaBadge(chave, info);
       }
     });
   }
+}
+
+// ==========================================================================
+// TELA ESPECIAL DE RESOLUÇÃO & CONSEQUÊNCIAS — PAPEL SOBREPOSTO (TICKET 26)
+// ==========================================================================
+let resolucaoEmExibicao = false;
+let viradaAnoPendente = null;
+let callbackAposResolucao = null;
+
+function fecharTelaResolucaoConsequencia() {
+  if (!elOverlayResolucaoConsequencia || elOverlayResolucaoConsequencia.style.display === 'none') return;
+
+  elOverlayResolucaoConsequencia.classList.add('saindo');
+  resolucaoEmExibicao = false;
+
+  setTimeout(() => {
+    elOverlayResolucaoConsequencia.style.display = 'none';
+    elOverlayResolucaoConsequencia.classList.remove('saindo');
+
+    if (viradaAnoPendente) {
+      const { anterior, novo, idade } = viradaAnoPendente;
+      viradaAnoPendente = null;
+      exibirTransicaoViradaAno(anterior, novo, idade);
+    }
+
+    if (typeof callbackAposResolucao === 'function') {
+      const cb = callbackAposResolucao;
+      callbackAposResolucao = null;
+      cb();
+    }
+  }, 220);
+}
+
+function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, callbackContinuar }) {
+  if (!elOverlayResolucaoConsequencia) {
+    if (typeof callbackContinuar === 'function') callbackContinuar();
+    return;
+  }
+
+  callbackAposResolucao = callbackContinuar;
+  resolucaoEmExibicao = true;
+
+  const meta = (evento && evento.metadata) || {};
+
+  // 1. Cabeçalho de data e cidade
+  if (elResolucaoDataAno) {
+    const cidade = (meta.cidade || 'RECIFE').toUpperCase();
+    const ano = meta.ano || store.getAnoAtual() || 1958;
+    elResolucaoDataAno.textContent = `${cidade}, ${ano}`;
+  }
+
+  // 2. Carimbo oficial
+  const carimboTexto = (resultadoDecisao && resultadoDecisao.carimbo) || (opcao && opcao.carimbo) || 'REGISTRADO';
+  if (elResolucaoCarimboTexto) {
+    elResolucaoCarimboTexto.textContent = `[ ${carimboTexto.toUpperCase()} ]`;
+  }
+
+  // 3. Fotografia de época e tombo
+  if (elResolucaoImgFoto) {
+    const imagemSrc = meta.imagem || '';
+    if (imagemSrc) {
+      elResolucaoImgFoto.src = imagemSrc;
+      elResolucaoImgFoto.style.display = 'block';
+    } else {
+      elResolucaoImgFoto.style.display = 'none';
+    }
+  }
+  if (elResolucaoTomboLegenda) {
+    const registro = meta.registro || 'REGISTRO DE ARQUIVO';
+    const local = meta.local || 'RECIFE';
+    elResolucaoTomboLegenda.textContent = `${registro} // ${local}`;
+  }
+
+  // 4. Ação tomada
+  if (elResolucaoTituloAcao) {
+    elResolucaoTituloAcao.textContent = `“${(opcao && opcao.rotulo) || 'Decisão Registrada'}”`;
+  }
+
+  // 5. Crônica do desfecho
+  if (elResolucaoTextoAcontecimentos) {
+    if (opcao && opcao.desfechoHtml) {
+      elResolucaoTextoAcontecimentos.innerHTML = opcao.desfechoHtml;
+    } else if (opcao && opcao.desfecho) {
+      const paragrafos = opcao.desfecho.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+      elResolucaoTextoAcontecimentos.innerHTML = paragrafos
+        .map(p => `<p class="resolucao-paragrafo-acontecimento">${p.trim()}</p>`)
+        .join('');
+    } else {
+      elResolucaoTextoAcontecimentos.innerHTML = `<p class="resolucao-paragrafo-acontecimento">As repercussões imediatas da sua escolha ecoam pelos corredores e ruas da cidade. O despacho foi anexado ao prontuário oficial.</p>`;
+    }
+  }
+
+  // 6. Balanço tátil de atributos e patamares
+  if (elResolucaoBalancoAtributos) {
+    elResolucaoBalancoAtributos.innerHTML = '';
+    const deltas = (resultadoDecisao && resultadoDecisao.deltas) || {};
+    const entradas = Object.entries(deltas).filter(
+      ([, info]) => info && typeof info.delta === 'number' && info.delta !== 0
+    );
+
+    if (entradas.length === 0) {
+      const chipVazio = document.createElement('div');
+      chipVazio.className = 'resolucao-chip-delta';
+      chipVazio.innerHTML = `<span>NENHUMA ALTERAÇÃO DIRETA DE ATRIBUTOS</span>`;
+      elResolucaoBalancoAtributos.appendChild(chipVazio);
+    } else {
+      entradas.forEach(([chave, info]) => {
+        const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
+        const sinal = info.delta > 0 ? `+${info.delta}` : `${info.delta}`;
+        const ehBom = chave === 'suspeita_dops' ? info.delta < 0 : info.delta > 0;
+        const classePilula = ehBom ? 'positivo' : 'negativo';
+
+        let badgeMudanca = '';
+        if (info.mudouPatamar && info.espectroNovo) {
+          const subiuBom = chave === 'suspeita_dops' ? !info.subiuPatamar : info.subiuPatamar;
+          const icone = info.subiuPatamar ? '▲' : '▼';
+          const verbo = info.subiuPatamar ? 'SUBIU PARA' : 'CAIU PARA';
+          badgeMudanca = `
+            <span class="resolucao-badge-patamar ${subiuBom ? 'subiu' : 'caiu'}">
+              ${icone} ${verbo} ${info.espectroNovo.rotulo.toUpperCase()}
+            </span>
+          `;
+        }
+
+        const chip = document.createElement('div');
+        chip.className = `resolucao-chip-delta ${classePilula}`;
+        chip.innerHTML = `
+          <span><strong>${nome}</strong> ${sinal}</span>
+          ${badgeMudanca}
+        `;
+        elResolucaoBalancoAtributos.appendChild(chip);
+      });
+    }
+  }
+
+  // 7. Exibição e som analógico
+  elOverlayResolucaoConsequencia.classList.remove('saindo');
+  elOverlayResolucaoConsequencia.style.display = 'flex';
+  tocarSomCarimbo();
+
+  // 8. Foco no botão de continuar
+  if (btnContinuarResolucao) {
+    setTimeout(() => {
+      try { btnContinuarResolucao.focus(); } catch (_) {}
+    }, 50);
+  }
+}
+
+if (btnContinuarResolucao) {
+  btnContinuarResolucao.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fecharTelaResolucaoConsequencia();
+  });
+}
+
+if (elOverlayResolucaoConsequencia) {
+  elOverlayResolucaoConsequencia.addEventListener('click', (e) => {
+    if (e.target === elOverlayResolucaoConsequencia) {
+      fecharTelaResolucaoConsequencia();
+    }
+  });
 }
 
 function fecharTransicaoViradaAno() {
@@ -463,6 +642,13 @@ if (elOverlayViradaAno) {
 }
 
 window.addEventListener('keydown', (e) => {
+  if (elOverlayResolucaoConsequencia && elOverlayResolucaoConsequencia.style.display === 'flex') {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+      e.preventDefault();
+      fecharTelaResolucaoConsequencia();
+      return;
+    }
+  }
   if (elOverlayViradaAno && elOverlayViradaAno.style.display === 'flex') {
     if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
       e.preventDefault();
@@ -1457,11 +1643,18 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
                 deltas: res.deltas
               };
 
-              if (res.proximoEventoId && cacheEventos[res.proximoEventoId]) {
-                abrirEvento(res.proximoEventoId);
-              } else {
-                renderizarDossie();
-              }
+              exibirTelaResolucaoConsequencia({
+                evento,
+                opcao,
+                resultadoDecisao: res,
+                callbackContinuar: () => {
+                  if (res.proximoEventoId && cacheEventos[res.proximoEventoId]) {
+                    abrirEvento(res.proximoEventoId);
+                  } else {
+                    renderizarDossie();
+                  }
+                }
+              });
             });
           } catch (err) {
             console.error("Erro ao executar decisão:", err);

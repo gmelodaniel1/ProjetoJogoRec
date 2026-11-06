@@ -51,9 +51,10 @@ it('Rebites metálicos mecânicos presentes nas duas extremidades da barra', () 
   assert(htmlContent.includes('class="rebite-parafuso rebite-dir"'), 'Rebite direito ausente');
 });
 
-it('Plaqueta de identificação do arquivo policial (DOPS-PE // GAVETEIRO 04) presente', () => {
+it('Plaqueta de identificação do arquivo (GAVETEIRO 04) presente e sem DOPS na barra', () => {
   assert(htmlContent.includes('class="plaqueta-arquivo-id"'), 'Classe .plaqueta-arquivo-id ausente');
-  assert(htmlContent.includes('DOPS-PE // GAVETEIRO 04'), 'Texto identificador do arquivo ausente');
+  assert(htmlContent.includes('GAVETEIRO 04'), 'Texto identificador do arquivo GAVETEIRO 04 ausente');
+  assert(!htmlContent.includes('DOPS-PE // GAVETEIRO 04'), 'DOPS não deve estar presente no identificador superior');
 });
 
 it('Bloco do carimbo datador mecânico presente com elemento #ano-atual preservado', () => {
@@ -61,9 +62,8 @@ it('Bloco do carimbo datador mecânico presente com elemento #ano-atual preserva
   assert(htmlContent.includes('id="ano-atual"'), 'ID ano-atual ausente no DOM');
 });
 
-it('Bloco de orifícios perfurados presente com elemento #indicador-acoes preservado', () => {
-  assert(htmlContent.includes('class="bloco-perfurador-acoes"'), 'Classe .bloco-perfurador-acoes ausente');
-  assert(htmlContent.includes('id="indicador-acoes"'), 'ID indicador-acoes ausente no DOM');
+it('Mecânica de ações artificiais e indicador de ações removidos da HUD a pedido do usuário', () => {
+  assert(!htmlContent.includes('id="indicador-acoes"'), 'ID indicador-acoes deve ter sido removido da HUD');
 });
 
 it('Botões de comando estilizados como fitas rotuladoras plásticas Dymo', () => {
@@ -109,10 +109,8 @@ it('Fitas Dymo com tipografia prensada em relevo, sombras e gradientes de plást
 // -----------------------------------------------------------------------------
 console.log('\n[TIER 3] Verificação da Lógica Reativa em renderer.js');
 
-it('renderizarTelaPrincipal atualiza indicador-acoes com estrutura de trilha de furos perfurados', () => {
-  assert(jsContent.includes('acoes-furos-trilha'), 'Estrutura acoes-furos-trilha ausente no renderer.js');
-  assert(jsContent.includes('ponto-ativo'), 'Geração de ponto-ativo preservada');
-  assert(jsContent.includes('ponto-gasto'), 'Geração de ponto-gasto preservada');
+it('HUD simplificada sem overhead de ações artificiais conforme especificado pelo usuário', () => {
+  assert(!jsContent.includes('elIndicadorAcoes.innerHTML'), 'Atualização de indicador de ações removida da barra de sistema');
 });
 
 // -----------------------------------------------------------------------------

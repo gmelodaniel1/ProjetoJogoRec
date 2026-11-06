@@ -5,13 +5,13 @@ Substituir a transição abrupta pós-decisão por uma folha de ocorrência/rela
 
 **Blocked by:** Ticket 24 e Ticket 25.
 
-**Status:** ready-for-agent
+**Status:** closed
 
 ## Acceptance Criteria
-- [ ] Modal diegético `#overlay-resolucao-consequencia` estilizado como folha de ocorrência sobreposta ao centro da mesa.
-- [ ] Exibição da moldura fotográfica de época, tombo do acervo e carimbo oficial com cor correspondente.
-- [ ] Exibição do texto da crônica do desfecho e das pílulas táteis de impacto nos atributos e recursos.
-- [ ] Botão de encerramento `[ ASSIMILAR OS FATOS & SEGUIR ADIANTE ➔ ]` que só então transita para a virada de ano, próximo evento ou dossiê.
-- [ ] Preservação estrita das regras de acessibilidade e compatibilidade híbrida Web + Electron.
-- [ ] Suíte de testes automatizada `test/test_tela_resolucao_ticket26.js` aprovada com 100% de sucesso.
+- [x] Modal diegético `#overlay-resolucao-consequencia` estilizado como folha de ocorrência sobreposta ao centro da mesa.
+- [x] Exibição da moldura fotográfica de época, tombo do acervo e carimbo oficial com cor correspondente.
+- [x] Exibição do texto da crônica do desfecho e das pílulas táteis de impacto nos atributos e recursos.
+- [x] Botão de encerramento `[ ASSIMILAR OS FATOS & SEGUIR ADIANTE ➔ ]` que só então transita para a virada de ano, próximo evento ou dossiê.
+- [x] Preservação estrita das regras de acessibilidade e compatibilidade híbrida Web + Electron.
+- [x] Suíte de testes automatizada `test/test_tela_resolucao_ticket26.js` aprovada com 100% de sucesso.
 
