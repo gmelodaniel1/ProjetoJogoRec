@@ -100,6 +100,18 @@ function parseEventFile(filePath) {
     data.requisitos_acesso = data.requisitos_acesso || {};
     data.opcoes = data.opcoes || [];
 
+    // Normaliza campo de múltiplas imagens/beats por cena
+    if (Array.isArray(data.imagens)) {
+      data.imagens = data.imagens.map(img => {
+        if (typeof img === 'string') return { imagem: img, tombo_mcr: data.tombo_mcr || null };
+        return img;
+      });
+    } else if (data.imagem) {
+      data.imagens = [{ imagem: data.imagem, tombo_mcr: data.tombo_mcr || null }];
+    } else {
+      data.imagens = [];
+    }
+
     // Valida o contrato do roteirista
     validarEsquemaEvento(data, filePath);
 

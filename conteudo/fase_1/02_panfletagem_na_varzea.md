@@ -8,6 +8,11 @@ tipo: "dossie"
 custo_acoes: 1
 imagem: "cenarios/fase1_ruinas_engenho_126065.webp"
 tombo_mcr: "126.065"
+imagens:
+  - imagem: "cenarios/fase1_ruinas_engenho_126065.webp"
+    tombo_mcr: "126.065"
+  - imagem: "cenarios/fase1_comicio_princesas_125940.webp"
+    tombo_mcr: "125.940"
 
 requisitos_acesso:
   sangue_frio: 1

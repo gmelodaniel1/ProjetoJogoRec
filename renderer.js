@@ -1049,7 +1049,7 @@ function gerarSvgCenario(evento, estado) {
   `;
 }
 
-function atualizarMolduraEvidencia(evento = null) {
+function atualizarMolduraEvidencia(evento = null, indiceBeat = 0) {
   if (!elSlotEvidencia) return;
 
   const estado = store.getState();
@@ -1060,7 +1060,21 @@ function atualizarMolduraEvidencia(evento = null) {
   const tituloCena = evento && evento.metadata ? evento.metadata.titulo.toUpperCase() : `ARQUIVO CENTRAL — FASE ${estado.faseAtual}`;
   const idStr = evento && evento.metadata ? evento.metadata.id : `FASE-${estado.faseAtual}`;
   const numProcesso = Math.abs(idStr.split('').reduce((acc, c) => acc + c.charCodeAt(0), 100)) % 899 + 100;
-  const tomboMcr = evento && evento.metadata && evento.metadata.tombo_mcr ? evento.metadata.tombo_mcr : null;
+
+  // Suporte a múltiplas imagens por evento vinculadas à progressão de leitura
+  let imagemAtual = evento && evento.metadata && evento.metadata.imagem ? evento.metadata.imagem : null;
+  let tomboMcr = evento && evento.metadata && evento.metadata.tombo_mcr ? evento.metadata.tombo_mcr : null;
+
+  if (evento && evento.metadata && Array.isArray(evento.metadata.imagens) && evento.metadata.imagens.length > 0) {
+    const beatIndex = Math.min(indiceBeat, evento.metadata.imagens.length - 1);
+    const item = evento.metadata.imagens[beatIndex];
+    if (typeof item === 'string') {
+      imagemAtual = item;
+    } else if (item && typeof item === 'object') {
+      if (item.imagem) imagemAtual = item.imagem;
+      if (item.tombo_mcr) tomboMcr = item.tombo_mcr;
+    }
+  }
 
   if (elCenarioLocal) {
     elCenarioLocal.textContent = `${tituloCena} (RECIFE, ${ano})`;
@@ -1079,14 +1093,25 @@ function atualizarMolduraEvidencia(evento = null) {
     ? 'CALAMIDADE — CHEIA DE 75'
     : (ehCrise ? 'MANDADO DE CAPTURA' : 'ARQUIVO ICONOGRÁFICO // PE');
 
-  if (evento && evento.metadata && evento.metadata.imagem) {
+  if (imagemAtual) {
     const seloImg = estado.faseAtual === 3
       ? 'DEFESA CIVIL / PE'
       : (ehCrise ? 'MANDADO DE CAPTURA' : (tomboMcr ? `ACERVO MCR // ${tomboMcr}` : 'REGISTRO DE ACERVO'));
 
+    let caminhoSrc = imagemAtual;
+    if (!caminhoSrc.startsWith('http') && !caminhoSrc.startsWith('artes/') && !caminhoSrc.startsWith('/')) {
+      caminhoSrc = `artes/${imagemAtual}`;
+    }
+
+    // Se a imagem no DOM já for exatamente a desejada, não recria o nó desnecessariamente
+    const imgExistente = elSlotEvidencia.querySelector('img.filtro-jornal-75');
+    if (imgExistente && imgExistente.getAttribute('src') === caminhoSrc) {
+      return;
+    }
+
     elSlotEvidencia.innerHTML = `
       <div class="foto-jornal-wrapper">
-        <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Cenário'}">
+        <img src="${caminhoSrc}" class="filtro-jornal-75" alt="${evento && evento.metadata ? evento.metadata.titulo || 'Cenário' : 'Cenário'}">
         <div class="selo-sobreposto-cenario">${seloImg}</div>
       </div>
     `;
@@ -1525,8 +1550,9 @@ function removerListenerTecladoLeitura() {
 
 // ==========================================================================
 // PROGRESSÃO CADENCIADA DE TEXTO — ESTILO DISCO ELYSIUM (TICKET 24)
+// FLUXO EM DOIS TEMPOS: LEITURA EM BEATS ➔ ORDEM DE DESPACHO ➔ ESCOLHAS
 // ==========================================================================
-function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
+function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta, evento = null) {
   if (!elCorpo) return;
 
   removerListenerTecladoLeitura();
@@ -1535,11 +1561,48 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
   tempDiv.innerHTML = corpoHtml;
   const blocos = Array.from(tempDiv.children);
 
+  // Configuração do botão de Ordem de Despacho que abre o Momento de Responder
+  function configurarBotaoDespacho() {
+    if (!elBtnContinuar || !elBlocoContinuar) return;
+
+    const meta = (evento && evento.metadata) || {};
+    let chamadaTexto = 'PESAR AS ESCOLHAS & DELIBERAR SOBRE OS FATOS';
+    if (meta.tipo === 'climax_obrigatorio') {
+      chamadaTexto = 'ENFRENTAR O DESTINO HISTÓRICO // ABRIR DECISÃO';
+    } else if (meta.tipo === 'crise_urgente') {
+      chamadaTexto = 'RESPONDER À EMERGÊNCIA COMPULSÓRIA // EXAMINAR OPÇÕES';
+    }
+
+    const elChamada = elBtnContinuar.querySelector('.despacho-chamada');
+    if (elChamada) {
+      elChamada.textContent = chamadaTexto;
+    }
+
+    elBtnContinuar.onclick = (e) => {
+      if (e) e.stopPropagation();
+      tocarSomCarimbo();
+      deliberacaoAberta = true;
+      if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+      if (elSecaoDeliberacao) {
+        elSecaoDeliberacao.style.display = 'block';
+        setTimeout(() => {
+          elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const primeiroBotao = elListaDecisoes ? elListaDecisoes.querySelector('button') : null;
+          if (primeiroBotao) {
+            try { primeiroBotao.focus(); } catch (_) {}
+          }
+        }, 50);
+      }
+      if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
+    };
+  }
+
   if (blocos.length === 0) {
     elCorpo.innerHTML = corpoHtml;
     if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
     if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
     if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'block';
+    if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
     return;
   }
 
@@ -1549,17 +1612,40 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
     elCorpo.appendChild(bloco);
   });
 
-  function finalizarLeitura(scrollParaDecisoes = true) {
+  // Se a deliberação já estava aberta (ex: retorno pós-dossiê ou hot-reload)
+  if (deliberacaoJaAberta) {
+    blocos.forEach(bloco => {
+      bloco.classList.remove('oculto');
+      bloco.classList.add('revelado');
+    });
+    if (evento && Array.isArray(evento.metadata.imagens) && evento.metadata.imagens.length > 0) {
+      atualizarMolduraEvidencia(evento, evento.metadata.imagens.length - 1);
+    }
+    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+    if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+    if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'block';
+    if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
+    return;
+  }
+
+  // Estado inicial: Momento de Ler! Deliberação e escolhas permanecem ocultas.
+  if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
+  if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'none';
+  configurarBotaoDespacho();
+
+  function concluirLeituraEMostrarDespacho() {
     removerListenerTecladoLeitura();
     if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
-    deliberacaoAberta = true;
-    if (elSecaoDeliberacao) {
-      elSecaoDeliberacao.style.display = 'block';
-      if (scrollParaDecisoes) {
-        setTimeout(() => {
-          elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-      }
+
+    // Apresenta o botão de despacho para que o jogador delibere no seu tempo
+    if (elBlocoContinuar) {
+      elBlocoContinuar.style.display = 'flex';
+      setTimeout(() => {
+        elBlocoContinuar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (elBtnContinuar) {
+          try { elBtnContinuar.focus(); } catch (_) {}
+        }
+      }, 40);
     }
   }
 
@@ -1568,12 +1654,18 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
       bloco.classList.remove('oculto');
       bloco.classList.add('revelado');
     });
+    if (evento) {
+      atualizarMolduraEvidencia(evento, blocos.length - 1);
+    }
     if (tocarSom) tocarSomCarimbo();
-    finalizarLeitura(tocarSom);
+    concluirLeituraEMostrarDespacho();
   }
 
-  if (deliberacaoJaAberta || blocos.length <= 1) {
-    revelarTodosParagrafos(false);
+  if (blocos.length <= 1) {
+    blocos[0].classList.add('revelado');
+    blocos[0].classList.remove('oculto');
+    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+    concluirLeituraEMostrarDespacho();
     return;
   }
 
@@ -1586,7 +1678,6 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
     blocos[i].classList.remove('revelado');
   }
 
-  if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
   if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
   if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'flex';
 
@@ -1598,15 +1689,21 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
       blocoAtual.classList.add('revelado');
       tocarSomCarimbo();
 
+      // Se este beat possuir outra imagem, o palco transita para a nova cena!
+      if (evento) {
+        atualizarMolduraEvidencia(evento, indiceAtual);
+      }
+
       setTimeout(() => {
         blocoAtual.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 30);
 
+      // Ao atingir o último bloco de texto, conclui a leitura e mostra o botão de despacho
       if (indiceAtual === blocos.length - 1) {
-        finalizarLeitura(false);
+        concluirLeituraEMostrarDespacho();
       }
     } else {
-      finalizarLeitura(false);
+      concluirLeituraEMostrarDespacho();
     }
   }
 
@@ -1638,6 +1735,9 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta) {
       if (elBlocoProgredirLeitura && elBlocoProgredirLeitura.style.display !== 'none') {
         e.preventDefault();
         progredirLeitura();
+      } else if (elBlocoContinuar && elBlocoContinuar.style.display === 'flex' && elBtnContinuar) {
+        e.preventDefault();
+        elBtnContinuar.click();
       }
     }
   };
@@ -1689,8 +1789,8 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
     }
   }
 
-  // Progressão cadenciada de texto estilo Disco Elysium (Ticket 24)
-  iniciarProgressaoTexto(evento.corpoHtml, deliberacaoAberta);
+  // Progressão cadenciada de texto estilo Disco Elysium com fluxo em dois tempos (Momento de Ler ➔ Momento de Responder)
+  iniciarProgressaoTexto(evento.corpoHtml, deliberacaoAberta, evento);
   if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
 
   // Renderiza opções determinísticas com previsão de espectro estilo Sir Brante

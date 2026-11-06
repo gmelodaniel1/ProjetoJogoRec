@@ -60,6 +60,12 @@ window.EVENTOS_PRECARREGADOS = {
             "desfecho": "A decisão foi formalmente consumada sob o carimbo de [RESISTÊNCIA]. Quarenta e oito horas de pauladas e isolamento na cela úmida. Teu corpo carrega cicatrizes, mas a tua boca não abre.",
             "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [RESISTÊNCIA]. Quarenta e oito horas de pauladas e isolamento na cela úmida. Teu corpo carrega cicatrizes, mas a tua boca não abre.</p>"
           }
+        ],
+        "imagens": [
+          {
+            "imagem": "cenarios/fase2_recife_vibe_noturno.webp",
+            "tombo_mcr": null
+          }
         ]
       },
       "corpoHtml": "<p>As coronhadas de revólver contra a porta de madeira acordam o sobrado às três da manhã. O som de passos pesados no corredor não deixa dúvidas: o <span class=\"grifo-faccao\">DOPS</span> cercou a saída pelo quintal.</p>\n<p>&quot;Abram em nome da Lei de Segurança!&quot;, grita a voz rouca do sargento lá fora. O teu prontuário acumulou denúncias demais e a tua suspeita atingiu o limite máximo de tolerância do regime. Não há para onde fugir pelos telhados. Precisas pagar o preço imediatamente para não desaparecer nos porões.</p>\n",
@@ -106,7 +112,8 @@ window.EVENTOS_PRECARREGADOS = {
             "desfecho": "A decisão foi formalmente consumada sob o carimbo de [HUMILHAÇÃO]. Engolir o orgulho e beijar a mão da elite usineira para evitar que tua família vá para a sarjeta.",
             "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [HUMILHAÇÃO]. Engolir o orgulho e beijar a mão da elite usineira para evitar que tua família vá para a sarjeta.</p>"
           }
-        ]
+        ],
+        "imagens": []
       },
       "corpoHtml": "<p>Os oficiais de justiça chegam acompanhados por dois praças da <span class=\"grifo-faccao\">Polícia Militar</span>. Teu Capital zerou por completo e as dívidas acumuladas bateram à porta. Móveis velhos, colchões de palha e as ferramentas de ofício são jogados na calçada sob o olhar curioso dos vizinhos.</p>\n<p>Se não conseguires recursos neste instante, a tua família será lançada na miséria absoluta dos alagadiços do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span>.</p>\n",
       "corpoTextoPuro": "Os oficiais de justiça chegam acompanhados por dois praças da Polícia Militar. Teu Capital zerou por completo e as dívidas acumuladas bateram à porta. Móveis velhos, colchões de palha e as ferramentas de ofício são jogados na calçada sob o olhar curioso dos vizinhos.\n\nSe não conseguires recursos neste instante, a tua família será lançada na miséria absoluta dos alagadiços do Rio Capibaribe.",
@@ -151,7 +158,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Não houve berro nem desespero. Teus pequenos olhos cravaram-se no clarão trêmulo da lamparina de querosene, enquanto o <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> marulhava lá embaixo pelas frestas do assoalho. A parteira benzeu a testa com espanto: &#39;Menino quieto demais é bicho que pensa antes do tempo&#39;. A calma misteriosa daquela noite seria a tua primeira armadura contra os dias duros que viriam.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cais_recife_demo.svg",
+            "tombo_mcr": null
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a cena completa do nascimento em 1948 --><p>A noite de 1948 caía pesada sobre a lama do <span class=\"grifo-rio\">Capibaribe</span>. No interior estreito do mocambo, erguido sobre estacas de mangue nas cercanias de <span class=\"grifo-bairro\">São José</span>, o ar cheirava a maresia, querosene e fumaça de candeeiro. </p>\n<p>Tua mãe ofegava sobre o catre de palha enquanto as parteiras da vizinhança trocavam sussurros apressados. Do lado de fora, a maré subia rente ao assoalho de tábuas frouxas, trazendo o marulhar lento das barcaças que cruzavam as pontes do Recife. Foi naquele instante de penumbra que vieste ao mundo.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a cena completa do nascimento em 1948 -->\n\nA noite de 1948 caía pesada sobre a lama do Capibaribe. No interior estreito do mocambo, erguido sobre estacas de mangue nas cercanias de São José, o ar cheirava a maresia, querosene e fumaça de candeeiro. \n\nTua mãe ofegava sobre o catre de palha enquanto as parteiras da vizinhança trocavam sussurros apressados. Do lado de fora, a maré subia rente ao assoalho de tábuas frouxas, trazendo o marulhar lento das barcaças que cruzavam as pontes do Recife. Foi naquele instante de penumbra que vieste ao mundo.",
@@ -196,7 +209,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Ignorando os braços estendidos dos teus pais, soltaste o batente e marchaste trôpego direto para a claridade da viela de palafitas. Um passo em falso quase te levou ao canal de maré, mas teu pequeno equilíbrio surpreendeu a todos. Tua mãe correu aflita com a mão no peito, mas teu olhar já fitava o cais ao longe: a rua começava a te chamar.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cais_recife_demo.svg",
+            "tombo_mcr": null
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui os primeiros passos e o ambiente do mocambo em 1949 --><p>Com um ano de idade, o mundo para ti resumia-se aos limites daquela palafita e ao rumor incessante da maré batendo contra as estacas de sustentação. Teu pai retornava das oficinas com o macacão impregnado de fuligem, jogando sobre a esteira as peças que consertava à noite para render alguns trocados a mais.</p>\n<p>Foi ali, entre pregos de barco e caixotes de feira, que tuas pernas miúdas sustentaram pela primeira vez o peso do teu corpo, sob o olhar atento e severo de Mestre Severino.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui os primeiros passos e o ambiente do mocambo em 1949 -->\n\nCom um ano de idade, o mundo para ti resumia-se aos limites daquela palafita e ao rumor incessante da maré batendo contra as estacas de sustentação. Teu pai retornava das oficinas com o macacão impregnado de fuligem, jogando sobre a esteira as peças que consertava à noite para render alguns trocados a mais.\n\nFoi ali, entre pregos de barco e caixotes de feira, que tuas pernas miúdas sustentaram pela primeira vez o peso do teu corpo, sob o olhar atento e severo de Mestre Severino.",
@@ -241,7 +260,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Carregando lascas de ripa que pesavam nos teus bracinhos, foste de porta em porta berrando o alerta da cheia. As lavadeiras e carvoeiros dos <span class=\"grifo-bairro\">Coelhos</span> sorriram com gratidão e te deram meio pedaço de rapadura: &#39;Esse menino tem alma de povo&#39;. O respeito da tua vizinhança começou a se tecer ali, na lama dividida com quem nada tinha.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cais_recife_demo.svg",
+            "tombo_mcr": null
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o inverno de 1950 e o contato com as águas do Capibaribe --><p>Aos dois anos, a água deixava de ser apenas um som sob as tábuas para se tornar a presença mais viva do teu cotidiano. O inverno no Recife chegava sem pedir licença, e o <span class=\"grifo-rio\">Capibaribe</span> transbordava sobre o lodo dos quintais, obrigando as famílias a erguer móveis e esteiras sobre tijolos improvisados.</p>\n<p>As crianças da viela corriam à beira do canalete, observando os caranguejos que subiam pelo manguezal enquanto as mães gritavam advertências contra a correnteza escura.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o inverno de 1950 e o contato com as águas do Capibaribe -->\n\nAos dois anos, a água deixava de ser apenas um som sob as tábuas para se tornar a presença mais viva do teu cotidiano. O inverno no Recife chegava sem pedir licença, e o Capibaribe transbordava sobre o lodo dos quintais, obrigando as famílias a erguer móveis e esteiras sobre tijolos improvisados.\n\nAs crianças da viela corriam à beira do canalete, observando os caranguejos que subiam pelo manguezal enquanto as mães gritavam advertências contra a correnteza escura.",
@@ -287,7 +312,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Contaste tostão por tostão, com as mãozinhas pretas de poeira, e depositaste as moedas de níquel na lata de banha enferrujada. Quando a febre atacou teu irmão caçula e foi preciso comprar purgante na Pharmacia da Concórdia, aquelas moedas salvaram a noite. Teus pais trocaram um olhar de alívio silencioso: a responsabilidade chegava cedo na tua casa.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cenarios/fase1_comicio_princesas_125940.webp",
+            "tombo_mcr": "125.940"
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o aprendizado das ruas, sons e feiras de São José em 1951 --><p>Com três anos de idade, teus passos já alcançavam a entrada da feira de <span class=\"grifo-bairro\">São José</span>. O burburinho das carroças de mulas, o chiar do óleo quente nas frigideiras de acarajé e o badalo dos bondes elétricos formavam a música da cidade.</p>\n<p>Os pregoeiros gritavam seus fardos de maxixe, farinha de mandioca e querosene, enquanto os homens falavam em voz baixa sobre o preço dos gêneros e as promessas do novo governo na capital.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o aprendizado das ruas, sons e feiras de São José em 1951 -->\n\nCom três anos de idade, teus passos já alcançavam a entrada da feira de São José. O burburinho das carroças de mulas, o chiar do óleo quente nas frigideiras de acarajé e o badalo dos bondes elétricos formavam a música da cidade.\n\nOs pregoeiros gritavam seus fardos de maxixe, farinha de mandioca e querosene, enquanto os homens falavam em voz baixa sobre o preço dos gêneros e as promessas do novo governo na capital.",
@@ -333,7 +364,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Recebeste um arranhão feio no braço e poeira no rosto, mas não deste um único passo para trás. Quando os meninos maiores viram a tua firmeza gelada, baixaram os galhos e recuaram resmungando. Teu irmão limpou o nariz sangrando na tua camisa e apertou a tua mão. Naquele pedaço de chão batido, ninguém mais ousou mexer com a tua família.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cenarios/fase1_escolares_125976.webp",
+            "tombo_mcr": "125.976"
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui as primeiras letras e a formação do caráter em 1952 --><p>Aos quatro anos, as notícias do mundo chegavam ao mocambo impressas nos jornais amarelados que tua família usava para tapar os buracos do vento nas paredes de tábua. Entre anúncios de remédios e discursos de Getúlio Vargas, aprendeste a decifrar contornos de letras usando carvão de fogareiro.</p>\n<p>Na calçada, a meninada disputava lascas de madeira e restos de cana caídos dos vagões da <span class=\"grifo-faccao\">Great Western</span>, ensaiando as primeiras regras de respeito e lealdade da vizinhança.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui as primeiras letras e a formação do caráter em 1952 -->\n\nAos quatro anos, as notícias do mundo chegavam ao mocambo impressas nos jornais amarelados que tua família usava para tapar os buracos do vento nas paredes de tábua. Entre anúncios de remédios e discursos de Getúlio Vargas, aprendeste a decifrar contornos de letras usando carvão de fogareiro.\n\nNa calçada, a meninada disputava lascas de madeira e restos de cana caídos dos vagões da Great Western, ensaiando as primeiras regras de respeito e lealdade da vizinhança.",
@@ -392,7 +429,13 @@ window.EVENTOS_PRECARREGADOS = {
             "desfechoHtml": "<p>Com a caixa de engraxate presa ao ombro e jornais vespertinos debaixo do braço, a <span class=\"grifo-rio\">Ponte Duarte Coelho</span> tornou-se a tua escola. Ouviste segredos de bacharéis embriagados, esquivaste-te de rondas policiais e acumulaste cada moeda de cobre como quem constrói uma fortaleza. As ruas do Recife ensinaram-te a malícia de quem nunca pode vacilar.</p>"
           }
         ],
-        "requisitos_acesso": {}
+        "requisitos_acesso": {},
+        "imagens": [
+          {
+            "imagem": "cais_recife_demo.svg",
+            "tombo_mcr": null
+          }
+        ]
       },
       "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a despedida da primeira infância e o salto temporal para 1958 --><p>Aos cinco anos de idade, a infância descalça começava a ceder espaço às obrigações que a sobrevivência impunha aos filhos da classe trabalhadora no Recife. Mestre Severino olhou nos teus olhos e decretou que já tinhas tamanho para compreender o peso do trabalho e o custo da dignidade.</p>\n<p>Os anos seguintes correriam velozes como a maré do <span class=\"grifo-rio\">Capibaribe</span>. A cidade crescia vertiginosamente, engolindo os mocambos e abrindo avenidas de asfalto sob os governos do pós-guerra, enquanto a efervescência política das oficinas preparava o terreno para os grandes embates do final da década de 50.</p>\n",
       "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a despedida da primeira infância e o salto temporal para 1958 -->\n\nAos cinco anos de idade, a infância descalça começava a ceder espaço às obrigações que a sobrevivência impunha aos filhos da classe trabalhadora no Recife. Mestre Severino olhou nos teus olhos e decretou que já tinhas tamanho para compreender o peso do trabalho e o custo da dignidade.\n\nOs anos seguintes correriam velozes como a maré do Capibaribe. A cidade crescia vertiginosamente, engolindo os mocambos e abrindo avenidas de asfalto sob os governos do pós-guerra, enquanto a efervescência política das oficinas preparava o terreno para os grandes embates do final da década de 50.",
@@ -410,6 +453,16 @@ window.EVENTOS_PRECARREGADOS = {
         "imagem": "cenarios/fase1_portuarios_saps_126056.webp",
         "tombo_mcr": "126.056",
         "condicao_social_padrao": "Filho de Estivador",
+        "imagens": [
+          {
+            "imagem": "cenarios/fase1_portuarios_saps_126056.webp",
+            "tombo_mcr": "126.056"
+          },
+          {
+            "imagem": "cenarios/fase2_recife_vibe_noturno.webp",
+            "tombo_mcr": "125.940"
+          }
+        ],
         "requisitos_acesso": {
           "astucia": 1
         },
@@ -476,6 +529,16 @@ window.EVENTOS_PRECARREGADOS = {
         "custo_acoes": 1,
         "imagem": "cenarios/fase1_ruinas_engenho_126065.webp",
         "tombo_mcr": "126.065",
+        "imagens": [
+          {
+            "imagem": "cenarios/fase1_ruinas_engenho_126065.webp",
+            "tombo_mcr": "126.065"
+          },
+          {
+            "imagem": "cenarios/fase1_comicio_princesas_125940.webp",
+            "tombo_mcr": "125.940"
+          }
+        ],
         "requisitos_acesso": {
           "sangue_frio": 1
         },
@@ -527,6 +590,16 @@ window.EVENTOS_PRECARREGADOS = {
         "custo_acoes": 0,
         "imagem": "cenarios/fase1_praca_republica_126023.webp",
         "tombo_mcr": "126.023",
+        "imagens": [
+          {
+            "imagem": "cenarios/fase1_praca_republica_126023.webp",
+            "tombo_mcr": "126.023"
+          },
+          {
+            "imagem": "cenarios/fase2_ponte_duarte_coelho_noturno.webp",
+            "tombo_mcr": "126.023"
+          }
+        ],
         "requisitos_acesso": {},
         "opcoes": [
           {
@@ -643,7 +716,8 @@ window.EVENTOS_PRECARREGADOS = {
             "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SOLIDARIEDADE]. Abandonar os bens materiais e passar a noite puxando crianças e idosos com cordas.",
             "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SOLIDARIEDADE]. Abandonar os bens materiais e passar a noite puxando crianças e idosos com cordas.</p>"
           }
-        ]
+        ],
+        "imagens": []
       },
       "corpoHtml": "<p>A chuva torrencial de julho não dava trégua há mais de setenta e duas horas. Ao romper da manhã de 17 de julho de 1975, o mugido surdo das águas do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> ecoou pelos becos da <span class=\"grifo-bairro\">Madalena</span>.</p>\n<p>A régua hidrológica do governo já marcava mais de dois metros e meio acima do leito normal. A energia elétrica caiu em toda a zona norte e o centro da cidade; o telefone silenciou. Pelas ruas tomadas pelo lodo, móveis, animais e tábuas desciam em direção à <span class=\"grifo-rio\">Ponte Duarte Coelho</span>. Cada hora gasta agora define o que sobrará de tua vida após a água baixar.</p>\n",
       "corpoTextoPuro": "A chuva torrencial de julho não dava trégua há mais de setenta e duas horas. Ao romper da manhã de 17 de julho de 1975, o mugido surdo das águas do Rio Capibaribe ecoou pelos becos da Madalena.\n\nA régua hidrológica do governo já marcava mais de dois metros e meio acima do leito normal. A energia elétrica caiu em toda a zona norte e o centro da cidade; o telefone silenciou. Pelas ruas tomadas pelo lodo, móveis, animais e tábuas desciam em direção à Ponte Duarte Coelho. Cada hora gasta agora define o que sobrará de tua vida após a água baixar.",
@@ -707,7 +781,8 @@ window.EVENTOS_PRECARREGADOS = {
             "desfecho": "A decisão foi formalmente consumada sob o carimbo de [AUDACIOSO]. Enquanto policiais e funcionários fogem desesperados, invadir a delegacia alagada para destruir de vez o teu prontuário.",
             "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [AUDACIOSO]. Enquanto policiais e funcionários fogem desesperados, invadir a delegacia alagada para destruir de vez o teu prontuário.</p>"
           }
-        ]
+        ],
+        "imagens": []
       },
       "corpoHtml": "<p>&quot;A <span class=\"grifo-rio\">barragem de <span class=\"grifo-rio\">Tapacurá</span></span> estourou! Salve-se quem puder!&quot;, o grito histérico partiu da Praça do Diário e espalhou-se como pólvora por <span class=\"grifo-bairro\">Santo Antônio</span> e <span class=\"grifo-bairro\">Boa Vista</span>.</p>\n<p>Em minutos, o centro do Recife transformou-se em uma massa humana em pânico absoluto. Carros abandonados colidiam nas pontes, pessoas tropeçavam e eram pisoteadas nas calçadas inundadas, e o rumor de uma tromba d&#39;água gigantesca vinda de São Lourenço paralisava o coração da cidade. O rio já ultrapassava os três metros e meio, e a linha entre a ordem do Estado e a sobrevivência animal desintegrou-se por completo.</p>\n",
       "corpoTextoPuro": "\"A barragem de Tapacurá estourou! Salve-se quem puder!\", o grito histérico partiu da Praça do Diário e espalhou-se como pólvora por Santo Antônio e Boa Vista.\n\nEm minutos, o centro do Recife transformou-se em uma massa humana em pânico absoluto. Carros abandonados colidiam nas pontes, pessoas tropeçavam e eram pisoteadas nas calçadas inundadas, e o rumor de uma tromba d'água gigantesca vinda de São Lourenço paralisava o coração da cidade. O rio já ultrapassava os três metros e meio, e a linha entre a ordem do Estado e a sobrevivência animal desintegrou-se por completo.",
@@ -767,7 +842,8 @@ window.EVENTOS_PRECARREGADOS = {
             "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Tu sobreviveras à repressão e à maior cheia do século. A água baixou, levando o passado e deixando apenas as cicatrizes.",
             "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Tu sobreviveras à repressão e à maior cheia do século. A água baixou, levando o passado e deixando apenas as cicatrizes.</p>"
           }
-        ]
+        ],
+        "imagens": []
       },
       "corpoHtml": "<p>A enchente histórica de julho de 1975 alcançou seu ápice a mais de quatro metros e meio. Oitenta por cento do Recife ficou debaixo d&#39;água. Quando o <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> finalmente começou a recuar, deixou para trás uma crosta espessa de lodo fétido, pontes arruinadas e milhares de desabrigados.</p>\n<p>Ali, no cais onde tua jornada começou nos anos 50, o silêncio substituiu o som dos motores e o medo do <span class=\"grifo-faccao\">DOPS</span>. Todas as decisões que tomaste ao longo de dezessete anos — cada amizade mantida, cada recurso acumulado e cada traição evitada — culminaram neste momento final.</p>\n",
       "corpoTextoPuro": "A enchente histórica de julho de 1975 alcançou seu ápice a mais de quatro metros e meio. Oitenta por cento do Recife ficou debaixo d'água. Quando o Rio Capibaribe finalmente começou a recuar, deixou para trás uma crosta espessa de lodo fétido, pontes arruinadas e milhares de desabrigados.\n\nAli, no cais onde tua jornada começou nos anos 50, o silêncio substituiu o som dos motores e o medo do DOPS. Todas as decisões que tomaste ao longo de dezessete anos — cada amizade mantida, cada recurso acumulado e cada traição evitada — culminaram neste momento final.",

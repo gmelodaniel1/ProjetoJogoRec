@@ -7,6 +7,11 @@ tipo: "climax_obrigatorio"
 custo_acoes: 0
 imagem: "cenarios/fase1_praca_republica_126023.webp"
 tombo_mcr: "126.023"
+imagens:
+  - imagem: "cenarios/fase1_praca_republica_126023.webp"
+    tombo_mcr: "126.023"
+  - imagem: "cenarios/fase2_ponte_duarte_coelho_noturno.webp"
+    tombo_mcr: "126.023"
 
 requisitos_acesso: {}
 

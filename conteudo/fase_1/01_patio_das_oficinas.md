@@ -9,6 +9,11 @@ custo_acoes: 1
 imagem: "cenarios/fase1_portuarios_saps_126056.webp"
 tombo_mcr: "126.056"
 condicao_social_padrao: "Filho de Estivador"
+imagens:
+  - imagem: "cenarios/fase1_portuarios_saps_126056.webp"
+    tombo_mcr: "126.056"
+  - imagem: "cenarios/fase2_recife_vibe_noturno.webp"
+    tombo_mcr: "125.940"
 
 requisitos_acesso:
   astucia: 1
