@@ -301,7 +301,30 @@
               <div class="fita-adesiva fita-canto-dir"></div>
               
               <div class="moldura-evidencia" id="slot-moldura-evidencia">
-                <!-- Preenchido dinamicamente pelo renderer.js com Fotografia/Cena Grande -->
+                <!-- Camada 1: Cenário / Fotografia de Época ao Fundo -->
+                <div class="camada-cenario-fundo" id="camada-cenario-fundo">
+                  <!-- Preenchido dinamicamente pelo renderer.js com Fotografia/Cena Grande -->
+                </div>
+
+                <!-- Camada 2: Personagem Recortado no Papel (Paper Mario + Xilogravura - Ticket 30) -->
+                <div class="camada-personagem-recorte" id="camada-personagem-recorte" style="display: none;">
+                  <div class="personagem-papel-container" id="personagem-papel-container">
+                    <!-- Recorte de Papel Cartão com Sombra Projetada -->
+                    <div class="personagem-recorte-papel" id="personagem-figura-slot"></div>
+                    
+                    <!-- Balão de Fala Diegético com Bico e Identificação -->
+                    <div class="balao-fala-recorte" id="balao-fala-recorte">
+                      <span class="balao-nome-orador" id="orador-nome">ORADOR</span>
+                      <span class="balao-subtitulo-orador" id="orador-subtitulo">Papel / Ocupação</span>
+                      <div class="bico-balao-fala" aria-hidden="true"></div>
+                    </div>
+                  </div>
+
+                  <!-- Fita Conectora Diegética ligando o Orador à Folha de Texto da Direita -->
+                  <div class="fita-conectora-dialogo" id="fita-conectora-dialogo" aria-hidden="true">
+                    <span class="indicador-ponte-fala"></span>
+                  </div>
+                </div>
               </div>
 
               <div class="cenario-legenda-barra">
@@ -783,6 +806,7 @@
   <script src="engine.js"></script>
   <script src="save-manager.js"></script>
   <script src="audio-manager.js"></script>
+  <script src="src/xilogravura-svg.js"></script>
   <script src="conteudo/eventos-bundle.js"></script>
   <script src="renderer.js"></script>
 </body>

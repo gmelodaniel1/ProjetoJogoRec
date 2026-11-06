@@ -126,6 +126,13 @@ const btnContinuarResolucao = document.getElementById('btn-continuar-resolucao')
 
 // Referências DOM - Palco & Atalhos Inferiores
 const elSlotEvidencia = document.getElementById('slot-moldura-evidencia');
+const elCamadaCenarioFundo = document.getElementById('camada-cenario-fundo');
+const elCamadaPersonagemRecorte = document.getElementById('camada-personagem-recorte');
+const elPersonagemFiguraSlot = document.getElementById('personagem-figura-slot');
+const elBalaoFalaRecorte = document.getElementById('balao-fala-recorte');
+const elOradorNome = document.getElementById('orador-nome');
+const elOradorSubtitulo = document.getElementById('orador-subtitulo');
+const elFitaConectoraDialogo = document.getElementById('fita-conectora-dialogo');
 const elCenarioLocal = document.getElementById('cenario-local');
 const elCenarioRegistro = document.getElementById('cenario-registro');
 const elGaleriaPersonagens = document.getElementById('galeria-personagens');
@@ -1537,6 +1544,8 @@ function atualizarMolduraEvidencia(evento = null, indiceBeat = 0) {
     ? 'CALAMIDADE — CHEIA DE 75'
     : (ehCrise ? 'MANDADO DE CAPTURA' : 'ARQUIVO ICONOGRÁFICO // PE');
 
+  const containerDestino = elCamadaCenarioFundo || elSlotEvidencia;
+
   if (imagemAtual) {
     const seloImg = estado.faseAtual === 3
       ? 'DEFESA CIVIL / PE'
@@ -1547,23 +1556,24 @@ function atualizarMolduraEvidencia(evento = null, indiceBeat = 0) {
       caminhoSrc = `artes/${imagemAtual}`;
     }
 
-    // Se a imagem no DOM já for exatamente a desejada, não recria o nó desnecessariamente
-    const imgExistente = elSlotEvidencia.querySelector('img.filtro-jornal-75');
+    // Se a imagem no DOM já for exatamente a desejada, apenas atualiza o recorte de personagem
+    const imgExistente = containerDestino.querySelector('img.filtro-jornal-75');
     if (imgExistente && imgExistente.getAttribute('src') === caminhoSrc) {
+      atualizarRecortePersonagem(evento, indiceBeat);
       return;
     }
 
-    elSlotEvidencia.innerHTML = `
+    containerDestino.innerHTML = `
       <div class="foto-jornal-wrapper">
         <img src="${caminhoSrc}" class="filtro-jornal-75" alt="${evento && evento.metadata ? evento.metadata.titulo || 'Cenário' : 'Cenário'}">
         <div class="selo-sobreposto-cenario">${seloImg}</div>
       </div>
     `;
 
-    const imgEl = elSlotEvidencia.querySelector('img.filtro-jornal-75');
+    const imgEl = containerDestino.querySelector('img.filtro-jornal-75');
     if (imgEl) {
       imgEl.addEventListener('error', () => {
-        elSlotEvidencia.innerHTML = `
+        containerDestino.innerHTML = `
           <div class="foto-jornal-wrapper">
             ${svgCena}
             <div class="selo-sobreposto-cenario">${carimboSelo}</div>
@@ -1571,16 +1581,112 @@ function atualizarMolduraEvidencia(evento = null, indiceBeat = 0) {
         `;
       }, { once: true });
     }
+    atualizarRecortePersonagem(evento, indiceBeat);
     return;
   }
 
-  elSlotEvidencia.innerHTML = `
+  containerDestino.innerHTML = `
     <div class="foto-jornal-wrapper">
       ${svgCena}
       <div class="selo-sobreposto-cenario">${carimboSelo}</div>
     </div>
   `;
+  atualizarRecortePersonagem(evento, indiceBeat);
 }
+
+// ==========================================================================
+// CONTROLE DE PERSONAGENS EM RECORTE DE PAPEL & BALÃO CONECTOR (TICKET 30)
+// ==========================================================================
+function atualizarRecortePersonagem(evento, indiceBeat = 0) {
+  if (!elCamadaPersonagemRecorte || !elPersonagemFiguraSlot) return;
+
+  const meta = (evento && evento.metadata) || {};
+  const beatsOradores = meta.beats_oradores || [];
+  const oradorId = beatsOradores[indiceBeat] || null;
+
+  // Atualiza destaque no parágrafo ativo na folha de texto da direita
+  if (elCorpo) {
+    const paragrafos = elCorpo.querySelectorAll('.paragrafo-beat');
+    paragrafos.forEach((p, idx) => {
+      p.classList.toggle('paragrafo-em-fala', idx === indiceBeat && Boolean(oradorId));
+    });
+  }
+
+  if (!oradorId) {
+    ocultarRecortePersonagem();
+    return;
+  }
+
+  const personagensCena = meta.personagens_cena || {};
+  const dadosPersona = personagensCena[oradorId] || {
+    nome: oradorId.replace(/_/g, ' ').toUpperCase(),
+    subtitulo: 'Depoente de Inquérito',
+    arte: null,
+    expressao_padrao: 'grave'
+  };
+
+  // 1. Identificação no balão de fala diegético
+  if (elOradorNome) elOradorNome.textContent = dadosPersona.nome.toUpperCase();
+  if (elOradorSubtitulo) elOradorSubtitulo.textContent = dadosPersona.subtitulo || '';
+
+  // 2. Renderização do recorte: tenta carregar arte real WebP/PNG ou gera xilogravura procedural
+  const artePath = dadosPersona.arte;
+  if (artePath && (artePath.endsWith('.png') || artePath.endsWith('.webp') || artePath.endsWith('.jpg') || artePath.endsWith('.svg'))) {
+    let caminhoSrc = artePath;
+    if (!caminhoSrc.startsWith('http') && !caminhoSrc.startsWith('artes/') && !caminhoSrc.startsWith('/')) {
+      caminhoSrc = `artes/${artePath}`;
+    }
+    elPersonagemFiguraSlot.innerHTML = `
+      <img src="${caminhoSrc}" alt="${dadosPersona.nome}" class="personagem-imagem-recorte">
+    `;
+    const imgEl = elPersonagemFiguraSlot.querySelector('img');
+    if (imgEl) {
+      imgEl.addEventListener('error', () => {
+        if (typeof gerarSvgPersonagemXilogravura === 'function') {
+          elPersonagemFiguraSlot.innerHTML = gerarSvgPersonagemXilogravura(oradorId, {
+            expressao: dadosPersona.expressao_padrao || 'grave'
+          });
+        }
+      }, { once: true });
+    }
+  } else {
+    if (typeof gerarSvgPersonagemXilogravura === 'function') {
+      elPersonagemFiguraSlot.innerHTML = gerarSvgPersonagemXilogravura(oradorId, {
+        expressao: dadosPersona.expressao_padrao || 'grave'
+      });
+    } else {
+      elPersonagemFiguraSlot.innerHTML = `<div class="personagem-placeholder">[${dadosPersona.nome}]</div>`;
+    }
+  }
+
+  // 3. Exibição e animação de entrada sobre o cenário
+  elCamadaPersonagemRecorte.style.display = 'flex';
+  if (elCamadaCenarioFundo) {
+    elCamadaCenarioFundo.classList.add('cenario-com-personagem');
+  }
+
+  // 4. Som analógico de manipulação de papel
+  if (audioManager) {
+    audioManager.somPapel();
+  }
+}
+
+function ocultarRecortePersonagem() {
+  if (elCamadaPersonagemRecorte) {
+    elCamadaPersonagemRecorte.style.display = 'none';
+  }
+  if (elCamadaCenarioFundo) {
+    elCamadaCenarioFundo.classList.remove('cenario-com-personagem');
+  }
+  if (elCorpo) {
+    elCorpo.querySelectorAll('.paragrafo-beat').forEach(p => {
+      p.classList.remove('paragrafo-em-fala');
+    });
+  }
+}
+
+window.atualizarRecortePersonagem = atualizarRecortePersonagem;
+window.ocultarRecortePersonagem = ocultarRecortePersonagem;
 
 // ==========================================================================
 // TELA DE RELAÇÕES & VÍNCULOS (ABA 3 - TICKET 18: RETRATOS 3x4 DE PRONTUÁRIO)

@@ -112,6 +112,30 @@ function parseEventFile(filePath) {
       data.imagens = [];
     }
 
+    // Suporte a Personagens em Recorte de Papel & Oradores por Beat (Ticket 30)
+    data.personagens_cena = data.personagens_cena || {};
+    if (Array.isArray(data.beats_oradores)) {
+      data.beats_oradores = data.beats_oradores.map(b => (b ? String(b).trim() : null));
+    } else {
+      // Heurística defensiva: analisa os parágrafos para detectar diálogos diretos
+      const paragrafosBrutos = (parsed.content || '').split(/\n\s*\n/).filter(p => p.trim().length > 0);
+      data.beats_oradores = paragrafosBrutos.map(p => {
+        const texto = p.trim();
+        if (data.personagens_cena && Object.keys(data.personagens_cena).length > 0) {
+          const chaves = Object.keys(data.personagens_cena);
+          for (const chave of chaves) {
+            const persona = data.personagens_cena[chave] || {};
+            const nomePersona = persona.nome || '';
+            if ((texto.startsWith('"') || texto.startsWith('“') || texto.startsWith('—')) && 
+                (nomePersona && texto.includes(nomePersona) || chaves.length === 1)) {
+              return chave;
+            }
+          }
+        }
+        return null;
+      });
+    }
+
     // Valida o contrato do roteirista
     validarEsquemaEvento(data, filePath);
 

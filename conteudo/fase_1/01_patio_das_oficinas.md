@@ -15,6 +15,17 @@ imagens:
   - imagem: "cenarios/fase2_recife_vibe_noturno.webp"
     tombo_mcr: "125.940"
 
+personagens_cena:
+  severino:
+    nome: "Mestre Severino"
+    subtitulo: "Teu Pai // Operário das Oficinas"
+    arte: "personagens/severino.webp"
+    expressao_padrao: "grave"
+
+beats_oradores:
+  - null
+  - "severino"
+
 requisitos_acesso:
   astucia: 1
 
