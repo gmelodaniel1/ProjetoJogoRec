@@ -15,7 +15,8 @@ const SUITES = [
   { nome: "Progressão Cronológica da Infância (1948–1953)", arquivo: "test-progressao-infancia.js" },
   { nome: "Progressão Cadenciada de Texto — Estilo Disco Elysium (Ticket 24)", arquivo: "test_progressao_texto_ticket24.js" },
   { nome: "Schema & Crônicas de Desfecho Narrativo (Ticket 25)", arquivo: "test_desfechos_ticket25.js" },
-  { nome: "Tela Especial de Resolução em Papel Sobreposto (Ticket 26)", arquivo: "test_tela_resolucao_ticket26.js" }
+  { nome: "Tela Especial de Resolução em Papel Sobreposto (Ticket 26)", arquivo: "test_tela_resolucao_ticket26.js" },
+  { nome: "Sistema de Persistência, Save/Load & Auto-Save (Ticket 27)", arquivo: "test_persistencia_save_load_ticket27.js" }
 ];
 
 console.log("=================================================================");

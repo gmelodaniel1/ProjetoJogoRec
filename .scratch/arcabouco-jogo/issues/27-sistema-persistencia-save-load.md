@@ -5,14 +5,14 @@ Implementar o arcabouço técnico de serialização, armazenamento e recuperaç�
 
 **Blocked by:** Ticket 05, Ticket 06, Ticket 26.
 
-**Status:** open
+**Status:** closed
 
 ## Acceptance Criteria
-- [ ] Classe/Módulo `SaveManager` para serializar o estado completo (`CharacterStateStore`), histórico de decisões, ano, fase e variáveis da sessão.
-- [ ] Suporte a 4 slots persistentes: `auto_save`, `slot_1`, `slot_2` e `slot_3`.
-- [ ] Metadados de resumo rápidos por slot (ano, idade, condição social, timestamp, fase, principais carimbos) para listagem sem deserializar todo o estado.
-- [ ] Gatilhos de auto-salvamento automático após assimilar decisões na folha de resolução e nas viradas de ano.
-- [ ] Mecanismo de restauração determinística (`carregarSlot(slotId)`) que reidrata a interface e o dossiê/evento ativo com precisão.
-- [ ] Tratamento defensivo de erros (corrupção de dados, fallback gracioso e versionamento de schema `versaoSchema: 1`).
-- [ ] Suíte de testes automatizada `test/test_persistencia_save_load_ticket27.js` aprovada com 100% de sucesso.
+- [x] Classe/Módulo `SaveManager` para serializar o estado completo (`CharacterStateStore`), histórico de decisões, ano, fase e variáveis da sessão.
+- [x] Suporte a 4 slots persistentes: `auto_save`, `slot_1`, `slot_2` e `slot_3`.
+- [x] Metadados de resumo rápidos por slot (ano, idade, condição social, timestamp, fase, principais carimbos) para listagem sem deserializar todo o estado.
+- [x] Gatilhos de auto-salvamento automático após assimilar decisões na folha de resolução e nas viradas de ano.
+- [x] Mecanismo de restauração determinística (`carregarSlot(slotId)`) que reidrata a interface e o dossiê/evento ativo com precisão.
+- [x] Tratamento defensivo de erros (corrupção de dados, fallback gracioso e versionamento de schema `versaoSchema: 1`).
+- [x] Suíte de testes automatizada `test/test_persistencia_save_load_ticket27.js` aprovada com 100% de sucesso.
 

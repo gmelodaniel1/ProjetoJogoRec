@@ -424,6 +424,25 @@ class CharacterStateStore {
     });
   }
 
+  // Restaura e reidrata o estado a partir de um salvamento
+  carregarEstado(novoEstado) {
+    if (!novoEstado || typeof novoEstado !== 'object') return false;
+    const base = JSON.parse(JSON.stringify(ESTADO_INICIAL_PADRAO));
+    this.estado = {
+      ...base,
+      ...novoEstado,
+      atributosFixos: { ...base.atributosFixos, ...(novoEstado.atributosFixos || {}) },
+      recursosVolateis: { ...base.recursosVolateis, ...(novoEstado.recursosVolateis || {}) },
+      parentesco: { ...base.parentesco, ...(novoEstado.parentesco || {}) },
+      historicoDecisoes: Array.isArray(novoEstado.historicoDecisoes) ? [...novoEstado.historicoDecisoes] : []
+    };
+    if (novoEstado.cheia75) {
+      this.estado.cheia75 = { ...base.cheia75, ...novoEstado.cheia75 };
+    }
+    this.notificar({ carregamento: true });
+    return true;
+  }
+
   // Reseta para o estado inicial
   reset() {
     this.estado = JSON.parse(JSON.stringify(ESTADO_INICIAL_PADRAO));

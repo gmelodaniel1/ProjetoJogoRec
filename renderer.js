@@ -12,8 +12,52 @@ let deliberacaoAberta = false; // Fluxo em dois tempos: false = lendo narrativa,
 
 const store = new CharacterStateStore();
 const engine = new DeterministicEngine(store);
+const saveManager = typeof SaveManager !== 'undefined' ? new SaveManager({ store }) : null;
 window.personagemStore = store;
 window.gameEngine = engine;
+window.saveManager = saveManager;
+
+// ==========================================================================
+// PERSISTÊNCIA & RESTAURAÇÃO DE SESSÃO (TICKET 27)
+// ==========================================================================
+function executarAutoSave(tituloCena = null) {
+  if (!saveManager) return;
+  saveManager.salvar('auto_save', {
+    eventoAtivoId,
+    modoVisual,
+    deliberacaoAberta,
+    abaPalcoAtiva,
+    diarioDecisoes,
+    tituloCena
+  });
+}
+window.executarAutoSave = executarAutoSave;
+
+function restaurarSessaoSalva(slotId = 'auto_save') {
+  if (!saveManager) return false;
+  const res = saveManager.carregar(slotId);
+  if (!res || !res.sucesso) return false;
+
+  const { estado, sessao } = res.dados;
+  store.carregarEstado(estado);
+
+  if (sessao) {
+    diarioDecisoes = Array.isArray(sessao.diarioDecisoes) ? [...sessao.diarioDecisoes] : [];
+    deliberacaoAberta = Boolean(sessao.deliberacaoAberta);
+    if (sessao.abaPalcoAtiva) {
+      alternarAbaPalco(sessao.abaPalcoAtiva);
+    }
+    if (sessao.modoVisual === 'evento' && sessao.eventoAtivoId && cacheEventos[sessao.eventoAtivoId]) {
+      abrirEvento(sessao.eventoAtivoId, deliberacaoAberta);
+    } else {
+      renderizarDossie();
+    }
+  } else {
+    renderizarDossie();
+  }
+  return true;
+}
+window.restaurarSessaoSalva = restaurarSessaoSalva;
 
 const NOMES_ATRIBUTOS_UI = {
   astucia: 'ASTÚCIA',
@@ -708,6 +752,7 @@ function fecharTransicaoViradaAno() {
   setTimeout(() => {
     elOverlayViradaAno.style.display = 'none';
     elOverlayViradaAno.classList.remove('saindo');
+    executarAutoSave('Virada de Ano');
   }, 220);
 }
 
@@ -1517,7 +1562,7 @@ function renderizarDossie() {
 // ==========================================================================
 // RENDERIZAÇÃO DE UM EVENTO ESPECÍFICO
 // ==========================================================================
-function abrirEvento(eventoId) {
+function abrirEvento(eventoId, deliberacaoJaAberta = false) {
   const evento = cacheEventos[eventoId];
   if (!evento) {
     console.error(`Evento '${eventoId}' não encontrado no cache!`);
@@ -1535,8 +1580,9 @@ function abrirEvento(eventoId) {
 
   modoVisual = 'evento';
   eventoAtivoId = eventoId;
-  deliberacaoAberta = false;
-  renderizarEvento(evento, false);
+  deliberacaoAberta = Boolean(deliberacaoJaAberta);
+  renderizarEvento(evento, deliberacaoAberta);
+  executarAutoSave(evento.metadata?.titulo || eventoId);
 }
 
 let handlerTecladoLeitura = null;
@@ -1856,6 +1902,7 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
                     abrirEvento(res.proximoEventoId);
                   } else {
                     renderizarDossie();
+                    executarAutoSave('Dossiê da Fase');
                   }
                 }
               });
@@ -2106,6 +2153,7 @@ if (btnDevReset) {
     diarioDecisoes = [];
     ultimaConsequenciaDecisao = null;
     store.reset();
+    if (saveManager) saveManager.limparTodos();
     renderizarDossie();
     toggleConsoleDepuracao();
   });
