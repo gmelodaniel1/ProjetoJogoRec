@@ -1597,6 +1597,8 @@ function atualizarMolduraEvidencia(evento = null, indiceBeat = 0) {
 // ==========================================================================
 // CONTROLE DE PERSONAGENS EM RECORTE DE PAPEL & BALÃO CONECTOR (TICKET 30)
 // ==========================================================================
+let oradorAtualRecorteId = null;
+
 function atualizarRecortePersonagem(evento, indiceBeat = 0) {
   if (!elCamadaPersonagemRecorte || !elPersonagemFiguraSlot) return;
 
@@ -1625,9 +1627,18 @@ function atualizarRecortePersonagem(evento, indiceBeat = 0) {
     expressao_padrao: 'grave'
   };
 
+  const mesmoOrador = (oradorAtualRecorteId === oradorId) && (elCamadaPersonagemRecorte.style.display === 'flex');
+
   // 1. Identificação no balão de fala diegético
   if (elOradorNome) elOradorNome.textContent = dadosPersona.nome.toUpperCase();
   if (elOradorSubtitulo) elOradorSubtitulo.textContent = dadosPersona.subtitulo || '';
+
+  // Se o mesmo personagem já estiver em cena, mantém a ancoragem visual sem recriar o nó e sem duplicar o som
+  if (mesmoOrador) {
+    return;
+  }
+
+  oradorAtualRecorteId = oradorId;
 
   // 2. Renderização do recorte: tenta carregar arte real WebP/PNG ou gera xilogravura procedural
   const artePath = dadosPersona.arte;
@@ -1672,6 +1683,7 @@ function atualizarRecortePersonagem(evento, indiceBeat = 0) {
 }
 
 function ocultarRecortePersonagem() {
+  oradorAtualRecorteId = null;
   if (elCamadaPersonagemRecorte) {
     elCamadaPersonagemRecorte.style.display = 'none';
   }

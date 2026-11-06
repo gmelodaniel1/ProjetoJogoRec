@@ -109,7 +109,7 @@ function gerarSvgSeverino(opcoes = {}) {
 
         <!-- SELO DE GRAVURA MANUAL (ASSINATURA DO TALHE) -->
         <rect x="255" y="320" width="22" height="22" fill="${CORES_XILO.urucum}"/>
-        <text x="266" y="336" font-family="monospace" font-size="12" font-weight="bold" fill="${CORES_XILO.entalheBranco}" text-anchor="middle">S</text>
+        <text x="266" y="336" font-family="'Courier Prime', 'Special Elite', monospace" font-size="12" font-weight="bold" fill="${CORES_XILO.entalheBranco}" text-anchor="middle">S</text>
       </g>
     </svg>
   `.trim();
@@ -185,7 +185,7 @@ function gerarSvgDelegadoDops(opcoes = {}) {
 
         <!-- CARIMBO POLICIAL DE ENQUADRAMENTO -->
         <rect x="250" y="318" width="26" height="26" fill="${CORES_XILO.nanquim}" stroke="${CORES_XILO.urucum}" stroke-width="2"/>
-        <text x="263" y="336" font-family="monospace" font-size="11" font-weight="900" fill="${CORES_XILO.urucum}" text-anchor="middle">PE</text>
+        <text x="263" y="336" font-family="'Courier Prime', 'Special Elite', monospace" font-size="11" font-weight="900" fill="${CORES_XILO.urucum}" text-anchor="middle">PE</text>
       </g>
     </svg>
   `.trim();
@@ -269,3 +269,4 @@ if (typeof module !== 'undefined' && module.exports) {
   window.gerarSvgPersonagemXilogravura = gerarSvgPersonagemXilogravura;
   window.CORES_XILO = CORES_XILO;
 }
+
