@@ -41,8 +41,8 @@
     </div>
 
     <!-- TELA ESPECIAL DE RESOLUÇÃO & CONSEQUÊNCIAS — FOLHA DE OCORRÊNCIA SOBREPOSTA (TICKET 26) -->
-    <div id="overlay-resolucao-consequencia" class="overlay-resolucao-consequencia" style="display: none;">
-      <div class="cartao-resolucao-papel" id="cartao-resolucao-papel">
+    <div id="overlay-resolucao-consequencia" class="overlay-resolucao-consequencia" role="dialog" aria-modal="true" aria-labelledby="resolucao-selo-oficial" aria-describedby="resolucao-texto-acontecimentos" style="display: none;">
+      <div class="cartao-resolucao-papel" id="cartao-resolucao-papel" tabindex="-1">
         <div class="grampo-metalico-resolucao" aria-hidden="true"></div>
         <div class="fita-resolucao-canto-esq" aria-hidden="true"></div>
         <div class="fita-resolucao-canto-dir" aria-hidden="true"></div>
@@ -50,7 +50,7 @@
         <!-- CABEÇALHO DO LAUDO DE OCORRÊNCIA -->
         <header class="resolucao-cabecalho">
           <div class="resolucao-cabecalho-textos">
-            <span class="resolucao-selo-oficial">ARQUIVO DE OCORRÊNCIA // DESFECHO HISTÓRICO</span>
+            <span class="resolucao-selo-oficial" id="resolucao-selo-oficial">ARQUIVO DE OCORRÊNCIA // DESFECHO HISTÓRICO</span>
             <span class="resolucao-data-ano" id="resolucao-data-ano">RECIFE, 1958</span>
           </div>
           <div class="resolucao-carimbo-box" id="resolucao-carimbo-box">

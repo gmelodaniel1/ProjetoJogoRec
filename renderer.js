@@ -438,16 +438,90 @@ function atualizarProntuario(estado, deltas) {
 let resolucaoEmExibicao = false;
 let viradaAnoPendente = null;
 let callbackAposResolucao = null;
+let timerFechamentoResolucao = null;
+let elementoFocoAnterior = null;
+
+const ATRIBUTOS_POLARIDADE_INVERTIDA = new Set(['suspeita_dops']);
+
+function escaparHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function descreverDelta(chave, info) {
+  if (!info || typeof info.delta !== 'number') return null;
+
+  const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
+  const sinal = info.delta > 0 ? `+${info.delta}` : `${info.delta}`;
+  const polaridadeInvertida = ATRIBUTOS_POLARIDADE_INVERTIDA.has(chave);
+  const ehBom = polaridadeInvertida ? info.delta < 0 : info.delta > 0;
+  const classePilula = ehBom ? 'positivo' : 'negativo';
+
+  let badgeMudanca = null;
+  if (info.mudouPatamar && info.espectroNovo) {
+    const subiuBom = polaridadeInvertida ? !info.subiuPatamar : info.subiuPatamar;
+    const icone = info.subiuPatamar ? '▲' : '▼';
+    const verbo = info.subiuPatamar ? 'SUBIU PARA' : 'CAIU PARA';
+    const rotuloLimpo = escaparHtml(info.espectroNovo.rotulo || '').toUpperCase();
+    badgeMudanca = {
+      icone,
+      verbo,
+      rotulo: rotuloLimpo,
+      subiuBom,
+      classe: subiuBom ? 'subiu' : 'caiu'
+    };
+  }
+
+  const valAnt = chave === 'capital' ? `Cr$ ${info.anterior}` : info.anterior;
+  const valNov = chave === 'capital' ? `Cr$ ${info.novo}` : info.novo;
+
+  return {
+    chave,
+    nome,
+    sinal,
+    classePilula,
+    badgeMudanca,
+    valAnt,
+    valNov,
+    espectroAnterior: info.espectroAnterior,
+    espectroNovo: info.espectroNovo
+  };
+}
+
+function obterClasseTomCarimbo(carimboTexto = '') {
+  const c = String(carimboTexto).toUpperCase().trim();
+  const vermelhos = ['SUBVERSIVO', 'RESISTÊNCIA', 'CLANDESTINO', 'AGITADOR', 'VALENTE', 'TEMERÁRIO', 'TEMÍVEL', 'CENSURADO', 'INFÂMIA', 'SUBORNO'];
+  const azuis = ['OFÍCIO', 'ESTUDIOSO', 'LETRADO', 'ADESÃO', 'POUPADOR', 'OPERÁRIO', 'SENTINELA'];
+  const verdes = ['SOLIDÁRIO', 'SAGAZ', 'ELOQUENTE'];
+  if (vermelhos.some(v => c.includes(v))) return 'carimbo-tom-vermelho';
+  if (azuis.some(a => c.includes(a))) return 'carimbo-tom-azul';
+  if (verdes.some(v => c.includes(v))) return 'carimbo-tom-verde';
+  return 'carimbo-tom-sepia';
+}
 
 function fecharTelaResolucaoConsequencia() {
   if (!elOverlayResolucaoConsequencia || elOverlayResolucaoConsequencia.style.display === 'none') return;
+  if (elOverlayResolucaoConsequencia.classList.contains('saindo')) return;
 
   elOverlayResolucaoConsequencia.classList.add('saindo');
   resolucaoEmExibicao = false;
 
-  setTimeout(() => {
+  if (timerFechamentoResolucao) clearTimeout(timerFechamentoResolucao);
+  timerFechamentoResolucao = setTimeout(() => {
+    timerFechamentoResolucao = null;
     elOverlayResolucaoConsequencia.style.display = 'none';
     elOverlayResolucaoConsequencia.classList.remove('saindo');
+
+    // Restaura o foco para acessibilidade
+    if (elementoFocoAnterior && typeof elementoFocoAnterior.focus === 'function') {
+      try { elementoFocoAnterior.focus(); } catch (_) {}
+      elementoFocoAnterior = null;
+    }
 
     if (viradaAnoPendente) {
       const { anterior, novo, idade } = viradaAnoPendente;
@@ -469,60 +543,97 @@ function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, call
     return;
   }
 
+  if (timerFechamentoResolucao) {
+    clearTimeout(timerFechamentoResolucao);
+    timerFechamentoResolucao = null;
+    elOverlayResolucaoConsequencia.classList.remove('saindo');
+  }
+
+  elementoFocoAnterior = document.activeElement;
   callbackAposResolucao = callbackContinuar;
   resolucaoEmExibicao = true;
 
   const meta = (evento && evento.metadata) || {};
+  const estado = store.getState();
+  const tituloCena = meta.titulo || 'Cenário Histórico';
+  const tomboMcr = meta.tombo_mcr || null;
 
   // 1. Cabeçalho de data e cidade
   if (elResolucaoDataAno) {
-    const cidade = (meta.cidade || 'RECIFE').toUpperCase();
-    const ano = meta.ano || store.getAnoAtual() || 1958;
-    elResolucaoDataAno.textContent = `${cidade}, ${ano}`;
+    const ano = meta.ano || estado.anoAtual || 1958;
+    elResolucaoDataAno.textContent = `RECIFE, ${ano}`;
   }
 
-  // 2. Carimbo oficial
+  // 2. Carimbo oficial com classe de tom correspondente
   const carimboTexto = (resultadoDecisao && resultadoDecisao.carimbo) || (opcao && opcao.carimbo) || 'REGISTRADO';
   if (elResolucaoCarimboTexto) {
     elResolucaoCarimboTexto.textContent = `[ ${carimboTexto.toUpperCase()} ]`;
   }
+  if (elResolucaoCarimboBox) {
+    elResolucaoCarimboBox.className = `resolucao-carimbo-box ${obterClasseTomCarimbo(carimboTexto)}`;
+  }
 
-  // 3. Fotografia de época e tombo
-  if (elResolucaoImgFoto) {
-    const imagemSrc = meta.imagem || '';
-    if (imagemSrc) {
-      elResolucaoImgFoto.src = imagemSrc;
-      elResolucaoImgFoto.style.display = 'block';
+  // 3. Tombo do acervo iconográfico
+  if (elResolucaoTomboLegenda) {
+    elResolucaoTomboLegenda.textContent = tomboMcr
+      ? `TOMBO N.º ${tomboMcr}/MCR`
+      : `REGISTRO DE ARQUIVO // RECIFE, ${meta.ano || estado.anoAtual || 1958}`;
+  }
+
+  // 4. Imagem histórica com caminho artes/ ou fallback procedural SVG
+  if (elResolucaoMolduraFoto) {
+    let caminhoImagem = '';
+    if (meta.imagem) {
+      if (meta.imagem.startsWith('http') || meta.imagem.startsWith('artes/') || meta.imagem.startsWith('/')) {
+        caminhoImagem = meta.imagem;
+      } else {
+        caminhoImagem = `artes/${meta.imagem}`;
+      }
+    }
+
+    if (caminhoImagem) {
+      elResolucaoMolduraFoto.innerHTML = `
+        <img id="resolucao-img-foto" src="${caminhoImagem}" alt="Fotografia histórica: ${escaparHtml(tituloCena)}" class="resolucao-foto-epoca">
+      `;
+      const imgFoto = elResolucaoMolduraFoto.querySelector('#resolucao-img-foto');
+      if (imgFoto) {
+        imgFoto.addEventListener('error', () => {
+          elResolucaoMolduraFoto.innerHTML = `
+            <div class="resolucao-svg-fallback-wrapper">
+              ${gerarSvgCenario(evento, estado)}
+            </div>
+          `;
+        }, { once: true });
+      }
     } else {
-      elResolucaoImgFoto.style.display = 'none';
+      elResolucaoMolduraFoto.innerHTML = `
+        <div class="resolucao-svg-fallback-wrapper">
+          ${gerarSvgCenario(evento, estado)}
+        </div>
+      `;
     }
   }
-  if (elResolucaoTomboLegenda) {
-    const registro = meta.registro || 'REGISTRO DE ARQUIVO';
-    const local = meta.local || 'RECIFE';
-    elResolucaoTomboLegenda.textContent = `${registro} // ${local}`;
-  }
 
-  // 4. Ação tomada
+  // 5. Ação tomada
   if (elResolucaoTituloAcao) {
-    elResolucaoTituloAcao.textContent = `“${(opcao && opcao.rotulo) || 'Decisão Registrada'}”`;
+    elResolucaoTituloAcao.textContent = `“${escaparHtml(opcao && opcao.rotulo ? opcao.rotulo : 'Decisão Registrada')}”`;
   }
 
-  // 5. Crônica do desfecho
+  // 6. Crônica do desfecho com grifos semânticos ou texto sanitizado
   if (elResolucaoTextoAcontecimentos) {
     if (opcao && opcao.desfechoHtml) {
       elResolucaoTextoAcontecimentos.innerHTML = opcao.desfechoHtml;
     } else if (opcao && opcao.desfecho) {
       const paragrafos = opcao.desfecho.split(/\n\s*\n/).filter(p => p.trim().length > 0);
       elResolucaoTextoAcontecimentos.innerHTML = paragrafos
-        .map(p => `<p class="resolucao-paragrafo-acontecimento">${p.trim()}</p>`)
+        .map(p => `<p class="resolucao-paragrafo-acontecimento">${escaparHtml(p.trim())}</p>`)
         .join('');
     } else {
       elResolucaoTextoAcontecimentos.innerHTML = `<p class="resolucao-paragrafo-acontecimento">As repercussões imediatas da sua escolha ecoam pelos corredores e ruas da cidade. O despacho foi anexado ao prontuário oficial.</p>`;
     }
   }
 
-  // 6. Balanço tátil de atributos e patamares
+  // 7. Balanço tátil de atributos e patamares (utiliza descreverDelta compartilhado)
   if (elResolucaoBalancoAtributos) {
     elResolucaoBalancoAtributos.innerHTML = '';
     const deltas = (resultadoDecisao && resultadoDecisao.deltas) || {};
@@ -537,40 +648,35 @@ function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, call
       elResolucaoBalancoAtributos.appendChild(chipVazio);
     } else {
       entradas.forEach(([chave, info]) => {
-        const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
-        const sinal = info.delta > 0 ? `+${info.delta}` : `${info.delta}`;
-        const ehBom = chave === 'suspeita_dops' ? info.delta < 0 : info.delta > 0;
-        const classePilula = ehBom ? 'positivo' : 'negativo';
+        const d = descreverDelta(chave, info);
+        if (!d) return;
 
-        let badgeMudanca = '';
-        if (info.mudouPatamar && info.espectroNovo) {
-          const subiuBom = chave === 'suspeita_dops' ? !info.subiuPatamar : info.subiuPatamar;
-          const icone = info.subiuPatamar ? '▲' : '▼';
-          const verbo = info.subiuPatamar ? 'SUBIU PARA' : 'CAIU PARA';
-          badgeMudanca = `
-            <span class="resolucao-badge-patamar ${subiuBom ? 'subiu' : 'caiu'}">
-              ${icone} ${verbo} ${info.espectroNovo.rotulo.toUpperCase()}
+        let badgeHtml = '';
+        if (d.badgeMudanca) {
+          badgeHtml = `
+            <span class="resolucao-badge-patamar ${d.badgeMudanca.classe}">
+              ${d.badgeMudanca.icone} ${d.badgeMudanca.verbo} ${d.badgeMudanca.rotulo}
             </span>
           `;
         }
 
         const chip = document.createElement('div');
-        chip.className = `resolucao-chip-delta ${classePilula}`;
+        chip.className = `resolucao-chip-delta ${d.classePilula}`;
         chip.innerHTML = `
-          <span><strong>${nome}</strong> ${sinal}</span>
-          ${badgeMudanca}
+          <span><strong>${d.nome}</strong> ${d.sinal}</span>
+          ${badgeHtml}
         `;
         elResolucaoBalancoAtributos.appendChild(chip);
       });
     }
   }
 
-  // 7. Exibição e som analógico
+  // 8. Exibição e som analógico
   elOverlayResolucaoConsequencia.classList.remove('saindo');
   elOverlayResolucaoConsequencia.style.display = 'flex';
   tocarSomCarimbo();
 
-  // 8. Foco no botão de continuar
+  // 9. Foco deliberado no botão de avançar para acessibilidade
   if (btnContinuarResolucao) {
     setTimeout(() => {
       try { btnContinuarResolucao.focus(); } catch (_) {}
@@ -585,10 +691,12 @@ if (btnContinuarResolucao) {
   });
 }
 
+// Trap de foco no overlay para manter acessibilidade (tecla Tab)
 if (elOverlayResolucaoConsequencia) {
-  elOverlayResolucaoConsequencia.addEventListener('click', (e) => {
-    if (e.target === elOverlayResolucaoConsequencia) {
-      fecharTelaResolucaoConsequencia();
+  elOverlayResolucaoConsequencia.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      if (btnContinuarResolucao) btnContinuarResolucao.focus();
     }
   });
 }
@@ -643,7 +751,7 @@ if (elOverlayViradaAno) {
 
 window.addEventListener('keydown', (e) => {
   if (elOverlayResolucaoConsequencia && elOverlayResolucaoConsequencia.style.display === 'flex') {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       fecharTelaResolucaoConsequencia();
       return;
@@ -683,36 +791,31 @@ function renderizarPainelConsequencias() {
   }
 
   const linhasHtml = entradas.map(([chave, info]) => {
-    const nome = NOMES_ATRIBUTOS_UI[chave] || chave.replace(/_/g, ' ').toUpperCase();
-    const sinal = info.delta > 0 ? `+${info.delta}` : `${info.delta}`;
-    const ehBom = chave === 'suspeita_dops' ? info.delta < 0 : info.delta > 0;
-    const classePilula = ehBom ? 'positivo' : 'negativo';
-
-    const valAnt = chave === 'capital' ? `Cr$ ${info.anterior}` : info.anterior;
-    const valNov = chave === 'capital' ? `Cr$ ${info.novo}` : info.novo;
+    const d = descreverDelta(chave, info);
+    if (!d) return '';
 
     let badgeMudancaPatamar = '';
-    if (info.mudouPatamar) {
-      const subiuBom = chave === 'suspeita_dops' ? !info.subiuPatamar : info.subiuPatamar;
-      const icone = info.subiuPatamar ? '▲' : '▼';
-      const verbo = info.subiuPatamar ? 'SUBIU PARA' : 'CAIU PARA';
+    if (d.badgeMudanca) {
       badgeMudancaPatamar = `
-        <span class="alerta-mudanca-patamar ${subiuBom ? 'subiu' : 'caiu'}">
-          ${icone} ${verbo} ${info.espectroNovo.rotulo.toUpperCase()}!
+        <span class="alerta-mudanca-patamar ${d.badgeMudanca.classe}">
+          ${d.badgeMudanca.icone} ${d.badgeMudanca.verbo} ${d.badgeMudanca.rotulo}!
         </span>
       `;
     }
+
+    const rotuloAnt = d.espectroAnterior ? escaparHtml(d.espectroAnterior.rotulo) : '';
+    const rotuloNov = d.espectroNovo ? escaparHtml(d.espectroNovo.rotulo) : '';
 
     return `
       <div class="conseq-item-linha">
         <div class="conseq-item-topo">
           <div>
-            <span class="conseq-nome-delta">${nome}</span>
-            <span class="conseq-delta-pilula ${classePilula}">${sinal}</span>
+            <span class="conseq-nome-delta">${d.nome}</span>
+            <span class="conseq-delta-pilula ${d.classePilula}">${d.sinal}</span>
             ${badgeMudancaPatamar}
           </div>
           <div class="conseq-transicao-patamar">
-            ${valAnt} [${info.espectroAnterior.rotulo}] ➔ <strong>${valNov} [${info.espectroNovo.rotulo}]</strong>
+            ${d.valAnt} [${rotuloAnt}] ➔ <strong>${d.valNov} [${rotuloNov}]</strong>
           </div>
         </div>
         ${gerarBarraEspectroHtml(chave, info.novo)}
@@ -1634,14 +1737,15 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
                 carimbo: opcao.carimbo || 'REGISTRADO'
               });
 
+              // Sinaliza exibição ativa de resolução ANTES de executar a decisão
+              // para que notificações síncronas do store saibam que a tela de resolução
+              // está ativa e enfileirem a virada de ano em vez de abri-la antecipadamente
+              resolucaoEmExibicao = true;
+
               const res = engine.executarDecisao(evento, opcao.id);
-              
-              ultimaConsequenciaDecisao = {
-                eventoTitulo: meta.titulo,
-                opcaoRotulo: opcao.rotulo,
-                carimbo: res.carimbo,
-                deltas: res.deltas
-              };
+
+              // Desativa o painel lateral no próximo evento (substituído pela folha sobreposta)
+              ultimaConsequenciaDecisao = null;
 
               exibirTelaResolucaoConsequencia({
                 evento,
@@ -1657,6 +1761,7 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
               });
             });
           } catch (err) {
+            resolucaoEmExibicao = false;
             console.error("Erro ao executar decisão:", err);
           }
         });

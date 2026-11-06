@@ -35,18 +35,26 @@ const css = fs.readFileSync(cssPath, 'utf8');
 const renderer = fs.readFileSync(rendererPath, 'utf8');
 
 // =================================================================
-// [TIER 1] Verificação dos Elementos no DOM (index.html)
+// [TIER 1] Verificação dos Elementos e Acessibilidade no DOM
 // =================================================================
-console.log('[TIER 1] Verificação dos Elementos no DOM (index.html)');
+console.log('[TIER 1] Verificação dos Elementos e Acessibilidade no DOM (index.html)');
 
 test('Overlay e folha de papel sobreposto de resolução existem no HTML', () => {
   assert(html.includes('id="overlay-resolucao-consequencia"'), 'Elemento #overlay-resolucao-consequencia deve existir');
   assert(html.includes('id="cartao-resolucao-papel"'), 'Elemento #cartao-resolucao-papel deve existir');
 });
 
-test('Elementos de carimbo, foto de época, crônica de desfecho e balanço existem', () => {
+test('Acessibilidade estrita: role="dialog", aria-modal="true" e rotulagem descritiva', () => {
+  assert(html.includes('role="dialog"'), 'Overlay deve possuir role="dialog"');
+  assert(html.includes('aria-modal="true"'), 'Overlay deve possuir aria-modal="true"');
+  assert(html.includes('aria-labelledby="resolucao-selo-oficial"'), 'Overlay deve apontar aria-labelledby para o selo oficial');
+  assert(html.includes('aria-describedby="resolucao-texto-acontecimentos"'), 'Overlay deve apontar aria-describedby para os acontecimentos');
+});
+
+test('Elementos de carimbo, moldura de foto, crônica de desfecho e balanço existem', () => {
+  assert(html.includes('id="resolucao-carimbo-box"'), 'Deve conter elemento para o box do carimbo da decisão');
   assert(html.includes('id="resolucao-carimbo-texto"'), 'Deve conter elemento para o carimbo da decisão');
-  assert(html.includes('id="resolucao-img-foto"'), 'Deve conter elemento <img> para a foto de época do desfecho');
+  assert(html.includes('id="resolucao-moldura-foto"'), 'Deve conter container para moldura da foto');
   assert(html.includes('id="resolucao-texto-acontecimentos"'), 'Deve conter container para o texto da crônica de desfecho');
   assert(html.includes('id="resolucao-balanco-atributos"'), 'Deve conter container para as pílulas de balanço de atributos');
 });
@@ -66,48 +74,67 @@ test('Overlay estilizado como vinheta escura analógica com alta prioridade de z
   assert(css.includes('.cartao-resolucao-papel'), 'Classe .cartao-resolucao-papel deve estar estilizada');
 });
 
-test('Folha sobreposta utiliza textura rústica de papel, sombra de relevo e animação de entrada', () => {
-  assert(css.includes('@keyframes resolucaoPapelSlam') || css.includes('@keyframes resolucaoSlam') || css.includes('resolucaoPapelSlam'), 'Animação de queda do papel deve estar declarada');
-  assert(css.includes('.resolucao-carimbo-box'), 'Classe .resolucao-carimbo-box deve estar estilizada');
-  assert(css.includes('.resolucao-foto-epoca'), 'Classe .resolucao-foto-epoca deve estar estilizada');
+test('Variações cromáticas do carimbo oficial implementadas no CSS', () => {
+  assert(css.includes('.carimbo-tom-vermelho'), 'Deve estilizar carimbos de tom vermelho');
+  assert(css.includes('.carimbo-tom-azul'), 'Deve estilizar carimbos de tom azul');
+  assert(css.includes('.carimbo-tom-verde'), 'Deve estilizar carimbos de tom verde');
+  assert(css.includes('.carimbo-tom-sepia'), 'Deve estilizar carimbos de tom sépia');
 });
 
-test('Respeito estrito ao Visual Blacklist (sem border-radius moderno na folha ou no botão)', () => {
+test('Suporte estilístico a fallback de ilustração procedural SVG na moldura fotográfica', () => {
+  assert(css.includes('.resolucao-svg-fallback-wrapper'), 'Classe .resolucao-svg-fallback-wrapper deve estar estilizada');
+});
+
+test('Respeito estrito ao Visual Blacklist (zero border-radius e zero #FFFFFF)', () => {
   const regexRadiusPapel = /\.cartao-resolucao-papel[\s\S]*?\{[\s\S]*?border-radius:\s*([1-9][0-9]*px)/i;
   assert(!regexRadiusPapel.test(css), 'Folha de resolução não deve conter border-radius moderno');
 
   const regexRadiusBtn = /\.btn-continuar-resolucao[\s\S]*?\{[\s\S]*?border-radius:\s*([1-9][0-9]*px)/i;
   assert(!regexRadiusBtn.test(css), 'Botão de continuar resolução não deve conter border-radius moderno');
+
+  const regexPureWhiteBtn = /\.btn-continuar-resolucao[\s\S]*?\{[\s\S]*?color:\s*#FFFFFF/i;
+  assert(!regexPureWhiteBtn.test(css), 'Botão de continuar resolução não deve usar #FFFFFF puro');
+  assert(!css.includes('color: #FFFFFF'), 'Zero uso de #FFFFFF absoluto em style.css');
 });
 
 // =================================================================
-// [TIER 3] Verificação da Lógica de Resolução no Renderer (renderer.js)
+// [TIER 3] Verificação da Lógica e Robustez no Renderer (renderer.js)
 // =================================================================
 console.log('\n[TIER 3] Verificação da Lógica no renderer.js');
 
-test('Função exibirTelaResolucaoConsequencia implementada no renderer', () => {
-  assert(
-    renderer.includes('exibirTelaResolucaoConsequencia') || renderer.includes('abrirTelaResolucao'),
-    'Deve implementar a rotina exibirTelaResolucaoConsequencia'
-  );
+test('Caminho de fotografia com prefixo artes/ e fallback defensivo para SVG procedural', () => {
+  assert(renderer.includes('artes/${meta.imagem}'), 'Deve prefixar o caminho da imagem com artes/');
+  assert(renderer.includes('gerarSvgCenario(evento'), 'Deve acionar gerarSvgCenario em caso de ausência ou erro de imagem');
 });
 
-test('Avanço de decisão aguarda a interação do jogador na tela de resolução antes de transitar', () => {
-  assert(
-    renderer.includes('btnContinuarResolucao') || renderer.includes('btn-continuar-resolucao'),
-    'Deve vincular o fechamento da resolução ao botão de confirmação'
-  );
-  assert(
-    renderer.includes('resolucao-texto-acontecimentos'),
-    'Deve preencher os acontecimentos na tela de resolução'
-  );
+test('Leitura iconográfica de tombo_mcr fiel ao roteiro', () => {
+  assert(renderer.includes('meta.tombo_mcr'), 'Deve utilizar tombo_mcr do metadata para a legenda do acervo');
 });
 
-test('Balanço tátil de atributos e mudança de patamar renderizados na tela de resolução', () => {
-  assert(
-    renderer.includes('resolucao-balanco-atributos') || renderer.includes('elResolucaoBalancoAtributos'),
-    'Deve preencher os deltas de atributos na tela de resolução'
-  );
+test('Classificação tonal dinâmica do carimbo oficial e formatação segura', () => {
+  assert(renderer.includes('obterClasseTomCarimbo'), 'Deve classificar carimbos por tom tonal correspondente');
+  assert(renderer.includes('escaparHtml'), 'Deve higienizar strings injetadas');
+});
+
+test('Helper compartilhado descreverDelta elimina código duplicado e respeita polaridade invertida', () => {
+  assert(renderer.includes('function descreverDelta'), 'Deve conter rotina compartilhada descreverDelta');
+  assert(renderer.includes('ATRIBUTOS_POLARIDADE_INVERTIDA'), 'Deve identificar polaridade invertida (suspeita_dops)');
+});
+
+test('Ordem síncrona: resolucaoEmExibicao sinalizada antes de executarDecisao para adiar virada de ano', () => {
+  const idxSinalizacao = renderer.indexOf('resolucaoEmExibicao = true;');
+  const idxExecucao = renderer.indexOf('engine.executarDecisao(evento, opcao.id);');
+  assert(idxSinalizacao !== -1 && idxExecucao !== -1, 'Ambas as instruções devem estar presentes');
+  assert(idxSinalizacao < idxExecucao, 'resolucaoEmExibicao deve ser setada antes de engine.executarDecisao');
+});
+
+test('Avanço deliberado restrito: sem fechamento por clique no fundo ou Escape, apenas botão/Enter/Espaço', () => {
+  assert(!renderer.includes('e.target === elOverlayResolucaoConsequencia'), 'Não deve permitir fechar a folha ao clicar no fundo da mesa');
+  assert(!renderer.includes("e.key === 'Escape' && elOverlayResolucaoConsequencia"), 'Não deve fechar a resolução via tecla Escape');
+});
+
+test('Extinção da duplicação: painel lateral antigo é desativado pós-resolução', () => {
+  assert(renderer.includes('ultimaConsequenciaDecisao = null;'), 'Deve limpar ultimaConsequenciaDecisao para não duplicar no próximo evento');
 });
 
 // =================================================================
