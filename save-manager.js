@@ -92,7 +92,7 @@ class SaveManager {
       const tituloCena = contextoSessao.tituloCena || 
         (contextoSessao.modoVisual === 'evento' && contextoSessao.eventoAtivoId 
           ? `Ocorrência: ${contextoSessao.eventoAtivoId}` 
-          : `Dossiê — ${etapaVida.nome}`);
+          : `Capítulo — ${etapaVida.nome}`);
 
       const metadados = {
         slotId,

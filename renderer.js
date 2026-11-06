@@ -52,10 +52,22 @@ function restaurarSessaoSalva(slotId = 'auto_save') {
     if (sessao.modoVisual === 'evento' && sessao.eventoAtivoId && cacheEventos[sessao.eventoAtivoId]) {
       abrirEvento(sessao.eventoAtivoId, deliberacaoAberta);
     } else {
-      renderizarDossie();
+      const estadoAtual = store.getState();
+      const info = engine.obterEventosDossie(cacheEventos, estadoAtual);
+      if (info && info.eventosDisponiveis && info.eventosDisponiveis.length === 1 && info.eventosDisponiveis[0].acessoPermitido !== false) {
+        abrirEvento(info.eventosDisponiveis[0].metadata.id);
+      } else {
+        renderizarDossie();
+      }
     }
   } else {
-    renderizarDossie();
+    const estadoAtual = store.getState();
+    const info = engine.obterEventosDossie(cacheEventos, estadoAtual);
+    if (info && info.eventosDisponiveis && info.eventosDisponiveis.length === 1 && info.eventosDisponiveis[0].acessoPermitido !== false) {
+      abrirEvento(info.eventosDisponiveis[0].metadata.id);
+    } else {
+      renderizarDossie();
+    }
   }
   return true;
 }
@@ -941,7 +953,7 @@ function atualizarStatusMenuPrincipal() {
   } else {
     btnMenuContinuar.disabled = true;
     if (elMenuContinuarSubtitulo) {
-      elMenuContinuarSubtitulo.textContent = "Nenhum prontuário registrado no arquivo";
+      elMenuContinuarSubtitulo.textContent = "Nenhum jogo salvo no arquivo";
     }
   }
 }
@@ -975,12 +987,21 @@ function iniciarNovoProntuario() {
   ultimaConsequenciaDecisao = null;
   deliberacaoAberta = false;
   store.reset();
-  renderizarDossie();
-  executarAutoSave('Nascimento do Protagonista (1948)');
   fecharMenuPrincipal();
   tocarSomCarimbo();
+
+  // Inicia diretamente a história no primeiro acontecimento (1948 - Nascimento), sem escala intermediária
+  const estadoAtual = store.getState();
+  const infoDossie = engine.obterEventosDossie(cacheEventos, estadoAtual);
+  if (infoDossie && infoDossie.eventosDisponiveis && infoDossie.eventosDisponiveis.length > 0) {
+    abrirEvento(infoDossie.eventosDisponiveis[0].metadata.id);
+  } else {
+    abrirEvento('ev_f1_1948_nascimento');
+  }
+  executarAutoSave('Início da História (1948)');
 }
 window.iniciarNovoProntuario = iniciarNovoProntuario;
+window.iniciarNovoJogo = iniciarNovoProntuario;
 
 function abrirGaveteiroArquivos() {
   if (!elModalGaveteiro) return;
@@ -1085,7 +1106,7 @@ function renderizarSlotsGaveteiro() {
     btn.addEventListener('click', () => {
       const slotId = btn.dataset.slot;
       const etapa = store.getEtapaVida();
-      const tituloCena = modoVisual === 'evento' && eventoAtivoId ? `Evento: ${eventoAtivoId}` : `Dossiê — ${etapa.nome}`;
+      const tituloCena = modoVisual === 'evento' && eventoAtivoId ? `Evento: ${eventoAtivoId}` : `Capítulo — ${etapa.nome}`;
       saveManager.salvar(slotId, {
         eventoAtivoId,
         modoVisual,
@@ -1948,8 +1969,8 @@ function renderizarTelaCronologia() {
           <span>RECIFE, ${estado.anoAtual} • ${idadeTxt}</span>
           <span>INÍCIO DE JORNADA</span>
         </div>
-        <div class="cronologia-reg-titulo">Abertura do Prontuário</div>
-        <div class="cronologia-reg-escolha">Nenhuma decisão carimbada ainda. Abre um arquivo no Dossiê à direita para registrar tua história.</div>
+        <div class="cronologia-reg-titulo">Início da História</div>
+        <div class="cronologia-reg-escolha">Nenhuma decisão registrada ainda. Faz tua primeira escolha na narrativa para registrar teus passos.</div>
       </div>
     `;
   } else {
@@ -1984,7 +2005,7 @@ function renderizarTelaCronologia() {
 }
 
 // ==========================================================================
-// RENDERIZAÇÃO DO DOSSIÊ DA FASE & SEQUESTRO DE CRISE (TICKETS 08 & 09)
+// RENDERIZAÇÃO DO SELETOR DE CENAS / ESCOLHA DE CAMINHO NA CIDADE
 // ==========================================================================
 function renderizarDossie() {
   removerListenerTecladoLeitura();
@@ -2005,11 +2026,17 @@ function renderizarDossie() {
     return;
   }
 
+  // Se houver exatamente 1 acontecimento cronológico pendente, abre diretamente sem impor tela intermediária
+  if (infoDossie.eventosDisponiveis.length === 1 && infoDossie.eventosDisponiveis[0].acessoPermitido !== false) {
+    abrirEvento(infoDossie.eventosDisponiveis[0].metadata.id);
+    return;
+  }
+
   const etapaVida = store.getEtapaVida();
-  if (elEdicao) elEdicao.textContent = `ACERVO HISTÓRICO // ${etapaVida.nome.toUpperCase()}`;
+  if (elEdicao) elEdicao.textContent = `CRÔNICA DE PERNAMBUCO // ${etapaVida.nome.toUpperCase()}`;
   if (elData) elData.textContent = `RECIFE, ${estadoAtual.anoAtual}`;
-  if (elManchete) elManchete.textContent = "Índice de Documentos & Ocorrências";
-  if (elLead) elLead.textContent = "Consulta aos registros do acervo histórico do Recife antes que o curso do tempo se precipite.";
+  if (elManchete) elManchete.textContent = "Escolhe Teu Caminho na Cidade";
+  if (elLead) elLead.textContent = "Decide onde tua presença fará a diferença neste momento da história antes que os acontecimentos se precipitem.";
 
   if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
   if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
@@ -2032,7 +2059,7 @@ function renderizarDossie() {
   htmlCorpo += `<div class="lista-dossie-itens">`;
 
   if (infoDossie.eventosDisponiveis.length === 0) {
-    htmlCorpo += `<p class="dossie-vazio">Nenhum documento pendente neste momento. Todos os registros foram catalogados.</p>`;
+    htmlCorpo += `<p class="dossie-vazio">Nenhum acontecimento pendente neste momento. Todos os registros desta etapa foram concluídos.</p>`;
   } else {
     infoDossie.eventosDisponiveis.forEach(ev => {
       const meta = ev.metadata;
@@ -2044,7 +2071,7 @@ function renderizarDossie() {
           <div class="dossie-info">
             <div class="dossie-meta">
               <span>ANO: ${meta.ano}</span>
-              ${ehClimax ? ' | <span style="color: var(--cor-carimbo-vermelho); font-weight: bold;">CLÍMAX HISTÓRICO</span>' : ''}
+              ${ehClimax ? ' | <span style="color: var(--cor-carimbo-vermelho); font-weight: bold;">MOMENTO HISTÓRICO DECISIVO</span>' : ''}
               ${!podeAcessar ? ` | <span style="color: var(--cor-carimbo-vermelho)">BLOQUEADO: ${ev.motivoBloqueioAcesso}</span>` : ''}
             </div>
             <div class="dossie-titulo">${meta.titulo}</div>
@@ -2052,11 +2079,11 @@ function renderizarDossie() {
           <div>
             ${podeAcessar ? `
               <button class="btn-abrir-evento" data-evento-id="${meta.id}">
-                ${ehClimax ? 'ENFRENTAR O DESTINO' : 'ABRIR PÁGINA'}
+                ${ehClimax ? 'ENFRENTAR O DESTINO' : 'SEGUIR PARA ESTA CENA'}
               </button>
             ` : `
               <button class="btn-abrir-evento" disabled style="opacity: 0.5; cursor: not-allowed">
-                ACESSO NEGADO
+                ACESSO RESTRITO
               </button>
             `}
           </div>
@@ -2344,8 +2371,11 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
       `;
     } else {
       const etapaVida = store.getEtapaVida();
+      const eventosDisponiveis = (engine.obterEventosDossie(cacheEventos, estadoAtual).eventosDisponiveis) || [];
+      const temMultiplasCenas = eventosDisponiveis.length > 1;
+
       elEdicao.innerHTML = `
-        <button id="btn-voltar-ao-dossie" class="btn-voltar-dossie">← VOLTAR AO DOSSIÊ</button>
+        ${temMultiplasCenas ? '<button id="btn-voltar-ao-dossie" class="btn-voltar-dossie">⮌ ESCOLHER OUTRA CENA</button>' : ''}
         <span>${etapaVida.nome.toUpperCase()} // ${meta.ano}</span>
       `;
       const btnVoltar = document.getElementById('btn-voltar-ao-dossie');
@@ -2433,8 +2463,13 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
                   if (res.proximoEventoId && cacheEventos[res.proximoEventoId]) {
                     abrirEvento(res.proximoEventoId);
                   } else {
-                    renderizarDossie();
-                    executarAutoSave('Dossiê da Fase');
+                    const proxInfo = engine.obterEventosDossie(cacheEventos, store.getState());
+                    if (proxInfo && proxInfo.eventosDisponiveis && proxInfo.eventosDisponiveis.length === 1 && proxInfo.eventosDisponiveis[0].acessoPermitido !== false) {
+                      abrirEvento(proxInfo.eventosDisponiveis[0].metadata.id);
+                    } else {
+                      renderizarDossie();
+                    }
+                    executarAutoSave(`Recife, ${store.getState().anoAtual}`);
                   }
                 }
               });
@@ -2521,7 +2556,7 @@ async function inicializarNarrativa() {
             exibirNotificacaoHotReload(cacheEventos[eventoAtivoId].metadata.titulo);
           } else {
             renderizarDossie();
-            exibirNotificacaoHotReload('Dossiê da Fase');
+            exibirNotificacaoHotReload('Seletor de Cenas');
           }
         }
       });

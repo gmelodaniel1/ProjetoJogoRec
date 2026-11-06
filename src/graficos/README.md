@@ -7,3 +7,4 @@ Este diretório isola todos os geradores procedurais vetoriais (SVG) e tratament
 - **`retratos-svg.js`**: Geradores antropométricos e carimbos policiais de prontuário (DOPS) para a tela de relações.
 
 Estes módulos funcionam de forma desacoplada da lógica de motor do jogo (`renderer.js`).
+

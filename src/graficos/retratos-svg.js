@@ -42,3 +42,4 @@ if (typeof module !== 'undefined' && module.exports) {
   window.gerarSvgRetratoFallbackModulo = gerarSvgRetratoFallback;
   window.gerarSvgRetrato = gerarSvgRetrato;
 }
+

@@ -37,8 +37,8 @@
             <div class="menu-opcao-corpo">
               <span class="menu-opcao-tecla">[ENTER]</span>
               <div class="menu-opcao-textos">
-                <span class="menu-opcao-titulo">CONTINUAR INVESTIGAÇÃO</span>
-                <span id="menu-continuar-subtitulo" class="menu-opcao-subtitulo">Nenhum prontuário registrado no arquivo</span>
+                <span class="menu-opcao-titulo">CONTINUAR JOGO</span>
+                <span id="menu-continuar-subtitulo" class="menu-opcao-subtitulo">Nenhum jogo salvo no arquivo</span>
               </div>
             </div>
             <span class="menu-opcao-seta">➔</span>
@@ -48,8 +48,8 @@
             <div class="menu-opcao-corpo">
               <span class="menu-opcao-tecla">[N]</span>
               <div class="menu-opcao-textos">
-                <span class="menu-opcao-titulo">NOVO PRONTUÁRIO</span>
-                <span class="menu-opcao-subtitulo">Iniciar a crônica a partir do nascimento (Recife, 1948)</span>
+                <span class="menu-opcao-titulo">NOVO JOGO</span>
+                <span class="menu-opcao-subtitulo">Iniciar a história a partir do nascimento (Recife, 1948)</span>
               </div>
             </div>
             <span class="menu-opcao-seta">+</span>
@@ -59,8 +59,8 @@
             <div class="menu-opcao-corpo">
               <span class="menu-opcao-tecla">[G]</span>
               <div class="menu-opcao-textos">
-                <span class="menu-opcao-titulo">GAVETEIRO DE ARQUIVOS</span>
-                <span class="menu-opcao-subtitulo">Consultar fichas salvas, auto-save e gerenciar slots</span>
+                <span class="menu-opcao-titulo">CARREGAR JOGO</span>
+                <span class="menu-opcao-subtitulo">Consultar jogos salvos, auto-save e gerenciar arquivos</span>
               </div>
             </div>
             <span class="menu-opcao-seta">▤</span>
@@ -70,8 +70,8 @@
             <div class="menu-opcao-corpo">
               <span class="menu-opcao-tecla">[M]</span>
               <div class="menu-opcao-textos">
-                <span class="menu-opcao-titulo">MANUAL DE PROCEDIMENTOS</span>
-                <span class="menu-opcao-subtitulo">Instruções de inquérito, mecânicas do prontuário e diretrizes</span>
+                <span class="menu-opcao-titulo">MANUAL DO JOGO</span>
+                <span class="menu-opcao-subtitulo">Diretrizes históricas, mecânicas de atributos e regras</span>
               </div>
             </div>
             <span class="menu-opcao-seta">?</span>
@@ -139,9 +139,9 @@
     <!-- MODAL DE CONFIRMAÇÃO DE NOVO JOGO (TICKET 28) -->
     <div id="modal-confirmacao-novo-jogo" class="modal-confirmacao" role="dialog" aria-modal="true" style="display: none;">
       <div class="confirmacao-cartao">
-        <div class="confirmacao-titulo">⚠ ABERTURA DE NOVO PRONTUÁRIO</div>
+        <div class="confirmacao-titulo">⚠ INICIAR NOVO JOGO?</div>
         <div class="confirmacao-mensagem">
-          Iniciar uma nova investigação reiniciará a narrativa em 1948. Teus registros salvos nos slots manuais serão preservados, mas o prontuário em andamento será substituído. Desejas prosseguir?
+          Iniciar um novo jogo reiniciará a história em 1948. Teus registros salvos nos slots manuais serão preservados, mas o progresso atual não salvo será reiniciado. Desejas prosseguir?
         </div>
         <div class="confirmacao-botoes">
           <button id="btn-confirmar-novo-jogo" class="btn-confirmar-novo">INICIAR NOVO PRONTUÁRIO ➔</button>
@@ -703,7 +703,7 @@
           </select>
         </div>
         <button id="btn-dev-saltar-evento" class="btn-acao-rapida" style="margin-top: 8px;">▶ ABRIR EVENTO</button>
-        <button id="btn-dev-voltar-dossie" class="btn-acao-rapida">📁 EXIBIR DOSSIÊ DA FASE</button>
+        <button id="btn-dev-voltar-dossie" class="btn-acao-rapida">📁 SELETOR DE CENAS</button>
       </div>
 
       <!-- SIMULAÇÕES RÁPIDAS DE ESTADO -->

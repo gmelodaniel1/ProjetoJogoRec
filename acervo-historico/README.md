@@ -11,3 +11,4 @@ Este diretório contém os arquivos de alta resolução, digitalizações brutas
 - **`ACERVO DIGITAL MCR fotografia - VOL 99.pdf`**: Digitalização completa do Livro de Tombamento Fotográfico do Museu da Cidade do Recife (Forte das Cinco Pontas), cobrindo o período 1948–1965 (106 páginas, ~113 MB).
 - **`RecifeVibe.JPG`**: Fotografia matriz noturna com os néons da Ponte Duarte Coelho, Avenida Conde da Boa Vista e reflexos no Rio Capibaribe (~1967–1972).
 - Outras referências documentais, iconográficas e mapas de época.
+
