@@ -17,7 +17,8 @@ const SUITES = [
   { nome: "Schema & Crônicas de Desfecho Narrativo (Ticket 25)", arquivo: "test_desfechos_ticket25.js" },
   { nome: "Tela Especial de Resolução em Papel Sobreposto (Ticket 26)", arquivo: "test_tela_resolucao_ticket26.js" },
   { nome: "Sistema de Persistência, Save/Load & Auto-Save (Ticket 27)", arquivo: "test_persistencia_save_load_ticket27.js" },
-  { nome: "Menu Principal Diegético & Gaveteiro de Arquivos (Ticket 28)", arquivo: "test_menu_gaveteiro_ticket28.js" }
+  { nome: "Menu Principal Diegético & Gaveteiro de Arquivos (Ticket 28)", arquivo: "test_menu_gaveteiro_ticket28.js" },
+  { nome: "Módulo de Áudio Sintetizado & Soundscape (Ticket 29)", arquivo: "test_audio_manager_ticket29.js" }
 ];
 
 console.log("=================================================================");

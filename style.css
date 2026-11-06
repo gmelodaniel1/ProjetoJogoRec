@@ -343,6 +343,19 @@ body.fase-3 .mesa-viewport {
   color: #EFE8DA;
 }
 
+/* Fita Dymo Grafite / Áudio (Ticket 29) */
+.btn-dymo-grafite {
+  background: linear-gradient(180deg, #4A5255 0%, #303638 55%, #222628 100%);
+  border: 1px solid #141718;
+  color: #EFE8DA;
+}
+
+#btn-audio-toggle.som-mudo {
+  background: linear-gradient(180deg, #782E2B 0%, #521917 55%, #381110 100%);
+  border-color: #240A09;
+  color: #E2B6B4;
+}
+
 /* Compatibilidade com classes anteriores */
 .btn-controle {
   background: #423527;

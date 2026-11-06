@@ -143,3 +143,4 @@ if (reprovados > 0) {
 } else {
   process.exit(0);
 }
+

@@ -13,9 +13,11 @@ let deliberacaoAberta = false; // Fluxo em dois tempos: false = lendo narrativa,
 const store = new CharacterStateStore();
 const engine = new DeterministicEngine(store);
 const saveManager = typeof SaveManager !== 'undefined' ? new SaveManager({ store }) : null;
+const audioManager = typeof AudioManager !== 'undefined' ? new AudioManager() : null;
 window.personagemStore = store;
 window.gameEngine = engine;
 window.saveManager = saveManager;
+window.audioManager = audioManager;
 
 // ==========================================================================
 // PERSISTÊNCIA & RESTAURAÇÃO DE SESSÃO (TICKET 27)
@@ -77,6 +79,7 @@ const elEtiquetaFase = document.getElementById('etiqueta-fase');
 const elAnoAtual = document.getElementById('ano-atual');
 const btnFullscreen = document.getElementById('btn-fullscreen');
 const btnMenuArquivo = document.getElementById('btn-menu-arquivo');
+const btnAudioToggle = document.getElementById('btn-audio-toggle');
 
 // Referências DOM - Menu Principal & Gaveteiro de Arquivos (Ticket 28)
 const elTelaMenuPrincipal = document.getElementById('tela-menu-principal');
@@ -233,6 +236,7 @@ function alternarAbaPalco(idAlvo) {
     idAlvo = 'aba-cenario';
   }
   abaPalcoAtiva = idAlvo;
+  if (audioManager) audioManager.somPapel();
 
   document.querySelectorAll('.aba-palco').forEach(aba => {
     aba.classList.toggle('ativa', aba.id === idAlvo);
@@ -292,6 +296,10 @@ function animarDeltaBadge(chave, infoDelta) {
 }
 
 function tocarSomCarimbo() {
+  if (audioManager) {
+    audioManager.somCarimbo();
+    return;
+  }
   try {
     const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtxClass) return;
@@ -312,6 +320,32 @@ function tocarSomCarimbo() {
     osc.start();
     osc.stop(audioCtx.currentTime + 0.11);
   } catch (e) {}
+}
+
+function atualizarBotaoAudio() {
+  if (!btnAudioToggle || !audioManager) return;
+  const mudo = audioManager.estaMudo();
+  btnAudioToggle.textContent = mudo ? '[SOM: OFF]' : '[SOM: ON]';
+  btnAudioToggle.title = mudo ? 'Áudio Silenciado — Clique para Ativar [SOM]' : 'Áudio Ativado — Clique para Silenciar [SOM]';
+  if (mudo) {
+    btnAudioToggle.classList.add('som-mudo');
+  } else {
+    btnAudioToggle.classList.remove('som-mudo');
+  }
+}
+window.atualizarBotaoAudio = atualizarBotaoAudio;
+
+if (btnAudioToggle) {
+  btnAudioToggle.addEventListener('click', () => {
+    if (audioManager) {
+      audioManager.garantirContexto();
+      audioManager.alternarMudo();
+      atualizarBotaoAudio();
+      if (!audioManager.estaMudo()) {
+        audioManager.somCarimbo();
+      }
+    }
+  });
 }
 
 let emTransicao = false;
@@ -741,7 +775,11 @@ function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, call
   // 8. Exibição e som analógico
   elOverlayResolucaoConsequencia.classList.remove('saindo');
   elOverlayResolucaoConsequencia.style.display = 'flex';
-  tocarSomCarimbo();
+  if (audioManager) {
+    audioManager.somPapel();
+  } else {
+    tocarSomCarimbo();
+  }
 
   // 9. Foco deliberado no botão de avançar para acessibilidade
   if (btnContinuarResolucao) {
@@ -941,13 +979,20 @@ function abrirGaveteiroArquivos() {
   if (!elModalGaveteiro) return;
   renderizarSlotsGaveteiro();
   elModalGaveteiro.style.display = 'flex';
-  tocarSomCarimbo();
+  if (audioManager) {
+    audioManager.somGavetaMetalica();
+  } else {
+    tocarSomCarimbo();
+  }
 }
 window.abrirGaveteiroArquivos = abrirGaveteiroArquivos;
 
 function fecharGaveteiroArquivos() {
   if (!elModalGaveteiro) return;
   elModalGaveteiro.style.display = 'none';
+  if (audioManager) {
+    audioManager.somGavetaMetalica();
+  }
 }
 window.fecharGaveteiroArquivos = fecharGaveteiroArquivos;
 
@@ -2055,7 +2100,13 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta, evento = null) {
     if (evento) {
       atualizarMolduraEvidencia(evento, blocos.length - 1);
     }
-    if (tocarSom) tocarSomCarimbo();
+    if (tocarSom) {
+      if (audioManager) {
+        audioManager.somPapel();
+      } else {
+        tocarSomCarimbo();
+      }
+    }
     concluirLeituraEMostrarDespacho();
   }
 
@@ -2085,7 +2136,11 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta, evento = null) {
       const blocoAtual = blocos[indiceAtual];
       blocoAtual.classList.remove('oculto');
       blocoAtual.classList.add('revelado');
-      tocarSomCarimbo();
+      if (audioManager) {
+        audioManager.somDatilografia();
+      } else {
+        tocarSomCarimbo();
+      }
 
       // Se este beat possuir outra imagem, o palco transita para a nova cena!
       if (evento) {
@@ -2575,4 +2630,5 @@ window.addEventListener('DOMContentLoaded', () => {
   atualizarStatusFullscreen();
   inicializarNarrativa();
   atualizarStatusMenuPrincipal();
+  atualizarBotaoAudio();
 });
