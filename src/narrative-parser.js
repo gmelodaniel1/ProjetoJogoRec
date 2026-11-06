@@ -103,6 +103,22 @@ function parseEventFile(filePath) {
     // Valida o contrato do roteirista
     validarEsquemaEvento(data, filePath);
 
+    // Processa opções e desfechos narrativos (Ticket 25)
+    data.opcoes.forEach(opcao => {
+      if (opcao.desfecho && typeof opcao.desfecho === 'string') {
+        opcao.desfecho = opcao.desfecho.trim();
+        opcao.desfechoHtml = aplicarGrifosHistoricos(marked.parse(opcao.desfecho).trim());
+      } else {
+        // Fallback diegético elegante quando o autor não redigiu desfecho explícito
+        const carimboTexto = opcao.carimbo ? `[${opcao.carimbo}]` : '[REGISTRADO]';
+        const textoBase = opcao.descricao
+          ? `A decisão foi formalmente consumada sob o carimbo de ${carimboTexto}. ${opcao.descricao}`
+          : `A resolução foi lavrada nos registros históricos da cidade sob a chancela de ${carimboTexto}.`;
+        opcao.desfecho = textoBase;
+        opcao.desfechoHtml = aplicarGrifosHistoricos(`<p>${textoBase}</p>`);
+      }
+    });
+
     // Converte Markdown e aplica estilização tipográfica
     const htmlBruto = marked.parse(parsed.content || '');
     const htmlFinal = aplicarGrifosHistoricos(htmlBruto);

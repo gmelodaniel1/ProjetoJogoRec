@@ -15,6 +15,7 @@ opcoes:
     rotulo: "Riscar as primeiras vogais com ponta de carvão nas tábuas"
     descricao: "Copiar os títulos das manchetes velhas do Diário de Pernambuco que forram as paredes do quarto."
     carimbo: "LETRADO"
+    desfecho: "Com a ponta de um tição apagado, cobriste a madeira com as letras de 'CAPIBARIBE' e 'POVO'. Um tipógrafo aposentado que morava no beco parou para olhar e tirou do bolso uma cartilha amarrotada de cordel: 'A palavra escrita é a única foice que corta mais fundo que o chicote dos usineiros'. O fascínio pelos jornais e manifestos fincou raízes definitivas na tua mente."
     requisitos: {}
     efeitos:
       astucia: 1
@@ -24,6 +25,7 @@ opcoes:
     rotulo: "Interpor teu corpo numa contenda de moleques do pátio"
     descricao: "Não recuar diante dos garotos mais velhos que disputavam os restos de cana-de-açúcar descarregados no porto."
     carimbo: "TEMÍVEL"
+    desfecho: "Recebeste um arranhão feio no braço e poeira no rosto, mas não deste um único passo para trás. Quando os meninos maiores viram a tua firmeza gelada, baixaram os galhos e recuaram resmungando. Teu irmão limpou o nariz sangrando na tua camisa e apertou a tua mão. Naquele pedaço de chão batido, ninguém mais ousou mexer com a tua família."
     requisitos: {}
     efeitos:
       sangue_frio: 1

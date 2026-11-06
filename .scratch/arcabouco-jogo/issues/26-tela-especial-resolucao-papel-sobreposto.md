@@ -14,3 +14,4 @@ Substituir a transição abrupta pós-decisão por uma folha de ocorrência/rela
 - [ ] Botão de encerramento `[ ASSIMILAR OS FATOS & SEGUIR ADIANTE ➔ ]` que só então transita para a virada de ano, próximo evento ou dossiê.
 - [ ] Preservação estrita das regras de acessibilidade e compatibilidade híbrida Web + Electron.
 - [ ] Suíte de testes automatizada `test/test_tela_resolucao_ticket26.js` aprovada com 100% de sucesso.
+

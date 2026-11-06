@@ -14,6 +14,7 @@ opcoes:
     rotulo: "Acompanhar teu pai e aprender a engrenagem das oficinas"
     descricao: "Trocar as brincadeiras de rua pelo barulho ritmado dos tornos mecânicos e pelas reuniões clandestinas da categoria."
     carimbo: "OPERÁRIO"
+    desfecho: "Ao cruzar os portões de ferro das oficinas de Cinco Pontas pela primeira vez, o cheiro de graxa e melaço queimado selou o teu destino. Entre os motores das locomotivas da Great Western, aprendeste a arte do ofício e a disciplina silenciosa dos operários que tramavam greves nos fundos dos depósitos. A infância terminou sob o rugido do maquinário pesado."
     requisitos: {}
     efeitos:
       oficio: 1
@@ -24,6 +25,7 @@ opcoes:
     rotulo: "Dedicar as tardes aos alfarrábios e cartilhas da Boa Vista"
     descricao: "Frequentar a biblioteca pública e os círculos de estudo mantidos pelos estudantes na Faculdade de Direito."
     carimbo: "ESTUDIOSO"
+    desfecho: "Subindo as escadarias de pedra da Faculdade de Direito na Boa Vista com pés descalços e livros de segunda mão sob o braço, aprendeste a gramática da lei e a retórica da revolta. Os filhos da burguesia olhavam-te com desconfiança, mas tua sagacidade nas discussões políticas conquistou o respeito dos acadêmicos progressistas. Tua mente tornou-se uma arma afiada."
     requisitos: {}
     efeitos:
       astucia: 1
@@ -33,6 +35,7 @@ opcoes:
     rotulo: "Engraxar sapatos e vender jornais pelas pontes do centro"
     descricao: "Conhecer cada esquina entre a Ponte Duarte Coelho e a Praça da Independência, acumulando teus próprios trocados."
     carimbo: "VAGANTE"
+    desfecho: "Com a caixa de engraxate presa ao ombro e jornais vespertinos debaixo do braço, a Ponte Duarte Coelho tornou-se a tua escola. Ouviste segredos de bacharéis embriagados, esquivaste-te de rondas policiais e acumulaste cada moeda de cobre como quem constrói uma fortaleza. As ruas do Recife ensinaram-te a malícia de quem nunca pode vacilar."
     requisitos: {}
     efeitos:
       sangue_frio: 1

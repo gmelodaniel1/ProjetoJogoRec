@@ -15,6 +15,7 @@ opcoes:
     rotulo: "Decorar os versos dos mascates e pregoeiros do mercado"
     descricao: "Repetir os ritmos e as rimas dos vendedores de tapioca e peixe fresco, atraindo a atenção das comadres da rua."
     carimbo: "ELOQUENTE"
+    desfecho: "Subiste numa caixa de madeira de bacalhau e imitaste o grito cantado do vendedor de caranguejo com tamanha precisão que a feira inteira gargalhou. Um canoeiro deu-te dois tatus de goma e bateu nas tuas costas: 'Menino com essa garganta vai ser tribuno de palanque ou dono de jornal'. Tua voz aprendeu ali o poder de cativar o povo da rua."
     requisitos: {}
     efeitos:
       presenca: 1
@@ -24,6 +25,7 @@ opcoes:
     rotulo: "Cuidar com zelo das moedas que sobram do pão"
     descricao: "Recolher os trocados de cobre e entregá-los na lata de banha que tua mãe esconde atrás do pote de barro."
     carimbo: "POUPADOR"
+    desfecho: "Contaste tostão por tostão, com as mãozinhas pretas de poeira, e depositaste as moedas de níquel na lata de banha enferrujada. Quando a febre atacou teu irmão caçula e foi preciso comprar purgante na Pharmacia da Concórdia, aquelas moedas salvaram a noite. Teus pais trocaram um olhar de alívio silencioso: a responsabilidade chegava cedo na tua casa."
     requisitos: {}
     efeitos:
       capital: 5

@@ -5,12 +5,13 @@ Adicionar o campo `desfecho` nas opções dos eventos de roteiro Markdown (com t
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** closed
 
 ## Acceptance Criteria
-- [ ] Schema dos eventos suporta `desfecho` em cada item de `opcoes`.
-- [ ] Eventos da Fase 1 (Infância e Juventude) enriquecidos com crônicas literárias de desfecho.
-- [ ] Parser aplica grifos históricos no campo `desfecho` e o compila para HTML seguro.
-- [ ] Gerador `scripts/build-web.js` inclui os desfechos em `conteudo/eventos-bundle.js` e `conteudo/eventos.json`.
-- [ ] Fallback diegético elegante quando uma opção não possui `desfecho` explícito (combinação da descrição e do carimbo).
-- [ ] Suíte de testes automatizada `test/test_desfechos_ticket25.js` aprovada com 100% de sucesso.
+- [x] Schema dos eventos suporta `desfecho` em cada item de `opcoes`.
+- [x] Eventos da Fase 1 (Infância e Juventude) enriquecidos com crônicas literárias de desfecho.
+- [x] Parser aplica grifos históricos no campo `desfecho` e o compila para HTML seguro.
+- [x] Gerador `scripts/build-web.js` inclui os desfechos em `conteudo/eventos-bundle.js` e `conteudo/eventos.json`.
+- [x] Fallback diegético elegante quando uma opção não possui `desfecho` explícito (combinação da descrição e do carimbo).
+- [x] Suíte de testes automatizada `test/test_desfechos_ticket25.js` aprovada com 100% de sucesso.
+

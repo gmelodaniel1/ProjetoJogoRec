@@ -18,6 +18,7 @@ opcoes:
     rotulo: "Aceitar o fardo e correr pelos becos úmidos"
     descricao: "Conheces cada viela e telhado entre o cais e a Rua da Palma. Tua agilidade nas pontes pode salvar a pele do velho e o sindicato."
     carimbo: "SUBVERSIVO"
+    desfecho: "Com o maço de panfletos colado ao peito por dentro do casaco, disparaste pelos becos úmidos de Santo Antônio. As botas dos soldados ressoavam perto demais, mas teu conhecimento dos telhados e pontes fez a diferença. O material foi entregue intacto na tipografia clandestina da Rua da Palma. Teu pai escapou do cerco e os operários celebraram a tua agilidade, mas os agentes do DOPS anotaram pela primeira vez os teus traços nos relatórios de ronda."
     requisitos:
       astucia: 2
     efeitos:
@@ -29,6 +30,7 @@ opcoes:
     rotulo: "Enfrentar os soldados e encobrir a fuga com tua voz"
     descricao: "Gritar um falso alarme de incêndio no depósito para atrair a ronda militar para o lado oposto."
     carimbo: "TEMERÁRIO"
+    desfecho: "Teu grito de 'Fogo no armazém três!' ecoou estrondoso entre as vigas de ferro, paralisando a patrulha. Os soldados correram na direção contrária, abrindo a brecha necessária para teu pai sumir no manguezal com os documentos. Foste detido para averiguações na esquina da Concórdia e levaste duas bofetadas de aviso, mas nada encontraram nos teus bolsos. Teu nome, porém, foi fichado na delegacia."
     requisitos:
       presenca: 2
     efeitos:
@@ -39,6 +41,7 @@ opcoes:
     rotulo: "Recusar a loucura e jogar os papéis no canal do Capibaribe"
     descricao: "A segurança da família vale mais do que panfletos molhados. Arrancar a cumplicidade do teu destino antes que seja tarde."
     carimbo: "CAUTELOSO"
+    desfecho: "Num gesto frio e silencioso, arrancaste o pacote e lançaste-o nas águas escuras da maré. As folhas mimeografadas dispersaram-se na correnteza como espuma fétida antes que a ronda militar dobrasse a esquina. Teu pai olhou-te com uma tristeza cortante, sentindo a traição ao sindicato, mas quando a revista policial vasculhou os caixotes, nada havia para incriminar a família. A segurança fora comprada ao preço da amargura."
     requisitos: {}
     efeitos:
       relacao_pai: -1

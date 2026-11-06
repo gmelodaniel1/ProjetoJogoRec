@@ -22,7 +22,9 @@
             "efeitos": {
               "capital": -25,
               "suspeita_dops": -5
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SUBORNO]. O inspetor aceita empurrar o teu dossiê para o fundo da gaveta, mas o preço limpa os teus bolsos.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SUBORNO]. O inspetor aceita empurrar o teu dossiê para o fundo da gaveta, mas o preço limpa os teus bolsos.</p>"
           },
           {
             "id": "sacrificar_lealdade_familiar",
@@ -37,7 +39,9 @@
               "honra_familiar": -2,
               "suspeita_dops": -6,
               "sangue_frio": 1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [INFÂMIA]. O velho dá um passo à frente antes que os policiais alcancem o teu quarto. O olhar dele nunca mais te perdoará.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [INFÂMIA]. O velho dá um passo à frente antes que os policiais alcancem o teu quarto. O olhar dele nunca mais te perdoará.</p>"
           },
           {
             "id": "resistir_ao_interrogatorio",
@@ -51,7 +55,9 @@
               "sangue_frio": -1,
               "moral_popular": 4,
               "suspeita_dops": -4
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [RESISTÊNCIA]. Quarenta e oito horas de pauladas e isolamento na cela úmida. Teu corpo carrega cicatrizes, mas a tua boca não abre.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [RESISTÊNCIA]. Quarenta e oito horas de pauladas e isolamento na cela úmida. Teu corpo carrega cicatrizes, mas a tua boca não abre.</p>"
           }
         ]
       },
@@ -81,7 +87,9 @@
               "influencia": -1,
               "capital": 30,
               "moral_popular": -2
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [COMPROMETIDO]. Vender votos sindicais ou favores burocráticos para um agiota do cais em troca de dinheiro vivo.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [COMPROMETIDO]. Vender votos sindicais ou favores burocráticos para um agiota do cais em troca de dinheiro vivo.</p>"
           },
           {
             "id": "humilhacao_publica",
@@ -93,7 +101,9 @@
               "honra_familiar": -2,
               "capital": 20,
               "moral_popular": -1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [HUMILHAÇÃO]. Engolir o orgulho e beijar a mão da elite usineira para evitar que tua família vá para a sarjeta.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [HUMILHAÇÃO]. Engolir o orgulho e beijar a mão da elite usineira para evitar que tua família vá para a sarjeta.</p>"
           }
         ]
       },
@@ -118,22 +128,26 @@
             "rotulo": "Chorar com força diante do breu da noite",
             "descricao": "Teu primeiro alento é um grito que ecoa sobre as águas escuras do mangue, exigindo o calor dos braços de tua mãe.",
             "carimbo": "VALENTE",
+            "desfecho": "O teu primeiro grito rompeu o breu do manguezal com a força de um apito de trem nas oficinas de Cinco Pontas. Tua mãe apertou-te contra o peito suado, aliviada, e teu pai sorriu no vão da porta com os olhos marejados: 'Esse aí não nasceu para abaixar a cabeça, mulher'. A vizinhança soube logo que mais uma vida teimava em fincar raízes na lama do Recife.",
             "requisitos": {},
             "efeitos": {
               "presenca": 1,
               "relacao_pai": 1
-            }
+            },
+            "desfechoHtml": "<p>O teu primeiro grito rompeu o breu do manguezal com a força de um apito de trem nas oficinas de <span class=\"grifo-bairro\">Cinco Pontas</span>. Tua mãe apertou-te contra o peito suado, aliviada, e teu pai sorriu no vão da porta com os olhos marejados: &#39;Esse aí não nasceu para abaixar a cabeça, mulher&#39;. A vizinhança soube logo que mais uma vida teimava em fincar raízes na lama do Recife.</p>"
           },
           {
             "id": "olhar_silencioso",
             "rotulo": "Abrir os olhos em silêncio e absorver o murmúrio do rio",
             "descricao": "Contemplar a fresta de luz de lamparina entre as tábuas do mocambo. Uma calma prematura que intriga os presentes.",
             "carimbo": "ATENTO",
+            "desfecho": "Não houve berro nem desespero. Teus pequenos olhos cravaram-se no clarão trêmulo da lamparina de querosene, enquanto o Rio Capibaribe marulhava lá embaixo pelas frestas do assoalho. A parteira benzeu a testa com espanto: 'Menino quieto demais é bicho que pensa antes do tempo'. A calma misteriosa daquela noite seria a tua primeira armadura contra os dias duros que viriam.",
             "requisitos": {},
             "efeitos": {
               "astucia": 1,
               "sangue_frio": 1
-            }
+            },
+            "desfechoHtml": "<p>Não houve berro nem desespero. Teus pequenos olhos cravaram-se no clarão trêmulo da lamparina de querosene, enquanto o <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> marulhava lá embaixo pelas frestas do assoalho. A parteira benzeu a testa com espanto: &#39;Menino quieto demais é bicho que pensa antes do tempo&#39;. A calma misteriosa daquela noite seria a tua primeira armadura contra os dias duros que viriam.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -159,22 +173,26 @@
             "rotulo": "Apoiar-se na caixa de ferramentas de ferro do teu pai",
             "descricao": "Tocar o metal frio e a graxa das chaves de fenda do cais antes de dar o primeiro passo trôpego no chão de terra batida.",
             "carimbo": "OFÍCIO",
+            "desfecho": "Tuas pequenas mãos fecharam-se ao redor de uma chave inglesa gasta, pesada como chumbo. Ao ergueres o corpinho apoiado naquele aço frio, teus pés descalços firmaram-se no assoalho. Mestre Severino largou o fumo de rolo e gargalhou, pegando-te nos ombros: 'Quem aprende a se apoiar no ferro nunca despenca, meu filho'. A oficina já corria no teu sangue.",
             "requisitos": {},
             "efeitos": {
               "oficio": 1,
               "relacao_pai": 1
-            }
+            },
+            "desfechoHtml": "<p>Tuas pequenas mãos fecharam-se ao redor de uma chave inglesa gasta, pesada como chumbo. Ao ergueres o corpinho apoiado naquele aço frio, teus pés descalços firmaram-se no assoalho. Mestre Severino largou o fumo de rolo e gargalhou, pegando-te nos ombros: &#39;Quem aprende a se apoiar no ferro nunca despenca, meu filho&#39;. A oficina já corria no teu sangue.</p>"
           },
           {
             "id": "avancar_sozinho_porta",
             "rotulo": "Soltar as mãos e arriscar a travessia em direção à luz",
             "descricao": "Caminhar cambaleante rumo à porta aberta para a viela ensolarada, sem medo das frestas entre as tábuas.",
             "carimbo": "TEMERÁRIO",
+            "desfecho": "Ignorando os braços estendidos dos teus pais, soltaste o batente e marchaste trôpego direto para a claridade da viela de palafitas. Um passo em falso quase te levou ao canal de maré, mas teu pequeno equilíbrio surpreendeu a todos. Tua mãe correu aflita com a mão no peito, mas teu olhar já fitava o cais ao longe: a rua começava a te chamar.",
             "requisitos": {},
             "efeitos": {
               "sangue_frio": 1,
               "presenca": 1
-            }
+            },
+            "desfechoHtml": "<p>Ignorando os braços estendidos dos teus pais, soltaste o batente e marchaste trôpego direto para a claridade da viela de palafitas. Um passo em falso quase te levou ao canal de maré, mas teu pequeno equilíbrio surpreendeu a todos. Tua mãe correu aflita com a mão no peito, mas teu olhar já fitava o cais ao longe: a rua começava a te chamar.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -200,22 +218,26 @@
             "rotulo": "Aprender a ler o ritmo da maré antes de se aproximar",
             "descricao": "Notar como as folhas e os gravetos indicam a direção do fluxo do Capibaribe antes que a lama engula teus pés.",
             "carimbo": "SAGAZ",
+            "desfecho": "Sentado na ponta de um caibro molhado, aprendeste a decifrar a respiração traiçoeira do Rio Capibaribe: a espuma branca avisava a vazante, o lodo denso denunciava o repiquete. Enquanto outras crianças escorregavam na correnteza, teus pés sabiam exatamente onde pisar. O rio não era um monstro, mas um velho conhecido que exigia respeito e cautela.",
             "requisitos": {},
             "efeitos": {
               "astucia": 1,
               "sangue_frio": 1
-            }
+            },
+            "desfechoHtml": "<p>Sentado na ponta de um caibro molhado, aprendeste a decifrar a respiração traiçoeira do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span>: a espuma branca avisava a vazante, o lodo denso denunciava o repiquete. Enquanto outras crianças escorregavam na correnteza, teus pés sabiam exatamente onde pisar. O rio não era um monstro, mas um velho conhecido que exigia respeito e cautela.</p>"
           },
           {
             "id": "ajudar_mutirao_vizinhos",
             "rotulo": "Carregar pequenas tábuas para ajudar os vizinhos do beco",
             "descricao": "Correr descalço entre os mocambos vizinhos para avisar que a água de inverno começou a invadir as cozinhas.",
             "carimbo": "SOLIDÁRIO",
+            "desfecho": "Carregando lascas de ripa que pesavam nos teus bracinhos, foste de porta em porta berrando o alerta da cheia. As lavadeiras e carvoeiros dos Coelhos sorriram com gratidão e te deram meio pedaço de rapadura: 'Esse menino tem alma de povo'. O respeito da tua vizinhança começou a se tecer ali, na lama dividida com quem nada tinha.",
             "requisitos": {},
             "efeitos": {
               "moral_popular": 1,
               "presenca": 1
-            }
+            },
+            "desfechoHtml": "<p>Carregando lascas de ripa que pesavam nos teus bracinhos, foste de porta em porta berrando o alerta da cheia. As lavadeiras e carvoeiros dos <span class=\"grifo-bairro\">Coelhos</span> sorriram com gratidão e te deram meio pedaço de rapadura: &#39;Esse menino tem alma de povo&#39;. O respeito da tua vizinhança começou a se tecer ali, na lama dividida com quem nada tinha.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -242,22 +264,26 @@
             "rotulo": "Decorar os versos dos mascates e pregoeiros do mercado",
             "descricao": "Repetir os ritmos e as rimas dos vendedores de tapioca e peixe fresco, atraindo a atenção das comadres da rua.",
             "carimbo": "ELOQUENTE",
+            "desfecho": "Subiste numa caixa de madeira de bacalhau e imitaste o grito cantado do vendedor de caranguejo com tamanha precisão que a feira inteira gargalhou. Um canoeiro deu-te dois tatus de goma e bateu nas tuas costas: 'Menino com essa garganta vai ser tribuno de palanque ou dono de jornal'. Tua voz aprendeu ali o poder de cativar o povo da rua.",
             "requisitos": {},
             "efeitos": {
               "presenca": 1,
               "astucia": 1
-            }
+            },
+            "desfechoHtml": "<p>Subiste numa caixa de madeira de bacalhau e imitaste o grito cantado do vendedor de caranguejo com tamanha precisão que a feira inteira gargalhou. Um canoeiro deu-te dois tatus de goma e bateu nas tuas costas: &#39;Menino com essa garganta vai ser tribuno de palanque ou dono de jornal&#39;. Tua voz aprendeu ali o poder de cativar o povo da rua.</p>"
           },
           {
             "id": "guardar_trocados_familia",
             "rotulo": "Cuidar com zelo das moedas que sobram do pão",
             "descricao": "Recolher os trocados de cobre e entregá-los na lata de banha que tua mãe esconde atrás do pote de barro.",
             "carimbo": "POUPADOR",
+            "desfecho": "Contaste tostão por tostão, com as mãozinhas pretas de poeira, e depositaste as moedas de níquel na lata de banha enferrujada. Quando a febre atacou teu irmão caçula e foi preciso comprar purgante na Pharmacia da Concórdia, aquelas moedas salvaram a noite. Teus pais trocaram um olhar de alívio silencioso: a responsabilidade chegava cedo na tua casa.",
             "requisitos": {},
             "efeitos": {
               "capital": 5,
               "honra_familiar": 1
-            }
+            },
+            "desfechoHtml": "<p>Contaste tostão por tostão, com as mãozinhas pretas de poeira, e depositaste as moedas de níquel na lata de banha enferrujada. Quando a febre atacou teu irmão caçula e foi preciso comprar purgante na Pharmacia da Concórdia, aquelas moedas salvaram a noite. Teus pais trocaram um olhar de alívio silencioso: a responsabilidade chegava cedo na tua casa.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -284,22 +310,26 @@
             "rotulo": "Riscar as primeiras vogais com ponta de carvão nas tábuas",
             "descricao": "Copiar os títulos das manchetes velhas do Diário de Pernambuco que forram as paredes do quarto.",
             "carimbo": "LETRADO",
+            "desfecho": "Com a ponta de um tição apagado, cobriste a madeira com as letras de 'CAPIBARIBE' e 'POVO'. Um tipógrafo aposentado que morava no beco parou para olhar e tirou do bolso uma cartilha amarrotada de cordel: 'A palavra escrita é a única foice que corta mais fundo que o chicote dos usineiros'. O fascínio pelos jornais e manifestos fincou raízes definitivas na tua mente.",
             "requisitos": {},
             "efeitos": {
               "astucia": 1,
               "oficio": 1
-            }
+            },
+            "desfechoHtml": "<p>Com a ponta de um tição apagado, cobriste a madeira com as letras de &#39;<span class=\"grifo-rio\">CAPIBARIBE</span>&#39; e &#39;POVO&#39;. Um tipógrafo aposentado que morava no beco parou para olhar e tirou do bolso uma cartilha amarrotada de cordel: &#39;A palavra escrita é a única foice que corta mais fundo que o chicote dos usineiros&#39;. O fascínio pelos jornais e manifestos fincou raízes definitivas na tua mente.</p>"
           },
           {
             "id": "defender_irmao_briga",
             "rotulo": "Interpor teu corpo numa contenda de moleques do pátio",
             "descricao": "Não recuar diante dos garotos mais velhos que disputavam os restos de cana-de-açúcar descarregados no porto.",
             "carimbo": "TEMÍVEL",
+            "desfecho": "Recebeste um arranhão feio no braço e poeira no rosto, mas não deste um único passo para trás. Quando os meninos maiores viram a tua firmeza gelada, baixaram os galhos e recuaram resmungando. Teu irmão limpou o nariz sangrando na tua camisa e apertou a tua mão. Naquele pedaço de chão batido, ninguém mais ousou mexer com a tua família.",
             "requisitos": {},
             "efeitos": {
               "sangue_frio": 1,
               "presenca": 1
-            }
+            },
+            "desfechoHtml": "<p>Recebeste um arranhão feio no braço e poeira no rosto, mas não deste um único passo para trás. Quando os meninos maiores viram a tua firmeza gelada, baixaram os galhos e recuaram resmungando. Teu irmão limpou o nariz sangrando na tua camisa e apertou a tua mão. Naquele pedaço de chão batido, ninguém mais ousou mexer com a tua família.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -325,34 +355,40 @@
             "rotulo": "Acompanhar teu pai e aprender a engrenagem das oficinas",
             "descricao": "Trocar as brincadeiras de rua pelo barulho ritmado dos tornos mecânicos e pelas reuniões clandestinas da categoria.",
             "carimbo": "OPERÁRIO",
+            "desfecho": "Ao cruzar os portões de ferro das oficinas de Cinco Pontas pela primeira vez, o cheiro de graxa e melaço queimado selou o teu destino. Entre os motores das locomotivas da Great Western, aprendeste a arte do ofício e a disciplina silenciosa dos operários que tramavam greves nos fundos dos depósitos. A infância terminou sob o rugido do maquinário pesado.",
             "requisitos": {},
             "efeitos": {
               "oficio": 1,
               "relacao_pai": 1,
               "honra_familiar": 1
-            }
+            },
+            "desfechoHtml": "<p>Ao cruzar os portões de ferro das oficinas de <span class=\"grifo-bairro\">Cinco Pontas</span> pela primeira vez, o cheiro de graxa e melaço queimado selou o teu destino. Entre os motores das locomotivas da <span class=\"grifo-faccao\">Great Western</span>, aprendeste a arte do ofício e a disciplina silenciosa dos operários que tramavam greves nos fundos dos depósitos. A infância terminou sob o rugido do maquinário pesado.</p>"
           },
           {
             "id": "buscar_leitura_livros",
             "rotulo": "Dedicar as tardes aos alfarrábios e cartilhas da Boa Vista",
             "descricao": "Frequentar a biblioteca pública e os círculos de estudo mantidos pelos estudantes na Faculdade de Direito.",
             "carimbo": "ESTUDIOSO",
+            "desfecho": "Subindo as escadarias de pedra da Faculdade de Direito na Boa Vista com pés descalços e livros de segunda mão sob o braço, aprendeste a gramática da lei e a retórica da revolta. Os filhos da burguesia olhavam-te com desconfiança, mas tua sagacidade nas discussões políticas conquistou o respeito dos acadêmicos progressistas. Tua mente tornou-se uma arma afiada.",
             "requisitos": {},
             "efeitos": {
               "astucia": 1,
               "influencia": 1
-            }
+            },
+            "desfechoHtml": "<p>Subindo as escadarias de pedra da Faculdade de Direito na <span class=\"grifo-bairro\">Boa Vista</span> com pés descalços e livros de segunda mão sob o braço, aprendeste a gramática da lei e a retórica da revolta. Os filhos da burguesia olhavam-te com desconfiança, mas tua sagacidade nas discussões políticas conquistou o respeito dos acadêmicos progressistas. Tua mente tornou-se uma arma afiada.</p>"
           },
           {
             "id": "sobreviver_biscates_rua",
             "rotulo": "Engraxar sapatos e vender jornais pelas pontes do centro",
             "descricao": "Conhecer cada esquina entre a Ponte Duarte Coelho e a Praça da Independência, acumulando teus próprios trocados.",
             "carimbo": "VAGANTE",
+            "desfecho": "Com a caixa de engraxate presa ao ombro e jornais vespertinos debaixo do braço, a Ponte Duarte Coelho tornou-se a tua escola. Ouviste segredos de bacharéis embriagados, esquivaste-te de rondas policiais e acumulaste cada moeda de cobre como quem constrói uma fortaleza. As ruas do Recife ensinaram-te a malícia de quem nunca pode vacilar.",
             "requisitos": {},
             "efeitos": {
               "sangue_frio": 1,
               "capital": 15
-            }
+            },
+            "desfechoHtml": "<p>Com a caixa de engraxate presa ao ombro e jornais vespertinos debaixo do braço, a <span class=\"grifo-rio\">Ponte Duarte Coelho</span> tornou-se a tua escola. Ouviste segredos de bacharéis embriagados, esquivaste-te de rondas policiais e acumulaste cada moeda de cobre como quem constrói uma fortaleza. As ruas do Recife ensinaram-te a malícia de quem nunca pode vacilar.</p>"
           }
         ],
         "requisitos_acesso": {}
@@ -382,6 +418,7 @@
             "rotulo": "Aceitar o fardo e correr pelos becos úmidos",
             "descricao": "Conheces cada viela e telhado entre o cais e a Rua da Palma. Tua agilidade nas pontes pode salvar a pele do velho e o sindicato.",
             "carimbo": "SUBVERSIVO",
+            "desfecho": "Com o maço de panfletos colado ao peito por dentro do casaco, disparaste pelos becos úmidos de Santo Antônio. As botas dos soldados ressoavam perto demais, mas teu conhecimento dos telhados e pontes fez a diferença. O material foi entregue intacto na tipografia clandestina da Rua da Palma. Teu pai escapou do cerco e os operários celebraram a tua agilidade, mas os agentes do DOPS anotaram pela primeira vez os teus traços nos relatórios de ronda.",
             "requisitos": {
               "astucia": 2
             },
@@ -389,32 +426,37 @@
               "sangue_frio": 1,
               "moral_popular": 2,
               "suspeita_dops": 1
-            }
+            },
+            "desfechoHtml": "<p>Com o maço de panfletos colado ao peito por dentro do casaco, disparaste pelos becos úmidos de <span class=\"grifo-bairro\">Santo Antônio</span>. As botas dos soldados ressoavam perto demais, mas teu conhecimento dos telhados e pontes fez a diferença. O material foi entregue intacto na tipografia clandestina da Rua da Palma. Teu pai escapou do cerco e os operários celebraram a tua agilidade, mas os agentes do <span class=\"grifo-faccao\">DOPS</span> anotaram pela primeira vez os teus traços nos relatórios de ronda.</p>"
           },
           {
             "id": "confrontar_soldados",
             "rotulo": "Enfrentar os soldados e encobrir a fuga com tua voz",
             "descricao": "Gritar um falso alarme de incêndio no depósito para atrair a ronda militar para o lado oposto.",
             "carimbo": "TEMERÁRIO",
+            "desfecho": "Teu grito de 'Fogo no armazém três!' ecoou estrondoso entre as vigas de ferro, paralisando a patrulha. Os soldados correram na direção contrária, abrindo a brecha necessária para teu pai sumir no manguezal com os documentos. Foste detido para averiguações na esquina da Concórdia e levaste duas bofetadas de aviso, mas nada encontraram nos teus bolsos. Teu nome, porém, foi fichado na delegacia.",
             "requisitos": {
               "presenca": 2
             },
             "efeitos": {
               "presenca": 1,
               "suspeita_dops": 3
-            }
+            },
+            "desfechoHtml": "<p>Teu grito de &#39;Fogo no armazém três!&#39; ecoou estrondoso entre as vigas de ferro, paralisando a patrulha. Os soldados correram na direção contrária, abrindo a brecha necessária para teu pai sumir no manguezal com os documentos. Foste detido para averiguações na esquina da Concórdia e levaste duas bofetadas de aviso, mas nada encontraram nos teus bolsos. Teu nome, porém, foi fichado na delegacia.</p>"
           },
           {
             "id": "jogar_no_rio",
             "rotulo": "Recusar a loucura e jogar os papéis no canal do Capibaribe",
             "descricao": "A segurança da família vale mais do que panfletos molhados. Arrancar a cumplicidade do teu destino antes que seja tarde.",
             "carimbo": "CAUTELOSO",
+            "desfecho": "Num gesto frio e silencioso, arrancaste o pacote e lançaste-o nas águas escuras da maré. As folhas mimeografadas dispersaram-se na correnteza como espuma fétida antes que a ronda militar dobrasse a esquina. Teu pai olhou-te com uma tristeza cortante, sentindo a traição ao sindicato, mas quando a revista policial vasculhou os caixotes, nada havia para incriminar a família. A segurança fora comprada ao preço da amargura.",
             "requisitos": {},
             "efeitos": {
               "relacao_pai": -1,
               "suspeita_dops": -1,
               "sangue_frio": 1
-            }
+            },
+            "desfechoHtml": "<p>Num gesto frio e silencioso, arrancaste o pacote e lançaste-o nas águas escuras da maré. As folhas mimeografadas dispersaram-se na correnteza como espuma fétida antes que a ronda militar dobrasse a esquina. Teu pai olhou-te com uma tristeza cortante, sentindo a traição ao <span class=\"grifo-faccao\">sindicato</span>, mas quando a revista policial vasculhou os caixotes, nada havia para incriminar a família. A segurança fora comprada ao preço da amargura.</p>"
           }
         ]
       },
@@ -442,6 +484,7 @@
             "rotulo": "Entrar no turno da noite da Fábrica de Tecidos",
             "descricao": "Esconder manifestos operários entre os carretéis de algodão antes da troca de guarda.",
             "carimbo": "AGITADOR",
+            "desfecho": "Movendo-te com destreza de tecelão entre o vapor e os carretéis ruidosos, inseriste os boletins grevistas em cada cesto de algodão cru. Ao amanhecer, quando o apito da fábrica soou, as operárias cruzaram os braços e leram as denúncias de arrocho salarial. A greve estourou com força na Várzea, mas a gerência chamou os inspetores do DOPS para vigiar as entradas do galpão.",
             "requisitos": {
               "oficio": 2
             },
@@ -449,20 +492,23 @@
               "moral_popular": 3,
               "capital": 10,
               "suspeita_dops": 2
-            }
+            },
+            "desfechoHtml": "<p>Movendo-te com destreza de tecelão entre o vapor e os carretéis ruidosos, inseriste os boletins grevistas em cada cesto de algodão cru. Ao amanhecer, quando o apito da fábrica soou, as operárias cruzaram os braços e leram as denúncias de arrocho salarial. A greve estourou com força na <span class=\"grifo-bairro\">Várzea</span>, mas a gerência chamou os inspetores do <span class=\"grifo-faccao\">DOPS</span> para vigiar as entradas do galpão.</p>"
           },
           {
             "id": "vigiar_perimetro",
             "rotulo": "Ficar de guarda na esquina do bonde elétrico",
             "descricao": "Prestar atenção em viaturas descaracterizadas e qualquer movimentação suspeita na Várzea.",
             "carimbo": "SENTINELA",
+            "desfecho": "Encolhido sob a marquise da parada do bonde na névoa fria, teus olhos atentos detectaram uma viatura preta com faróis apagados rondando a Avenida Caxangá. Teu assobio combinado de alarme fez os companheiros recolherem o material e sumirem pelos canaviais antes da batida policial. A operação foi salva sem deixar pistas e a polícia revistou apenas sombras.",
             "requisitos": {
               "astucia": 2
             },
             "efeitos": {
               "astucia": 1,
               "suspeita_dops": -1
-            }
+            },
+            "desfechoHtml": "<p>Encolhido sob a marquise da parada do bonde na névoa fria, teus olhos atentos detectaram uma viatura preta com faróis apagados rondando a Avenida Caxangá. Teu assobio combinado de alarme fez os companheiros recolherem o material e sumirem pelos canaviais antes da batida policial. A operação foi salva sem deixar pistas e a polícia revistou apenas sombras.</p>"
           }
         ]
       },
@@ -487,6 +533,7 @@
             "rotulo": "Invadir a sede e queimar os fichários sindicais",
             "descricao": "As sirenes do Exército ecoam pela Avenida Caxangá. Tuas mãos destroem provas antes que os soldados do IV Exército arrombem as portas.",
             "carimbo": "CLANDESTINO",
+            "desfecho": "Enquanto as coronhadas dos fuzis esmurravam os portões do sindicato, jogaste querosene nos armários de aço e ateaste fogo nas fichas de centenas de operários. A fumaça preta sufocou a sala, mas quando as tropas do IV Exército invadiram o recinto com baionetas em riste, encontraram apenas cinzas fumegantes. Centenas de famílias foram poupadas da prisão imediata graças ao teu sangue-frio na hora do terror.",
             "requisitos": {
               "sangue_frio": 1
             },
@@ -494,13 +541,15 @@
               "suspeita_dops": -3,
               "honra_familiar": 1,
               "sangue_frio": 1
-            }
+            },
+            "desfechoHtml": "<p>Enquanto as coronhadas dos fuzis esmurravam os portões do <span class=\"grifo-faccao\">sindicato</span>, jogaste querosene nos armários de aço e ateaste fogo nas fichas de centenas de operários. A fumaça preta sufocou a sala, mas quando as tropas do IV <span class=\"grifo-faccao\">Exército</span> invadiram o recinto com baionetas em riste, encontraram apenas cinzas fumegantes. Centenas de famílias foram poupadas da prisão imediata graças ao teu sangue-frio na hora do terror.</p>"
           },
           {
             "id": "resistir_ao_lado_do_pai",
             "rotulo": "Formar cordão de resistência no Palácio do Governo",
             "descricao": "Junto aos ferroviários e estudantes da Boa Vista, enfrentar os blindados que sobem a Ponte Duarte Coelho.",
             "carimbo": "RESISTÊNCIA",
+            "desfecho": "De braços dados com teu pai e dezenas de ferroviários no meio da Ponte Duarte Coelho, entoaste o hino sob a mira dos canhões dos blindados. O choque foi brutal: bombas de gás lacrimogêneo e cassetetes romperam o cordão humano. Teu pai foi derrubado na lama e preso, mas o teu grito de protesto ecoou em toda a cidade. Teu nome entrou com destaque vermelho nos arquivos de subversão do DOPS.",
             "requisitos": {
               "moral_popular": 2
             },
@@ -508,13 +557,15 @@
               "moral_popular": 4,
               "suspeita_dops": 4,
               "relacao_pai": 2
-            }
+            },
+            "desfechoHtml": "<p>De braços dados com teu pai e dezenas de ferroviários no meio da <span class=\"grifo-rio\">Ponte Duarte Coelho</span>, entoaste o hino sob a mira dos canhões dos blindados. O choque foi brutal: bombas de gás lacrimogêneo e cassetetes romperam o cordão humano. Teu pai foi derrubado na lama e preso, mas o teu grito de protesto ecoou em toda a cidade. Teu nome entrou com destaque vermelho nos arquivos de subversão do <span class=\"grifo-faccao\">DOPS</span>.</p>"
           },
           {
             "id": "aproveitar_o_caos",
             "rotulo": "Negociar salvo-conduto com os novos oficiais",
             "descricao": "Entregar as chaves dos armazéns aos militares em troca de imunidade para tua família e teus negócios.",
             "carimbo": "ADESÃO",
+            "desfecho": "No gabinete improvisado do quartel do Derby, entregaste as chaves e as listas de abastecimento dos depósitos do porto ao coronel interventor. Em troca, recebeste um crachá de livre trânsito e o salvo-conduto comercial que garantiu os teus lucros durante a ocupação. Teu pai nunca mais te olhou nos olhos e os velhos amigos viraram o rosto na rua, mas a tua sobrevivência material fora cravada na nova ordem.",
             "requisitos": {
               "astucia": 2
             },
@@ -523,7 +574,8 @@
               "influencia": 2,
               "relacao_pai": -2,
               "suspeita_dops": -4
-            }
+            },
+            "desfechoHtml": "<p>No gabinete improvisado do quartel do <span class=\"grifo-bairro\">Derby</span>, entregaste as chaves e as listas de abastecimento dos depósitos do porto ao coronel interventor. Em troca, recebeste um crachá de livre trânsito e o salvo-conduto comercial que garantiu os teus lucros durante a ocupação. Teu pai nunca mais te olhou nos olhos e os velhos amigos viraram o rosto na rua, mas a tua sobrevivência material fora cravada na nova ordem.</p>"
           }
         ]
       },
@@ -555,7 +607,9 @@
               "moral_popular": 3,
               "suspeita_dops": 1,
               "sangue_frio": 1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [RESGATE]. A água barrenta bate na altura do peito. Salvar as fichas e atas clandestinas acumuladas desde os anos 60 antes que a correnteza as desfaça.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [RESGATE]. A água barrenta bate na altura do peito. Salvar as fichas e atas clandestinas acumuladas desde os anos 60 antes que a correnteza as desfaça.</p>"
           },
           {
             "id": "salvar_armazem_comercial",
@@ -568,7 +622,9 @@
             "efeitos": {
               "capital": 25,
               "moral_popular": -2
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SALVAGUARDA]. Gastar parte do teu capital acumulado para salvar os fardos de mercadoria antes que o Derby e a Madalena fiquem submersos.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SALVAGUARDA]. Gastar parte do teu capital acumulado para salvar os fardos de mercadoria antes que o <span class=\"grifo-bairro\">Derby</span> e a <span class=\"grifo-bairro\">Madalena</span> fiquem submersos.</p>"
           },
           {
             "id": "evacuar_moradores_mocambo",
@@ -582,7 +638,9 @@
               "moral_popular": 5,
               "relacao_pai": 2,
               "capital": -10
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SOLIDARIEDADE]. Abandonar os bens materiais e passar a noite puxando crianças e idosos com cordas.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SOLIDARIEDADE]. Abandonar os bens materiais e passar a noite puxando crianças e idosos com cordas.</p>"
           }
         ]
       },
@@ -613,7 +671,9 @@
             "efeitos": {
               "moral_popular": 4,
               "sangue_frio": 1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [PACIFICADOR]. Usar tua presença e moral acumulada para organizar o fluxo de pessoas na subida para a Rua do Hospício.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [PACIFICADOR]. Usar tua presença e moral acumulada para organizar o fluxo de pessoas na subida para a Rua do Hospício.</p>"
           },
           {
             "id": "fugir_para_zona_alta",
@@ -627,7 +687,9 @@
               "moral_popular": -3,
               "capital": -5,
               "sangue_frio": 1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Abandonar o centro do Recife e garantir o teu próprio refúgio antes que a suposta onda de dez metros alcance a Avenida Caxangá.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Abandonar o centro do Recife e garantir o teu próprio refúgio antes que a suposta onda de dez metros alcance a Avenida Caxangá.</p>"
           },
           {
             "id": "saquear_reparticao_vazia",
@@ -640,7 +702,9 @@
             "efeitos": {
               "suspeita_dops": -8,
               "sangue_frio": 1
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [AUDACIOSO]. Enquanto policiais e funcionários fogem desesperados, invadir a delegacia alagada para destruir de vez o teu prontuário.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [AUDACIOSO]. Enquanto policiais e funcionários fogem desesperados, invadir a delegacia alagada para destruir de vez o teu prontuário.</p>"
           }
         ]
       },
@@ -671,7 +735,9 @@
             "efeitos": {
               "moral_popular": 10,
               "honra_familiar": 3
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [IMORTAL]. Teus recursos foram consumidos pela enchente, mas tua liderança e integridade forjaram um nome que a ditadura nunca conseguiu apagar.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [IMORTAL]. Teus recursos foram consumidos pela enchente, mas tua liderança e integridade forjaram um nome que a ditadura nunca conseguiu apagar.</p>"
           },
           {
             "id": "ascensao_na_reconstrucao",
@@ -684,7 +750,9 @@
             "efeitos": {
               "capital": 100,
               "influencia": 5
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [MAGNATA]. A tragédia climática torna-se o maior negócio do século. Tua fortuna multiplica-se enquanto o Recife conta seus mortos.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [MAGNATA]. A tragédia climática torna-se o maior negócio do século. Tua fortuna multiplica-se enquanto o Recife conta seus mortos.</p>"
           },
           {
             "id": "sobrevivencia_silenciosa",
@@ -694,7 +762,9 @@
             "requisitos": {},
             "efeitos": {
               "sangue_frio": 2
-            }
+            },
+            "desfecho": "A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Tu sobreviveras à repressão e à maior cheia do século. A água baixou, levando o passado e deixando apenas as cicatrizes.",
+            "desfechoHtml": "<p>A decisão foi formalmente consumada sob o carimbo de [SOBREVIVENTE]. Tu sobreviveras à repressão e à maior cheia do século. A água baixou, levando o passado e deixando apenas as cicatrizes.</p>"
           }
         ]
       },

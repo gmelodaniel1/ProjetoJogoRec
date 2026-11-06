@@ -17,6 +17,7 @@ opcoes:
     rotulo: "Entrar no turno da noite da Fábrica de Tecidos"
     descricao: "Esconder manifestos operários entre os carretéis de algodão antes da troca de guarda."
     carimbo: "AGITADOR"
+    desfecho: "Movendo-te com destreza de tecelão entre o vapor e os carretéis ruidosos, inseriste os boletins grevistas em cada cesto de algodão cru. Ao amanhecer, quando o apito da fábrica soou, as operárias cruzaram os braços e leram as denúncias de arrocho salarial. A greve estourou com força na Várzea, mas a gerência chamou os inspetores do DOPS para vigiar as entradas do galpão."
     requisitos:
       oficio: 2
     efeitos:
@@ -28,6 +29,7 @@ opcoes:
     rotulo: "Ficar de guarda na esquina do bonde elétrico"
     descricao: "Prestar atenção em viaturas descaracterizadas e qualquer movimentação suspeita na Várzea."
     carimbo: "SENTINELA"
+    desfecho: "Encolhido sob a marquise da parada do bonde na névoa fria, teus olhos atentos detectaram uma viatura preta com faróis apagados rondando a Avenida Caxangá. Teu assobio combinado de alarme fez os companheiros recolherem o material e sumirem pelos canaviais antes da batida policial. A operação foi salva sem deixar pistas e a polícia revistou apenas sombras."
     requisitos:
       astucia: 2
     efeitos:

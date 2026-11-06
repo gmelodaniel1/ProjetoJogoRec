@@ -14,6 +14,7 @@ opcoes:
     rotulo: "Aprender a ler o ritmo da maré antes de se aproximar"
     descricao: "Notar como as folhas e os gravetos indicam a direção do fluxo do Capibaribe antes que a lama engula teus pés."
     carimbo: "SAGAZ"
+    desfecho: "Sentado na ponta de um caibro molhado, aprendeste a decifrar a respiração traiçoeira do Rio Capibaribe: a espuma branca avisava a vazante, o lodo denso denunciava o repiquete. Enquanto outras crianças escorregavam na correnteza, teus pés sabiam exatamente onde pisar. O rio não era um monstro, mas um velho conhecido que exigia respeito e cautela."
     requisitos: {}
     efeitos:
       astucia: 1
@@ -23,6 +24,7 @@ opcoes:
     rotulo: "Carregar pequenas tábuas para ajudar os vizinhos do beco"
     descricao: "Correr descalço entre os mocambos vizinhos para avisar que a água de inverno começou a invadir as cozinhas."
     carimbo: "SOLIDÁRIO"
+    desfecho: "Carregando lascas de ripa que pesavam nos teus bracinhos, foste de porta em porta berrando o alerta da cheia. As lavadeiras e carvoeiros dos Coelhos sorriram com gratidão e te deram meio pedaço de rapadura: 'Esse menino tem alma de povo'. O respeito da tua vizinhança começou a se tecer ali, na lama dividida com quem nada tinha."
     requisitos: {}
     efeitos:
       moral_popular: 1

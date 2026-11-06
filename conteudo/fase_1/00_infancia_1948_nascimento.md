@@ -14,6 +14,7 @@ opcoes:
     rotulo: "Chorar com força diante do breu da noite"
     descricao: "Teu primeiro alento é um grito que ecoa sobre as águas escuras do mangue, exigindo o calor dos braços de tua mãe."
     carimbo: "VALENTE"
+    desfecho: "O teu primeiro grito rompeu o breu do manguezal com a força de um apito de trem nas oficinas de Cinco Pontas. Tua mãe apertou-te contra o peito suado, aliviada, e teu pai sorriu no vão da porta com os olhos marejados: 'Esse aí não nasceu para abaixar a cabeça, mulher'. A vizinhança soube logo que mais uma vida teimava em fincar raízes na lama do Recife."
     requisitos: {}
     efeitos:
       presenca: 1
@@ -23,6 +24,7 @@ opcoes:
     rotulo: "Abrir os olhos em silêncio e absorver o murmúrio do rio"
     descricao: "Contemplar a fresta de luz de lamparina entre as tábuas do mocambo. Uma calma prematura que intriga os presentes."
     carimbo: "ATENTO"
+    desfecho: "Não houve berro nem desespero. Teus pequenos olhos cravaram-se no clarão trêmulo da lamparina de querosene, enquanto o Rio Capibaribe marulhava lá embaixo pelas frestas do assoalho. A parteira benzeu a testa com espanto: 'Menino quieto demais é bicho que pensa antes do tempo'. A calma misteriosa daquela noite seria a tua primeira armadura contra os dias duros que viriam."
     requisitos: {}
     efeitos:
       astucia: 1

@@ -15,6 +15,7 @@ opcoes:
     rotulo: "Invadir a sede e queimar os fichários sindicais"
     descricao: "As sirenes do Exército ecoam pela Avenida Caxangá. Tuas mãos destroem provas antes que os soldados do IV Exército arrombem as portas."
     carimbo: "CLANDESTINO"
+    desfecho: "Enquanto as coronhadas dos fuzis esmurravam os portões do sindicato, jogaste querosene nos armários de aço e ateaste fogo nas fichas de centenas de operários. A fumaça preta sufocou a sala, mas quando as tropas do IV Exército invadiram o recinto com baionetas em riste, encontraram apenas cinzas fumegantes. Centenas de famílias foram poupadas da prisão imediata graças ao teu sangue-frio na hora do terror."
     requisitos:
       sangue_frio: 1
     efeitos:
@@ -26,6 +27,7 @@ opcoes:
     rotulo: "Formar cordão de resistência no Palácio do Governo"
     descricao: "Junto aos ferroviários e estudantes da Boa Vista, enfrentar os blindados que sobem a Ponte Duarte Coelho."
     carimbo: "RESISTÊNCIA"
+    desfecho: "De braços dados com teu pai e dezenas de ferroviários no meio da Ponte Duarte Coelho, entoaste o hino sob a mira dos canhões dos blindados. O choque foi brutal: bombas de gás lacrimogêneo e cassetetes romperam o cordão humano. Teu pai foi derrubado na lama e preso, mas o teu grito de protesto ecoou em toda a cidade. Teu nome entrou com destaque vermelho nos arquivos de subversão do DOPS."
     requisitos:
       moral_popular: 2
     efeitos:
@@ -37,6 +39,7 @@ opcoes:
     rotulo: "Negociar salvo-conduto com os novos oficiais"
     descricao: "Entregar as chaves dos armazéns aos militares em troca de imunidade para tua família e teus negócios."
     carimbo: "ADESÃO"
+    desfecho: "No gabinete improvisado do quartel do Derby, entregaste as chaves e as listas de abastecimento dos depósitos do porto ao coronel interventor. Em troca, recebeste um crachá de livre trânsito e o salvo-conduto comercial que garantiu os teus lucros durante a ocupação. Teu pai nunca mais te olhou nos olhos e os velhos amigos viraram o rosto na rua, mas a tua sobrevivência material fora cravada na nova ordem."
     requisitos:
       astucia: 2
     efeitos:
