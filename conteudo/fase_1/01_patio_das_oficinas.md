@@ -3,6 +3,7 @@ id: "ev_f1_01_patio_das_oficinas"
 titulo: "A Fagulha no Pátio das Oficinas"
 fase: 1
 ano: 1958
+ano_alvo: 1959
 tipo: "dossie"
 custo_acoes: 1
 imagem: "cenarios/fase1_portuarios_saps_126056.webp"

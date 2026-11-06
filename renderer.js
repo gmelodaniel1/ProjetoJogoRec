@@ -65,6 +65,9 @@ const elManchete = document.getElementById('editorial-manchete');
 const elLead = document.getElementById('editorial-lead');
 const elPainelConsequencias = document.getElementById('painel-consequencias-decisao');
 const elCorpo = document.getElementById('corpo-narrativa');
+const elBlocoProgredirLeitura = document.getElementById('bloco-progredir-leitura');
+const elBtnProgredirLeitura = document.getElementById('btn-progredir-leitura');
+const elBtnLerTudo = document.getElementById('btn-ler-tudo');
 const elBlocoContinuar = document.getElementById('bloco-continuar-decisao');
 const elBtnContinuar = document.getElementById('btn-continuar-para-decisao');
 const elSecaoDeliberacao = document.getElementById('secao-deliberacao-decisoes');
@@ -289,21 +292,6 @@ function atualizarProntuario(estado, deltas) {
     const idade = store.getIdade();
     const rotuloIdade = idade === 0 ? 'NASCIMENTO' : `${idade} ${idade === 1 ? 'ANO' : 'ANOS'}`;
     elAnoAtual.textContent = `RECIFE, ${estado.anoAtual} • ${rotuloIdade}`;
-  }
-
-  // Medidor Visual de Ações (Ticket 20: Orifícios Perfurados de Ação)
-  if (elIndicadorAcoes) {
-    const restantes = estado.acoesRestantesFase;
-    const totais = estado.acoesTotaisFase;
-    let pontosHtml = '';
-    for (let i = 0; i < totais; i++) {
-      if (i < restantes) {
-        pontosHtml += '<span class="ponto-ativo" title="Ação Disponível">●</span>';
-      } else {
-        pontosHtml += '<span class="ponto-gasto" title="Ação Consumida">○</span>';
-      }
-    }
-    elIndicadorAcoes.innerHTML = `<span class="acoes-texto">AÇÕES:</span> <span class="acoes-furos-trilha">${pontosHtml}</span> <span class="acoes-contagem">(${restantes}/${totais})</span>`;
   }
 
   // Prontuário Social e Parentesco
@@ -1124,6 +1112,12 @@ function renderizarTelaCronologia() {
 // RENDERIZAÇÃO DO DOSSIÊ DA FASE & SEQUESTRO DE CRISE (TICKETS 08 & 09)
 // ==========================================================================
 function renderizarDossie() {
+  if (handlerTecladoLeitura) {
+    window.removeEventListener('keydown', handlerTecladoLeitura);
+    handlerTecladoLeitura = null;
+  }
+  if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+
   modoVisual = 'dossie';
   eventoAtivoId = null;
   atualizarMolduraEvidencia(null);
@@ -1157,7 +1151,7 @@ function renderizarDossie() {
       <div class="banner-climax-dossie">
         <div class="banner-climax-titulo">⚠ O PONTO DE RUPTURA HISTÓRICA CHEGOU</div>
         <div class="banner-climax-desc">
-          As tuas ações preparatórias neste período esgotaram-se. As forças militares e políticas tomaram as ruas do Recife. O evento de encerramento da fase é inevitável.
+          Os acontecimentos deste período alcançaram o ápice. As forças históricas convergem nas ruas do Recife e o desfecho da fase é inevitável.
         </div>
       </div>
     `;
@@ -1177,8 +1171,8 @@ function renderizarDossie() {
         <div class="cartao-dossie-item ${ehClimax ? 'recurso-alerta' : ''}">
           <div class="dossie-info">
             <div class="dossie-meta">
-              <span>ANO: ${meta.ano}</span> | 
-              <span>${ehClimax ? 'CLÍMAX OBRIGATÓRIO' : `CUSTO: ${meta.custo_acoes || 1} AÇÃO`}</span>
+              <span>ANO: ${meta.ano}</span>
+              ${ehClimax ? ' | <span style="color: var(--cor-carimbo-vermelho); font-weight: bold;">CLÍMAX HISTÓRICO</span>' : ''}
               ${!podeAcessar ? ` | <span style="color: var(--cor-carimbo-vermelho)">BLOQUEADO: ${ev.motivoBloqueioAcesso}</span>` : ''}
             </div>
             <div class="dossie-titulo">${meta.titulo}</div>
@@ -1235,6 +1229,142 @@ function abrirEvento(eventoId) {
   renderizarEvento(evento, false);
 }
 
+let handlerTecladoLeitura = null;
+
+// ==========================================================================
+// PROGRESSÃO CADENCIADA DE TEXTO — ESTILO DISCO ELYSIUM (TICKET 24)
+// ==========================================================================
+function iniciarProgressaoTexto(corpoHtml, deliberacaoAbertaParam) {
+  if (!elCorpo) return;
+
+  if (handlerTecladoLeitura) {
+    window.removeEventListener('keydown', handlerTecladoLeitura);
+    handlerTecladoLeitura = null;
+  }
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = corpoHtml;
+  const blocos = Array.from(tempDiv.children);
+
+  if (blocos.length === 0) {
+    elCorpo.innerHTML = corpoHtml;
+    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+    if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+    if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'block';
+    return;
+  }
+
+  elCorpo.innerHTML = '';
+  blocos.forEach(b => {
+    b.classList.add('paragrafo-beat');
+    elCorpo.appendChild(b);
+  });
+
+  if (deliberacaoAbertaParam || blocos.length <= 1) {
+    blocos.forEach(b => {
+      b.classList.remove('oculto');
+      b.classList.add('revelado');
+    });
+    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+    if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+    if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'block';
+    return;
+  }
+
+  let indiceAtual = 0;
+  blocos[0].classList.add('revelado');
+  blocos[0].classList.remove('oculto');
+
+  for (let i = 1; i < blocos.length; i++) {
+    blocos[i].classList.add('oculto');
+    blocos[i].classList.remove('revelado');
+  }
+
+  if (elSecaoDeliberacao) elSecaoDeliberacao.style.display = 'none';
+  if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+  if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'flex';
+
+  function progredirLeitura() {
+    if (indiceAtual < blocos.length - 1) {
+      indiceAtual++;
+      const p = blocos[indiceAtual];
+      p.classList.remove('oculto');
+      p.classList.add('revelado');
+      tocarSomCarimbo();
+
+      setTimeout(() => {
+        p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 30);
+
+      if (indiceAtual === blocos.length - 1) {
+        finalizarLeitura(false);
+      }
+    } else {
+      finalizarLeitura(false);
+    }
+  }
+
+  function finalizarLeitura(scrollParaDecisoes = true) {
+    if (handlerTecladoLeitura) {
+      window.removeEventListener('keydown', handlerTecladoLeitura);
+      handlerTecladoLeitura = null;
+    }
+    if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
+    deliberacaoAberta = true;
+    if (elSecaoDeliberacao) {
+      elSecaoDeliberacao.style.display = 'block';
+      if (scrollParaDecisoes) {
+        setTimeout(() => {
+          elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+  }
+
+  function revelarTodosParagrafos() {
+    blocos.forEach(b => {
+      b.classList.remove('oculto');
+      b.classList.add('revelado');
+    });
+    tocarSomCarimbo();
+    finalizarLeitura(true);
+  }
+
+  if (elBtnProgredirLeitura) {
+    elBtnProgredirLeitura.onclick = (e) => {
+      e.stopPropagation();
+      progredirLeitura();
+    };
+  }
+
+  if (elBtnLerTudo) {
+    elBtnLerTudo.onclick = (e) => {
+      e.stopPropagation();
+      revelarTodosParagrafos();
+    };
+  }
+
+  elCorpo.onclick = (e) => {
+    if (elBlocoProgredirLeitura && elBlocoProgredirLeitura.style.display !== 'none') {
+      progredirLeitura();
+    }
+  };
+
+  handlerTecladoLeitura = (e) => {
+    const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+    if (tag === 'input' || tag === 'textarea') return;
+
+    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
+      if (elBlocoProgredirLeitura && elBlocoProgredirLeitura.style.display !== 'none') {
+        e.preventDefault();
+        progredirLeitura();
+      }
+    }
+  };
+
+  window.addEventListener('keydown', handlerTecladoLeitura);
+}
+
 function renderizarEvento(evento, deliberacaoAbertaParam = null) {
   if (!evento || !evento.metadata) return;
   if (deliberacaoAbertaParam !== null) {
@@ -1278,37 +1408,9 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
       elLead.textContent = "";
     }
   }
-  if (elCorpo) elCorpo.innerHTML = evento.corpoHtml;
 
-  // Configuração do Fluxo em Dois Tempos (Exposição ➔ Continuar ➔ Decisão)
-  if (elBlocoContinuar) {
-    elBlocoContinuar.style.display = deliberacaoAberta ? 'none' : 'flex';
-    if (elBtnContinuar) {
-      if (meta.tipo === 'climax_obrigatorio') {
-        elBtnContinuar.innerHTML = `<span>ENFRENTAR O DESTINO HISTÓRICO</span><span class="seta-continuar">➔</span>`;
-      } else if (meta.tipo === 'crise_urgente') {
-        elBtnContinuar.innerHTML = `<span>RESPONDER À EMERGÊNCIA COMPULSÓRIA</span><span class="seta-continuar">➔</span>`;
-      } else {
-        elBtnContinuar.innerHTML = `<span>PESAR AS ESCOLHAS & DELIBERAR</span><span class="seta-continuar">➔</span>`;
-      }
-
-      elBtnContinuar.onclick = () => {
-        tocarSomCarimbo();
-        deliberacaoAberta = true;
-        if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
-        if (elSecaoDeliberacao) {
-          elSecaoDeliberacao.style.display = 'block';
-          setTimeout(() => {
-            elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 40);
-        }
-      };
-    }
-  }
-
-  if (elSecaoDeliberacao) {
-    elSecaoDeliberacao.style.display = deliberacaoAberta ? 'block' : 'none';
-  }
+  // Progressão cadenciada de texto estilo Disco Elysium (Ticket 24)
+  iniciarProgressaoTexto(evento.corpoHtml, deliberacaoAberta);
   if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
 
   // Renderiza opções determinísticas com previsão de espectro estilo Sir Brante
@@ -1333,7 +1435,7 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
           <div class="decisao-topo">
             <span class="decisao-numero">${numRomano}</span>
             <span class="decisao-rotulo">${opcao.rotulo}</span>
-            <span class="etiqueta-custo">[${meta.tipo === 'climax_obrigatorio' ? 'CLÍMAX' : `${custoAcao} AÇÃO`}]</span>
+            ${meta.tipo === 'climax_obrigatorio' ? '<span class="etiqueta-custo">[CLÍMAX]</span>' : ''}
           </div>
           ${opcao.descricao ? `<div class="decisao-descricao">${opcao.descricao}</div>` : ''}
           <div class="decisao-requisitos">

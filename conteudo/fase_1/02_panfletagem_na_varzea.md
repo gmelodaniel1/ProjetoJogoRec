@@ -3,6 +3,7 @@ id: "ev_f1_02_panfletagem_na_varzea"
 titulo: "O Encontro Secreto na Várzea"
 fase: 1
 ano: 1959
+ano_alvo: 1964
 tipo: "dossie"
 custo_acoes: 1
 imagem: "cenarios/fase1_ruinas_engenho_126065.webp"

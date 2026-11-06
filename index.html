@@ -46,7 +46,7 @@
       <div class="rebite-parafuso rebite-esq" aria-hidden="true" title="Fixador de arquivo metálico"></div>
 
       <div class="status-sistema">
-        <span class="plaqueta-arquivo-id">DOPS-PE // GAVETEIRO 04</span>
+        <span class="plaqueta-arquivo-id">GAVETEIRO 04</span>
         <div class="bloco-plaqueta-fase">
           <span class="ponto-status-led" aria-hidden="true"></span>
           <span id="etiqueta-fase" class="etiqueta-fase">FASE 1: A FORMAÇÃO (1958–1964)</span>
@@ -55,10 +55,6 @@
         <div class="bloco-carimbo-datador">
           <span class="datador-rotulo">REGISTRO:</span>
           <span id="ano-atual" class="ano-atual">RECIFE, 1958</span>
-        </div>
-        <span class="separador-barra" aria-hidden="true">|</span>
-        <div class="bloco-perfurador-acoes">
-          <span id="indicador-acoes" class="indicador-acoes">AÇÕES: ● ● ● ● (4/4)</span>
         </div>
       </div>
 
@@ -424,6 +420,18 @@
           <!-- CORPO NARRATIVO COM FONTE AMPLIADA E CAPITULAR -->
           <div id="corpo-narrativa" class="corpo-narrativa">
             <p>Carregando arquivos do inquérito...</p>
+          </div>
+
+          <!-- BLOCO DE PROGRESSÃO CADENCIADA DE LEITURA (ESTILO DISCO ELYSIUM - TICKET 24) -->
+          <div id="bloco-progredir-leitura" class="bloco-progredir-leitura" style="display: none;">
+            <button id="btn-progredir-leitura" class="btn-progredir-leitura" title="Avançar para o próximo parágrafo [Espaço ou Clique]">
+              <span class="indicador-pulso-leitura" aria-hidden="true">▾</span>
+              <span class="texto-acao-leitura">CONTINUAR LEITURA</span>
+              <span class="indicador-tecla-leitura">[Espaço ▾]</span>
+            </button>
+            <button id="btn-ler-tudo" class="btn-ler-tudo" title="Exibir todo o texto do evento de uma vez">
+              [LER TUDO]
+            </button>
           </div>
 
           <!-- BLOCO DE TRANSIÇÃO: ORDEM DE DESPACHO ANEXA (TICKET 22) -->

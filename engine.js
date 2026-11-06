@@ -270,36 +270,40 @@ class DeterministicEngine {
     // Identifica quais eventos já foram concluídos no histórico
     const concluidosIds = new Set(estadoAtual.historicoDecisoes.map(h => h.eventoId));
 
-    // Se as ações da fase se esgotaram, o dossiê libera exclusivamente o clímax histórico
-    if (estadoAtual.acoesRestantesFase <= 0) {
+    // Todos os eventos normais de dossiê pendentes nesta fase
+    const pendentesFase = eventosFase.filter(ev => ev.metadata.tipo === 'dossie' && !concluidosIds.has(ev.metadata.id));
+
+    // Se todos os eventos normais foram concluídos (ou se ações <= 0, mantido para compatibilidade de testes)
+    const acoesEsgotadas = estadoAtual.acoesRestantesFase !== undefined && estadoAtual.acoesRestantesFase <= 0;
+    if (pendentesFase.length === 0 || acoesEsgotadas) {
       const eventosClimax = eventosFase.filter(ev => ev.metadata.tipo === 'climax_obrigatorio' && !concluidosIds.has(ev.metadata.id));
       return {
         tipoDossie: 'climax',
         faseAtual: fase,
-        acoesRestantes: 0,
+        acoesRestantes: estadoAtual.acoesRestantesFase,
         eventosDisponiveis: eventosClimax
       };
     }
 
-    // Se ainda há ações, lista os eventos de dossiê pendentes
-    // Aplica filtragem temporal determinística:
-    // 1. Eventos com ano definido maior que o ano atual NUNCA são exibidos antecipadamente
-    // 2. Se existirem eventos pendentes cujo ano corresponde exatamente ao ano atual, prioriza esses (progressão ano a ano)
-    // 3. Caso não haja eventos para o ano exato, exibe os eventos pendentes com ano <= anoAtual ordenados cronologicamente
+    // Filtra eventos disponíveis respeitando a linha do tempo cronológica
     const anoAtual = Number(estadoAtual.anoAtual) || 1948;
 
-    let pendentesFase = eventosFase
-      .filter(ev => ev.metadata.tipo === 'dossie' && !concluidosIds.has(ev.metadata.id))
-      .filter(ev => !ev.metadata.ano || Number(ev.metadata.ano) <= anoAtual);
+    // 1. Eventos do ano atual que ainda não foram concluídos
+    let eventosParaExibir = pendentesFase.filter(ev => !ev.metadata.ano || Number(ev.metadata.ano) === anoAtual);
 
-    const eventosAnoAtual = pendentesFase.filter(ev => Number(ev.metadata.ano) === anoAtual);
-    if (eventosAnoAtual.length > 0) {
-      pendentesFase = eventosAnoAtual;
-    } else {
-      pendentesFase.sort((a, b) => (Number(a.metadata.ano) || 0) - (Number(b.metadata.ano) || 0));
+    // 2. Se não houver eventos no ano atual, busca eventos pendentes do ano mais próximo
+    if (eventosParaExibir.length === 0) {
+      const eventosAteAnoAtual = pendentesFase.filter(ev => Number(ev.metadata.ano) <= anoAtual);
+      if (eventosAteAnoAtual.length > 0) {
+        eventosParaExibir = eventosAteAnoAtual;
+      } else {
+        // Pega o menor ano futuro disponível na fase
+        const menorAnoFuturo = Math.min(...pendentesFase.map(ev => Number(ev.metadata.ano) || anoAtual));
+        eventosParaExibir = pendentesFase.filter(ev => Number(ev.metadata.ano) === menorAnoFuturo);
+      }
     }
 
-    const eventosDisponiveis = pendentesFase.map(ev => {
+    const eventosDisponiveis = eventosParaExibir.map(ev => {
       const acesso = this.verificarAcessoEvento(ev, estadoAtual);
       return {
         ...ev,
