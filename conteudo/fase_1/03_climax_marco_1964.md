@@ -5,6 +5,8 @@ fase: 1
 ano: 1964
 tipo: "climax_obrigatorio"
 custo_acoes: 0
+imagem: "cenarios/fase1_praca_republica_126023.webp"
+tombo_mcr: "126.023"
 
 requisitos_acesso: {}
 

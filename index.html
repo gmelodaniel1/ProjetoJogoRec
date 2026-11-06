@@ -15,45 +15,85 @@
 <body class="fase-1">
   <div class="mesa-viewport">
     
-    <!-- BANNER DE TRANSIÇÃO CRONOLÓGICA / VIRADA DE ANO (TICKET 15) -->
+    <!-- BANNER DE TRANSIÇÃO CRONOLÓGICA / VIRADA DE ANO — EDIÇÃO EXTRAORDINÁRIA (TICKET 21) -->
     <div id="overlay-virada-ano" class="overlay-virada-ano" style="display: none;">
       <div class="cartao-virada-ano">
-        <span class="virada-selo-topo">CRÔNICA DE PERNAMBUCO // O TEMPO PASSA</span>
+        <div class="virada-jornal-cabecalho">
+          <span class="virada-selo-topo">EDIÇÃO EXTRAORDINÁRIA // CRÔNICA DO RECIFE</span>
+          <span class="virada-carimbo-ano">REGISTRO HISTÓRICO</span>
+        </div>
+        <div class="virada-filete-duplo"></div>
         <div class="virada-titulo">UMA NOVA FOLHA NO CALENDÁRIO</div>
+        <div class="virada-manchete-sub">O curso da vida e da cidade segue inexorável pelas pontes do Capibaribe</div>
         <div class="virada-anos-linha">
           <span class="ano-origem" id="virada-ano-de">1948</span>
           <span class="virada-seta">➔</span>
           <span class="ano-destino" id="virada-ano-para">1949</span>
         </div>
         <div class="virada-idade-linha" id="virada-idade-info">O protagonista completa 1 ano de idade</div>
-        <div class="virada-subtitulo">O curso da vida e da cidade segue inexorável</div>
         <div class="virada-rodape-acao">
           <button id="btn-continuar-virada-ano" class="btn-continuar-virada">
-            ASSIMILAR & SEGUIR O CURSO DO TEMPO ➔
+            <span>ASSIMILAR OS FATOS & SEGUIR O TEMPO</span>
+            <span class="seta-acao">➔</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- BARRA DE SISTEMA SUPERIOR -->
-    <header class="barra-sistema">
+    <!-- BARRA DE SISTEMA SUPERIOR — LOMBADA DE ARQUIVO & GAVETEIRO (TICKET 20) -->
+    <header class="barra-sistema" aria-label="Lombada de Arquivo e Barra de Sistema">
+      <!-- Rebite metálico mecânico chanfrado esquerdo -->
+      <div class="rebite-parafuso rebite-esq" aria-hidden="true" title="Fixador de arquivo metálico"></div>
+
       <div class="status-sistema">
-        <span class="ponto-status">●</span>
-        <span id="etiqueta-fase" class="etiqueta-fase">FASE 1: A FORMAÇÃO (1958–1964)</span>
-        <span class="separador-barra">|</span>
-        <span id="ano-atual" class="ano-atual">RECIFE, 1958</span>
-        <span class="separador-barra">|</span>
-        <span id="indicador-acoes" class="indicador-acoes">AÇÕES: ● ● ● ● (4/4)</span>
+        <span class="plaqueta-arquivo-id">DOPS-PE // GAVETEIRO 04</span>
+        <div class="bloco-plaqueta-fase">
+          <span class="ponto-status-led" aria-hidden="true"></span>
+          <span id="etiqueta-fase" class="etiqueta-fase">FASE 1: A FORMAÇÃO (1958–1964)</span>
+        </div>
+        <span class="separador-barra" aria-hidden="true">|</span>
+        <div class="bloco-carimbo-datador">
+          <span class="datador-rotulo">REGISTRO:</span>
+          <span id="ano-atual" class="ano-atual">RECIFE, 1958</span>
+        </div>
+        <span class="separador-barra" aria-hidden="true">|</span>
+        <div class="bloco-perfurador-acoes">
+          <span id="indicador-acoes" class="indicador-acoes">AÇÕES: ● ● ● ● (4/4)</span>
+        </div>
       </div>
+
       <div class="comandos-sistema">
-        <span class="atalho-guia">[F11] Tela Cheia</span>
-        <button id="btn-devtools" class="btn-controle btn-devtools" title="Console de Depuração [F1]">[F1] DEVTOOLS</button>
-        <button id="btn-fullscreen" class="btn-controle" title="Alternar Tela Cheia">TELA CHEIA</button>
+        <span class="atalho-guia">[F11] TELA CHEIA</span>
+        <button id="btn-devtools" class="btn-dymo btn-dymo-vermelho" title="Console de Depuração [F1]">[F1] DEVTOOLS</button>
+        <button id="btn-fullscreen" class="btn-dymo btn-dymo-preto" title="Alternar Tela Cheia">TELA CHEIA</button>
       </div>
+
+      <!-- Rebite metálico mecânico chanfrado direito -->
+      <div class="rebite-parafuso rebite-dir" aria-hidden="true" title="Fixador de arquivo metálico"></div>
     </header>
 
     <!-- ÁREA PRINCIPAL DO JOGO (Palco Central + Página de Texto Lateral) -->
     <main class="mesa-investigacao">
+      <!-- ADEREÇOS DIEGÉTICOS DE MESA VIVA (TICKET 19) -->
+      <!-- Halo de fundo de xícara de café frio interceptando a folha e a madeira -->
+      <div class="adereco-mesa adereco-mancha-cafe" aria-hidden="true" title="Marca circular de café frio">
+        <svg width="150" height="150" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="75" cy="75" r="58" stroke="#3A1E0E" stroke-width="2.4" stroke-opacity="0.32" fill="none" stroke-dasharray="14 1 30 2 18 1"/>
+          <circle cx="75" cy="75" r="56.5" stroke="#5C3218" stroke-width="4.2" stroke-opacity="0.18" fill="rgba(88, 48, 22, 0.05)"/>
+          <circle cx="74" cy="76" r="53" stroke="#754322" stroke-width="1.2" stroke-opacity="0.12" fill="none"/>
+          <ellipse cx="122" cy="56" rx="4" ry="2.2" fill="#5C3218" fill-opacity="0.22" transform="rotate(20 122 56)"/>
+          <circle cx="32" cy="94" r="2" fill="#3A1E0E" fill-opacity="0.2"/>
+          <circle cx="88" cy="132" r="2.4" fill="#5C3218" fill-opacity="0.22"/>
+        </svg>
+      </div>
+
+      <!-- Clipe metálico avulso caído na madeira da mesa -->
+      <div class="adereco-mesa adereco-clipe-solto" aria-hidden="true" title="Clipe metálico avulso na bancada">
+        <svg width="26" height="50" viewBox="0 0 26 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 16 V40 C7 44 12 47 16 44 C20 41 20 36 20 31 V9 C20 3.5 12 3.5 12 9 V33 C12 36 15 37.5 17 36 C19 34.5 19 31.5 19 28 V16" stroke="#2B2825" stroke-width="2.8" stroke-linecap="round" fill="none" filter="drop-shadow(1px 2px 2px rgba(10,8,6,0.65))"/>
+          <path d="M7 16 V40 C7 44 12 47 16 44 C20 41 20 36 20 31 V9 C20 3.5 12 3.5 12 9 V33" stroke="#9EAAAF" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
       
       <!-- ESQUERDA / CENTRO: PALCO VISUAL + TELAS DE INSPEÇÃO + BARRA DE ATALHOS INFERIOR -->
       <section class="palco-central">
@@ -77,27 +117,45 @@
               </div>
             </div>
 
-            <!-- PAINEL HIDROLÓGICO DA CHEIA DE 75 (Visível na Fase 3 abaixo do Cenário) -->
+            <!-- PAINEL HIDROLÓGICO DA CHEIA DE 75 (RÉGUA LIMNIMÉTRICA DA CHESF / DEFESA CIVIL - TICKET 21) -->
             <div class="painel-cheia-75" id="painel-cheia-75">
               <div class="cheia-cabecalho">
-                <span class="cheia-alerta-luz">▲ ALERTA HIDROLÓGICO — DEFESA CIVIL DO RECIFE</span>
-                <span class="cheia-titulo">RÉGUA DO RIO CAPIBARIBE</span>
+                <div class="cheia-alerta-bloco">
+                  <span class="luz-piloto-alerta" aria-hidden="true"></span>
+                  <span class="cheia-alerta-luz">ALERTA HIDROLÓGICO — DEFESA CIVIL / CHESF</span>
+                </div>
+                <span class="cheia-titulo">RÉGUA LIMNIMÉTRICA • RIO CAPIBARIBE</span>
               </div>
               <div class="cheia-medidor-conteudo">
-                <div class="cheia-regua-grafica">
-                  <div class="regua-nivel-agua" id="regua-barra-nivel" style="height: 33%;"></div>
+                <!-- Coluna da Régua Limnimétrica Esmaltada com Marcas de Cota -->
+                <div class="cheia-regua-wrapper">
+                  <div class="regua-marcas-escala">
+                    <span class="marca-cota cota-critica">+4,50m</span>
+                    <span class="marca-cota cota-alerta">+3,50m</span>
+                    <span class="marca-cota">+2,00m</span>
+                    <span class="marca-cota">+1,00m</span>
+                    <span class="marca-cota cota-base">0,00m</span>
+                  </div>
+                  <div class="cheia-regua-grafica">
+                    <!-- Linhas graduadas esmaltadas em preto e branco -->
+                    <div class="regua-marcas-visuais" aria-hidden="true"></div>
+                    <!-- Nível da água barrenta com lodo e espuma -->
+                    <div class="regua-nivel-agua" id="regua-barra-nivel" style="height: 33%;">
+                      <div class="linha-espuma-rio"></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="cheia-dados-numericos">
                   <div class="dado-cheia-linha">
-                    <span class="rotulo">NÍVEL DO RIO:</span>
+                    <span class="rotulo">COTA MEDIDA:</span>
                     <span class="valor" id="val-nivel-rio">+1,50 m</span>
                   </div>
                   <div class="dado-cheia-linha">
-                    <span class="rotulo">HORAS ATÉ PICO:</span>
+                    <span class="rotulo">TEMPO ATÉ PICO:</span>
                     <span class="valor" id="val-horas-cheia">18 h</span>
                   </div>
                   <div class="dado-cheia-linha status-panico">
-                    <span class="rotulo">ESTADO:</span>
+                    <span class="rotulo">SITUAÇÃO DE TAPACURÁ:</span>
                     <span class="valor" id="val-status-tapacura">EM RISCO</span>
                   </div>
                 </div>
@@ -107,28 +165,48 @@
 
           <!-- 2. TELA DE ATRIBUTOS & RECURSOS (FICHA DO PRONTUÁRIO) -->
           <div class="aba-palco" id="aba-atributos">
-            <div class="pasta-arquivo-tela">
-              <header class="pasta-cabecalho">
-                <div>
-                  <span class="pasta-Selo">ACERVO HISTÓRICO // PRONTUÁRIO INDIVIDUAL</span>
-                  <h2 class="pasta-titulo">Ficha de Atributos & Recursos</h2>
+            <div class="pasta-arquivo-tela prontuario-manila-container">
+              <!-- GUIA/ORELHA DE ARQUIVO SUSPENSO KARDEX/MANILA -->
+              <div class="guia-pasta-manila" aria-hidden="true">
+                <span class="guia-furo-reforco">○</span>
+                <span class="etiqueta-guia">DOPS-PE // PRONTUÁRIO INDIVIDUAL N° 1958/04 • ARQUIVO VIVO</span>
+              </div>
+
+              <!-- CABEÇALHO OFICIAL DE INVESTIGAÇÃO POLICIAL -->
+              <header class="pasta-cabecalho prontuario-cabecalho-oficial">
+                <div class="prontuario-cabecalho-textos">
+                  <span class="pasta-Selo pasta-selo-oficial">SECRETARIA DE SEGURANÇA PÚBLICA DE PERNAMBUCO // DEPARTAMENTO DE ORDEM POLÍTICA E SOCIAL</span>
+                  <h2 class="pasta-titulo pasta-titulo-formulario">FICHA DE QUALIFICAÇÃO & ANTECEDENTES SOCIAIS</h2>
+                  <div class="prontuario-registro-topo">
+                    <span class="rotulo-registro">LIVRO DE ANTECEDENTES:</span> <span class="num-prontuario">VOL. IV / FOLHA 88</span> &nbsp;•&nbsp;
+                    <span class="rotulo-registro">CLASSIFICAÇÃO:</span> <span class="carimbo-sigiloso">[ CONFIDENCIAL ]</span>
+                  </div>
                 </div>
                 <button class="btn-voltar-cenario" data-fechar-aba>← VOLTAR AO CENÁRIO</button>
               </header>
 
               <div class="pasta-corpo">
-                <!-- CONDIÇÃO SOCIAL -->
+                <!-- CONDIÇÃO SOCIAL COM CLICHÊ TIPOGRÁFICO -->
                 <div class="bloco-condicao-social">
-                  <div class="rotulo-secao-pasta">CONDIÇÃO SOCIAL DE ORIGEM</div>
-                  <div class="valor-condicao-destaque" id="val-condicao-social">Filho de Estivador (Mocambo)</div>
+                  <div class="rotulo-secao-pasta rotulo-com-sub">
+                    <span>QUALIFICAÇÃO SOCIAL DE ORIGEM</span>
+                    <span class="codigo-formulario-dops">FORM. DOPS/PE-02</span>
+                  </div>
+                  <div class="linha-cliche-pontilhada" aria-hidden="true">........................................................................................................................</div>
+                  <div class="valor-condicao-destaque datilografia-impacto" id="val-condicao-social">Filho de Estivador (Mocambo)</div>
                   <p class="desc-condicao-social" id="desc-condicao-social">
                     Criado entre as palafitas e os armazéns do Cais de Santo Antônio. Conhece a língua dos estivadores e os atalhos do mangue, mas enfrenta portas fechadas nos salões da elite.
                   </p>
+                  <div class="linha-cliche-pontilhada" aria-hidden="true">........................................................................................................................</div>
                 </div>
 
                 <!-- ATRIBUTOS PESSOAIS FIXOS -->
-                <div class="ficha-bloco">
-                  <div class="rotulo-secao-pasta">ATRIBUTOS FORMATIVOS (ESPECTRO DE CAPACIDADE)</div>
+                <div class="ficha-bloco prontuario-ficha-secao">
+                  <div class="grampo-ficha-prontuario" aria-hidden="true"></div>
+                  <div class="rotulo-secao-pasta rotulo-com-sub">
+                    <span>ATRIBUTOS FORMATIVOS (ESPECTRO DE CAPACIDADE)</span>
+                    <span class="carimbo-rubrica-secao">[ REVISADO ]</span>
+                  </div>
                   <div class="grade-atributos-detalhada">
                     <div class="item-atributo-detalhado">
                       <div class="attr-linha-topo">
@@ -169,8 +247,12 @@
                 </div>
 
                 <!-- RECURSOS VOLÁTEIS & VIGILÂNCIA -->
-                <div class="ficha-bloco">
-                  <div class="rotulo-secao-pasta">RECURSOS VOLÁTEIS & VIGILÂNCIA</div>
+                <div class="ficha-bloco prontuario-ficha-secao">
+                  <div class="grampo-ficha-prontuario" aria-hidden="true"></div>
+                  <div class="rotulo-secao-pasta rotulo-com-sub">
+                    <span>RECURSOS VOLÁTEIS & VIGILÂNCIA</span>
+                    <span class="carimbo-rubrica-secao">[ FISCALIZAÇÃO ]</span>
+                  </div>
                   <div class="grade-recursos-detalhada">
                     <div class="item-recurso-detalhado">
                       <div class="attr-linha-topo">
@@ -270,9 +352,10 @@
 
         </div>
 
-        <!-- BARRA INFERIOR DE ATALHOS DO PALCO (PASTAS DE ACESSO RÁPIDO) -->
-        <nav class="barra-atalhos-dossie" aria-label="Atalhos do Prontuário">
+        <!-- BARRA INFERIOR DE ATALHOS DO PALCO (GUIAS DE FICHÁRIO KARDEX - TICKET 22) -->
+        <nav class="barra-atalhos-dossie" aria-label="Guias Kardex do Prontuário">
           <button class="btn-atalho-pasta ativo" id="btn-aba-cenario" data-aba-alvo="aba-cenario">
+            <div class="visor-celuloide-aba" aria-hidden="true"></div>
             <span class="atalho-icone">▣</span>
             <div class="atalho-textos">
               <span class="atalho-titulo">CENÁRIO</span>
@@ -281,6 +364,7 @@
           </button>
 
           <button class="btn-atalho-pasta" id="btn-aba-atributos" data-aba-alvo="aba-atributos">
+            <div class="visor-celuloide-aba" aria-hidden="true"></div>
             <span class="atalho-icone">▤</span>
             <div class="atalho-textos">
               <span class="atalho-titulo">ATRIBUTOS</span>
@@ -289,6 +373,7 @@
           </button>
 
           <button class="btn-atalho-pasta" id="btn-aba-relacoes" data-aba-alvo="aba-relacoes">
+            <div class="visor-celuloide-aba" aria-hidden="true"></div>
             <span class="atalho-icone">▥</span>
             <div class="atalho-textos">
               <span class="atalho-titulo">RELAÇÕES</span>
@@ -297,6 +382,7 @@
           </button>
 
           <button class="btn-atalho-pasta" id="btn-aba-cronologia" data-aba-alvo="aba-cronologia">
+            <div class="visor-celuloide-aba" aria-hidden="true"></div>
             <span class="atalho-icone">◷</span>
             <div class="atalho-textos">
               <span class="atalho-titulo">CRONOLOGIA</span>
@@ -310,6 +396,11 @@
       <!-- DIREITA: PÁGINA DE TEXTO E DECISÃO (FOLHA DE LIVRO / CRÔNICA) -->
       <section class="coluna-narrativa">
         <article class="folha-narrativa">
+          <!-- GRAMPO METÁLICO OXIDADO COM MIGRAÇÃO DE FERRUGEM (TICKET 19) -->
+          <div class="grampo-papel-oxidado" aria-hidden="true" title="Grampo de arquivo com halo de ferrugem">
+            <div class="halo-ferrugem-papel"></div>
+            <div class="arame-grampo-metal"></div>
+          </div>
           
           <!-- CABEÇALHO EDITORIAL DA PÁGINA -->
           <header class="editorial-cabecalho">
@@ -335,10 +426,14 @@
             <p>Carregando arquivos do inquérito...</p>
           </div>
 
-          <!-- BLOCO DE TRANSIÇÃO: CONTINUAR PARA A DECISÃO (FLUXO EM DOIS TEMPOS) -->
+          <!-- BLOCO DE TRANSIÇÃO: ORDEM DE DESPACHO ANEXA (TICKET 22) -->
           <div id="bloco-continuar-decisao" class="bloco-continuar-decisao" style="display: none;">
             <button id="btn-continuar-para-decisao" class="btn-continuar-decisao">
-              <span>PESAR AS ESCOLHAS & DELIBERAR</span>
+              <div class="fita-despacho-adesiva" aria-hidden="true"></div>
+              <div class="despacho-textos">
+                <span class="despacho-carimbo-titulo">ORDEM DE DESPACHO // INQUÉRITO FORMAL</span>
+                <span class="despacho-chamada">PESAR AS ESCOLHAS & DELIBERAR SOBRE OS FATOS</span>
+              </div>
               <span class="seta-continuar">➔</span>
             </button>
           </div>
@@ -481,6 +576,7 @@
 
   <script src="state-store.js"></script>
   <script src="engine.js"></script>
+  <script src="conteudo/eventos-bundle.js"></script>
   <script src="renderer.js"></script>
 </body>
 </html>

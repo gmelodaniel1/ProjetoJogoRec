@@ -28,6 +28,13 @@
   
   /* Medidas de Conforto */
   --largura-linha-leitura: 62ch;
+
+  /* Variáveis de Reestilização de Imagem por Fase (§3.5 DIRETRIZES_ESTETICAS_NOIR.md) */
+  --foto-filtro-base: sepia(35%) contrast(116%) brightness(94%) saturate(92%) hue-rotate(-5deg);
+  --foto-vinheta-centro: transparent;
+  --foto-vinheta-borda: rgba(36, 26, 18, 0.50);
+  --foto-borda-suporte: #8C7F6A;
+  --foto-fundo-cartolina: #C9BEA9;
 }
 
 /* ==========================================================================
@@ -74,99 +81,278 @@ html, body {
   width: 100vw;
   height: 100vh;
   padding: 12px 20px 18px 20px;
+  position: relative;
+  overflow: hidden;
   background: 
+    /* Cone focal de iluminação da luminária de leitura (Ticket 19) */
+    radial-gradient(ellipse 75% 65% at 52% 42%, rgba(255, 246, 224, 0.13) 0%, rgba(220, 195, 155, 0.05) 50%, transparent 72%),
+    /* Penumbra periférica densa das bordas da bancada */
+    radial-gradient(ellipse 110% 95% at 50% 50%, transparent 58%, rgba(26, 18, 12, 0.45) 82%, rgba(14, 10, 6, 0.82) 100%),
+    /* Tampo de madeira encerada com veio */
     radial-gradient(ellipse at 45% 35%, var(--cor-mesa-iluminada) 0%, var(--cor-fundo-mesa) 62%, var(--cor-mesa-borda) 100%),
     repeating-linear-gradient(90deg, rgba(30, 22, 14, 0.04) 0px, rgba(30, 22, 14, 0.04) 2px, transparent 2px, transparent 10px);
 }
 
+/* Micro-oscilação analógica de voltagem (flicker de filamento incandescente) */
+@keyframes flickerVoltagemMesa {
+  0%, 100% { filter: brightness(1); }
+  42% { filter: brightness(0.97); }
+  43% { filter: brightness(1.015); }
+  44% { filter: brightness(0.955); }
+  45% { filter: brightness(1); }
+  78% { filter: brightness(0.975); }
+  79% { filter: brightness(1); }
+}
+
+body.em-crise-urgente .mesa-viewport,
+body.fase-3 .mesa-viewport {
+  animation: flickerVoltagemMesa 14s infinite ease-in-out;
+}
+
 /* ==========================================================================
-   BARRA DE SISTEMA SUPERIOR
+   BARRA DE SISTEMA SUPERIOR — LOMBADA DE ARQUIVO DE AÇO & GAVETEIRO (TICKET 20)
    ========================================================================== */
 .barra-sistema {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
-  background-color: #2E241B;
-  border: 1px solid #6E5844;
-  box-shadow: 0 3px 10px rgba(28, 20, 12, 0.35);
+  padding: 7px 18px 7px 18px;
+  position: relative;
+  background: 
+    linear-gradient(180deg, #384032 0%, #2A3026 50%, #1F241C 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 16px);
+  border: 1px solid #5C523E;
+  border-bottom: 2px solid #1A1E17;
+  box-shadow: 
+    0 4px 12px rgba(18, 14, 10, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   color: #DFD5C4;
   font-family: var(--fonte-datilografada);
-  font-size: 13px;
-  letter-spacing: 1px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
   margin-bottom: 14px;
   flex-shrink: 0;
+  user-select: none;
+}
+
+/* Rebites metálicos com fenda mecânica nas extremidades */
+.rebite-parafuso {
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(circle at 35% 35%, #8C7F6A 0%, #4D4335 70%, #241F18 100%);
+  border: 1px solid #16130F;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.7);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rebite-parafuso::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  width: 6px;
+  height: 1.5px;
+  background-color: #120F0B;
+  transform: rotate(38deg);
 }
 
 .status-sistema {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.ponto-status {
-  color: #6DB37B;
-  font-size: 14px;
+/* Plaqueta gravada do Arquivo DOPS */
+.plaqueta-arquivo-id {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #A39682;
+  background-color: rgba(16, 18, 14, 0.55);
+  padding: 3px 7px;
+  border: 1px solid #484032;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Plaqueta de Fase com LED indicador analógico */
+.bloco-plaqueta-fase {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ponto-status-led {
+  width: 7px;
+  height: 7px;
+  background-color: #6BB577;
+  border: 1px solid #1A2E1D;
+  box-shadow: 0 0 5px rgba(107, 181, 119, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .etiqueta-fase {
   font-weight: bold;
-  color: #F0EAE1;
+  font-size: 12px;
+  color: #F4EFE6;
+  letter-spacing: 0.8px;
+}
+
+/* Bloco do Carimbo Datador Mecânico */
+.bloco-carimbo-datador {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(22, 19, 15, 0.6);
+  border: 1px solid #4E4232;
+  padding: 2px 8px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.datador-rotulo {
+  font-size: 9px;
+  font-weight: 900;
+  color: #8C7E6A;
+  letter-spacing: 0.6px;
 }
 
 .ano-atual {
-  color: #E2CFA9;
+  color: #E8D8B6;
   font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 0.6px;
 }
 
 .separador-barra {
-  color: #7A6550;
+  color: #5C5242;
+  opacity: 0.7;
+}
+
+/* Bloco do Indicador de Ações com Orifícios Perfurados */
+.bloco-perfurador-acoes {
+  display: flex;
+  align-items: center;
 }
 
 .indicador-acoes {
-  color: #E6DDD0;
+  color: #DFD5C4;
   font-family: var(--fonte-datilografada);
-  font-size: 13px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
+.acoes-texto {
+  font-size: 10px;
+  font-weight: bold;
+  color: #A89B87;
+  margin-right: 2px;
+}
+
+.acoes-furos-trilha {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Orifício com cartão/disco de ação intacto (Disponível) */
 .indicador-acoes .ponto-ativo {
-  color: #79C488;
-  margin-right: 3px;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #7DC98B 0%, #4D965E 70%, #2A5A35 100%);
+  border: 1px solid #18331E;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 2px rgba(0, 0, 0, 0.7);
+  font-size: 0;
+  vertical-align: middle;
 }
 
+/* Orifício perfurado mecânico vazado (Gasto) */
 .indicador-acoes .ponto-gasto {
-  color: #877665;
-  margin-right: 3px;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: #141612;
+  border: 1px solid #2F352A;
+  box-shadow: inset 1px 2px 3px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(140, 120, 95, 0.2);
+  font-size: 0;
+  vertical-align: middle;
+}
+
+.acoes-contagem {
+  font-size: 10px;
+  color: #9E907B;
+  margin-left: 3px;
 }
 
 .comandos-sistema {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .atalho-guia {
-  color: #B8A894;
-  font-size: 12px;
+  color: #8C806E;
+  font-size: 10px;
+  letter-spacing: 0.8px;
 }
 
-.btn-controle {
-  background: #423427;
-  color: #EFE8DC;
-  border: 1px solid #826A52;
-  padding: 5px 12px;
+/* Botões estilizados como fitas rotuladoras plásticas Dymo (Anos 60/70) */
+.btn-dymo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
   font-family: var(--fonte-datilografada);
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 900;
   letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9), 0 -1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 2px 5px rgba(12, 9, 6, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: filter 0.15s ease, transform 0.1s ease;
 }
 
-.btn-controle:hover {
-  background: #594635;
-  color: #F4EFE6;
-  border-color: #B09476;
+.btn-dymo:hover {
+  filter: brightness(1.15);
+}
+
+.btn-dymo:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(12, 9, 6, 0.7);
+}
+
+/* Fita Dymo Vermelha (DevTools / Urgência) */
+.btn-dymo-vermelho {
+  background: linear-gradient(180deg, #962824 0%, #6E1A17 55%, #521412 100%);
+  border: 1px solid #3A0D0B;
+  color: #F8F5EE;
+}
+
+/* Fita Dymo Preta / Grafite (Controle de Janela) */
+.btn-dymo-preto {
+  background: linear-gradient(180deg, #3C3630 0%, #28241F 55%, #1C1916 100%);
+  border: 1px solid #141210;
+  color: #EFE8DA;
+}
+
+/* Compatibilidade com classes anteriores */
+.btn-controle {
+  background: #423527;
+  color: #E2D7C8;
+  border: 1px solid #6E5B45;
+  padding: 4px 10px;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  cursor: pointer;
+  letter-spacing: 1px;
 }
 
 /* ==========================================================================
@@ -178,6 +364,50 @@ html, body {
   gap: 24px;
   min-height: 0;
   align-items: stretch;
+  position: relative;
+}
+
+/* ==========================================================================
+   ADEREÇOS DIEGÉTICOS DE MESA VIVA (TICKET 19)
+   ========================================================================== */
+.adereco-mesa {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Halo de xícara de café frio com borda capilar e respingos secos */
+.adereco-mancha-cafe {
+  bottom: -4px;
+  right: 14px;
+  width: 150px;
+  height: 150px;
+  mix-blend-mode: multiply;
+  transform: rotate(18deg);
+  opacity: 0.88;
+  z-index: 2;
+}
+
+.adereco-mancha-cafe svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Clipe metálico avulso caído na bancada de madeira */
+.adereco-clipe-solto {
+  bottom: 10px;
+  left: calc(54% - 24px);
+  width: 26px;
+  height: 50px;
+  transform: rotate(-24deg);
+  opacity: 0.92;
+  z-index: 8;
+}
+
+.adereco-clipe-solto svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* ==========================================================================
@@ -190,6 +420,9 @@ html, body {
   gap: 14px;
   min-width: 0;
   min-height: 0;
+  transform: rotate(-0.15deg);
+  transform-origin: 50% 120px;
+  transition: transform 0.25s ease;
 }
 
 .palco-visor {
@@ -261,14 +494,16 @@ html, body {
 
 .moldura-evidencia {
   flex: 1;
-  border: 1px solid #8C7F6A;
-  background: #C9BEA9;
+  border: 1px solid var(--foto-borda-suporte);
+  background-color: var(--foto-fundo-cartolina);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   min-height: 220px;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.40);
+  transition: border-color 0.4s ease, background-color 0.4s ease;
 }
 
 .cenario-legenda-barra {
@@ -310,8 +545,11 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: sepia(55%) contrast(112%) brightness(93%) grayscale(20%);
+  object-position: center 38%; /* Privilegia os dois terços superiores da foto */
+  filter: var(--foto-filtro-base);
   display: block;
+  transform: translateZ(0); /* Aceleração por hardware no compositor da GPU */
+  transition: filter 0.5s ease-out;
 }
 
 .foto-jornal-wrapper::after {
@@ -323,10 +561,11 @@ html, body {
   height: 100%;
   pointer-events: none;
   background: 
-    radial-gradient(ellipse at center, transparent 50%, rgba(38, 30, 22, 0.55) 100%),
-    repeating-radial-gradient(circle at 1px 1px, rgba(30, 25, 20, 0.1) 0, rgba(30, 25, 20, 0.1) 1px, transparent 1px, transparent 3px);
+    radial-gradient(ellipse at 50% 50%, var(--foto-vinheta-centro) 35%, var(--foto-vinheta-borda) 100%),
+    repeating-radial-gradient(circle at 1px 1px, rgba(30, 24, 18, 0.08) 0, rgba(30, 24, 18, 0.08) 1px, transparent 1px, transparent 3px);
   background-size: 100% 100%, 3px 3px;
   mix-blend-mode: multiply;
+  transition: background 0.5s ease;
 }
 
 .cenario-svg-palco {
@@ -453,12 +692,164 @@ html, body {
   text-transform: uppercase;
 }
 
-/* TELA 2: ATRIBUTOS & RECURSOS DETALHADOS */
+/* ==========================================================================
+   TICKET 23: PRONTUÁRIO DE ATRIBUTOS EM PASTA MANILA SUSPENSA
+   ========================================================================== */
+
+#aba-atributos .pasta-arquivo-tela.prontuario-manila-container {
+  background-color: #D2C4A8;
+  background-image: 
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(130, 105, 75, 0.15) 100%),
+    var(--textura-papel-grao);
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 256px 256px;
+  border: 1px solid #7D6E58;
+  border-top: 6px solid #827258;
+  position: relative;
+  box-shadow: 
+    0 12px 32px rgba(24, 18, 12, 0.55),
+    inset 0 0 40px rgba(120, 95, 60, 0.18),
+    inset 0 0 4px rgba(70, 50, 30, 0.25);
+}
+
+/* Orelha/Guia Saliente de Pasta Manila de Arquivo Suspenso */
+.guia-pasta-manila {
+  position: absolute;
+  top: -24px;
+  left: 28px;
+  background-color: #CBBFA8;
+  border: 1px solid #7D705C;
+  border-bottom: 2px solid #827258;
+  padding: 3px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+  box-shadow: 0 -2px 6px rgba(28, 20, 12, 0.18);
+}
+
+.guia-furo-reforco {
+  font-size: 10px;
+  color: #615340;
+  font-weight: bold;
+}
+
+.etiqueta-guia {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  color: #241F1A;
+  text-transform: uppercase;
+}
+
+/* Cabeçalho Oficial de Inquérito Policial */
+.prontuario-cabecalho-oficial {
+  background-color: #CFC2A9;
+  border-bottom: 2px solid var(--cor-tinta-principal);
+  padding: 18px 24px 14px 24px;
+}
+
+.prontuario-cabecalho-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pasta-selo-oficial {
+  display: block;
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: var(--cor-carimbo-vermelho);
+  margin-bottom: 2px;
+}
+
+.pasta-titulo-formulario {
+  font-family: var(--fonte-editorial);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--cor-tinta-principal);
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.prontuario-registro-topo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  color: var(--cor-tinta-desbotada);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rotulo-registro {
+  font-weight: bold;
+  color: #5A4E3E;
+}
+
+.num-prontuario {
+  font-weight: bold;
+  color: var(--cor-tinta-principal);
+  background-color: rgba(60, 48, 36, 0.08);
+  padding: 1px 6px;
+  border: 1px solid #B0A28C;
+}
+
+.carimbo-sigiloso {
+  color: var(--cor-carimbo-vermelho);
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 1px solid var(--cor-carimbo-vermelho);
+  padding: 1px 5px;
+  background-color: rgba(138, 37, 34, 0.06);
+}
+
+/* Linha de Clichê Pontilhada de Formulário Tipográfico */
+.linha-cliche-pontilhada {
+  font-family: var(--fonte-datilografada);
+  font-size: 12px;
+  color: #9C8E77;
+  letter-spacing: 2.5px;
+  line-height: 1;
+  user-select: none;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 4px 0;
+}
+
+.rotulo-com-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.codigo-formulario-dops {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  color: #7D705C;
+  letter-spacing: 1px;
+}
+
+.carimbo-rubrica-secao {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  color: var(--cor-carimbo-vermelho);
+  letter-spacing: 1px;
+  border: 1px solid var(--cor-carimbo-vermelho);
+  padding: 1px 4px;
+  background-color: rgba(138, 37, 34, 0.04);
+}
+
+/* Bloco de Condição Social com Fichamento */
 .bloco-condicao-social {
-  background-color: var(--cor-papel-principal);
-  border: 1px solid #BFB29B;
+  background-color: rgba(237, 230, 214, 0.95);
+  border: 1px solid #B5A892;
   border-left: 4px solid var(--cor-azul-caneta);
   padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(28, 20, 12, 0.1);
 }
 
 .valor-condicao-destaque {
@@ -469,11 +860,40 @@ html, body {
   margin-bottom: 6px;
 }
 
+.datilografia-impacto {
+  font-family: var(--fonte-datilografada);
+  font-size: 22px;
+  font-weight: 700;
+  color: #1F1B16;
+  letter-spacing: 0.5px;
+  text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.15);
+}
+
 .desc-condicao-social {
   font-family: var(--fonte-editorial);
   font-size: 18px;
   line-height: 1.45;
   color: var(--cor-tinta-desbotada);
+}
+
+/* Ficha de Seção com Grampo Metálico Diegético */
+.prontuario-ficha-secao {
+  position: relative;
+  background-color: rgba(237, 230, 214, 0.9);
+  border: 1px solid #B5A892;
+  padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(28, 20, 12, 0.1);
+}
+
+.grampo-ficha-prontuario {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  width: 14px;
+  height: 4px;
+  background: #6B6256;
+  border: 1px solid #38332C;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .grade-atributos-detalhada,
@@ -492,6 +912,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .attr-linha-topo {
@@ -555,126 +976,221 @@ html, body {
 }
 
 /* ==========================================================================
-   BARRA DE ESPECTRO QUALITATIVO (ESTILO SIR BRANTE)
+   TICKET 23: RÉGUA DE ESPECTRO QUALITATIVO ANALÓGICO COM CLICHÊ DE CHUMBO
    ========================================================================== */
 .slot-espectro {
   width: 100%;
-  margin: 2px 0 4px 0;
+  margin: 3px 0 5px 0;
 }
 
 .barra-espectro-brante {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 3px;
+  gap: 2px;
   width: 100%;
+  background-color: #635746;
+  border: 1px solid #4D4233;
+  padding: 2px;
+  box-shadow: inset 0 1px 3px rgba(20, 15, 10, 0.4);
 }
 
 .espectro-segmento {
-  background-color: #DCD3C0;
-  border: 1px solid #B5A892;
+  background-color: #D5CBBA;
+  border: 1px solid #998C77;
+  border-top: 2px solid #5A4E3E;
   padding: 4px 2px;
   text-align: center;
   font-family: var(--fonte-datilografada);
   font-size: 10px;
-  letter-spacing: 0.3px;
-  color: #7D7465;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  color: #665A4A;
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: all 0.15s ease;
 }
 
 .espectro-segmento.preenchido {
-  background-color: #C7BBA3;
-  color: #3D3830;
-  border-color: #8C7F6A;
+  background-color: #C0B49E;
+  color: #26211A;
+  border-color: #6E614E;
+  border-top-color: #3B3327;
 }
 
 .espectro-segmento.ativo {
   font-weight: bold;
   border-width: 2px;
-  transform: scaleY(1.06);
+  transform: scaleY(1.08);
   z-index: 2;
+  box-shadow: 0 2px 6px rgba(22, 16, 10, 0.4);
 }
 
 .espectro-segmento.ativo.tom-critico {
   background-color: var(--cor-carimbo-vermelho);
-  border-color: #5C1513;
-  color: #F0EAE1;
+  border-color: #4A1210;
+  color: #F7EFE2;
 }
 
 .espectro-segmento.ativo.tom-fraco {
   background-color: #8C4A27;
-  border-color: #592D16;
-  color: #F0EAE1;
+  border-color: #4F2713;
+  color: #F7EFE2;
 }
 
 .espectro-segmento.ativo.tom-estavel {
   background-color: var(--cor-azul-caneta);
-  border-color: #162433;
-  color: #F0EAE1;
+  border-color: #121E2B;
+  color: #F7EFE2;
 }
 
 .espectro-segmento.ativo.tom-forte {
   background-color: #2B5438;
-  border-color: #1B3623;
-  color: #F0EAE1;
+  border-color: #162B1D;
+  color: #F7EFE2;
 }
 
 .espectro-segmento.ativo.tom-mestre {
   background-color: #1F472B;
-  border-color: #122B1A;
-  color: #F4EFE6;
+  border-color: #0E2415;
+  color: #F7EFE2;
 }
 
-/* QUADRO DE CONSEQUÊNCIAS DA DECISÃO ANTERIOR (ESTILO SIR BRANTE) */
+/* ==========================================================================
+   TICKET 23: PAINEL DE CONSEQUÊNCIAS ESTILO SEGUNDA VIA DE DESPACHO COM FITA GOMADA
+   ========================================================================== */
 .painel-consequencias-decisao {
-  background-color: #E2D8C5;
-  border: 2px solid var(--cor-tinta-principal);
+  background-color: #E6DEC9;
+  border: 2px solid #2B251F;
   border-left: 6px solid var(--cor-azul-caneta);
-  padding: 16px 20px;
+  padding: 18px 22px 16px 22px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(28, 20, 12, 0.18);
+  position: relative;
+  box-shadow: 
+    0 8px 22px rgba(28, 20, 12, 0.32),
+    inset 0 0 25px rgba(130, 105, 70, 0.12);
+}
+
+/* Fita Adesiva Gomada Ressecada Fixando o Despacho */
+.fita-conseq-adesiva {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-0.5deg);
+  width: 140px;
+  height: 22px;
+  background: rgba(225, 205, 155, 0.72);
+  border: 1px solid rgba(175, 150, 100, 0.55);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.fita-conseq-adesiva::before,
+.fita-conseq-adesiva::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(145, 120, 75, 0.6) 2px,
+    rgba(145, 120, 75, 0.6) 4px
+  );
+}
+
+.fita-conseq-adesiva::before {
+  left: -2px;
+}
+
+.fita-conseq-adesiva::after {
+  right: -2px;
 }
 
 .conseq-cabecalho {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px dashed #8C7F6A;
-  padding-bottom: 8px;
+  align-items: flex-start;
+  border-bottom: 1px dashed #7D705C;
+  padding-bottom: 10px;
   margin-bottom: 12px;
+  gap: 12px;
+}
+
+.conseq-cabecalho-esq {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.conseq-carimbo-oficial {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: var(--cor-carimbo-vermelho);
+  border: 1px solid var(--cor-carimbo-vermelho);
+  padding: 1px 6px;
+  display: inline-block;
+  align-self: flex-start;
+  background-color: rgba(138, 37, 34, 0.05);
 }
 
 .conseq-titulo {
   font-family: var(--fonte-datilografada);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   color: var(--cor-tinta-principal);
 }
 
 .conseq-escolha-origem {
   font-family: var(--fonte-editorial);
   font-size: 17px;
+  color: var(--cor-tinta-principal);
+  margin-bottom: 12px;
+  line-height: 1.4;
+  padding: 6px 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-left: 3px solid #8C7F6A;
+}
+
+.conseq-origem-rotulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  color: #5A4E3E;
+  letter-spacing: 1px;
+}
+
+.conseq-evento-origem {
+  font-size: 15px;
   font-style: italic;
   color: var(--cor-tinta-desbotada);
-  margin-bottom: 10px;
 }
 
 .btn-fechar-conseq {
   background: transparent;
-  border: 1px solid #7D715E;
-  color: var(--cor-tinta-desbotada);
+  border: 1px solid #5A4E3E;
+  color: #383025;
   font-family: var(--fonte-datilografada);
   font-size: 11px;
-  padding: 2px 8px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
   cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .btn-fechar-conseq:hover {
   background: #D4C8B2;
   color: var(--cor-tinta-principal);
+  border-color: #2B251F;
 }
 
 .conseq-lista-mudancas {
@@ -685,11 +1201,13 @@ html, body {
 
 .conseq-item-linha {
   background-color: var(--cor-papel-principal);
-  border: 1px solid #BFB29B;
+  border: 1px solid #B5A892;
+  border-left: 4px solid #6E614E;
   padding: 10px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  box-shadow: 0 1px 3px rgba(28, 20, 12, 0.1);
 }
 
 .conseq-item-topo {
@@ -705,22 +1223,26 @@ html, body {
 .conseq-nome-delta {
   font-weight: bold;
   color: var(--cor-tinta-principal);
+  letter-spacing: 0.5px;
 }
 
 .conseq-delta-pilula {
-  padding: 2px 7px;
+  padding: 2px 8px;
   font-size: 12px;
   font-weight: bold;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  display: inline-block;
+  letter-spacing: 0.5px;
 }
 
 .conseq-delta-pilula.positivo {
-  background-color: #2B5438;
-  color: #F0EAE1;
+  background-color: #23472F;
+  color: #F7EFE2;
 }
 
 .conseq-delta-pilula.negativo {
   background-color: var(--cor-carimbo-vermelho);
-  color: #F0EAE1;
+  color: #F7EFE2;
 }
 
 .conseq-transicao-patamar {
@@ -736,20 +1258,21 @@ html, body {
 .alerta-mudanca-patamar {
   display: inline-block;
   margin-left: 6px;
-  padding: 1px 6px;
+  padding: 2px 7px;
   font-size: 11px;
   font-weight: bold;
   border: 1px solid currentColor;
+  letter-spacing: 0.5px;
 }
 
 .alerta-mudanca-patamar.subiu {
-  color: #2B5438;
-  background-color: rgba(43, 84, 56, 0.1);
+  color: #23472F;
+  background-color: rgba(35, 71, 47, 0.12);
 }
 
 .alerta-mudanca-patamar.caiu {
   color: var(--cor-carimbo-vermelho);
-  background-color: rgba(138, 37, 34, 0.1);
+  background-color: rgba(138, 37, 34, 0.12);
 }
 
 /* PREVISÃO DETALHADA DE MUDANÇA NOS CARTÕES DE DECISÃO */
@@ -802,18 +1325,25 @@ html, body {
 .galeria-personagens-relacoes {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .galeria-personagens-relacoes {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cartao-personagem {
   background-color: var(--cor-papel-principal);
   border: 1px solid #B5A790;
-  padding: 12px 14px;
+  padding: 14px 16px;
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
   box-shadow: 0 3px 8px rgba(28, 20, 12, 0.15);
   position: relative;
+  overflow: visible;
 }
 
 .cartao-personagem.personagem-protagonista {
@@ -828,19 +1358,86 @@ html, body {
   border-left: 4px solid var(--cor-verde-militar);
 }
 
-.retrato-moldura {
-  width: 64px;
-  height: 78px;
-  background-color: #CFC3AE;
-  border: 1px solid #8A7D68;
+/* Coluna de Pronturio Policial & Fotografia 3x4 (Ticket 18) */
+.prontuario-foto-coluna {
+  position: relative;
+  width: 86px;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.clipe-metalico-foto {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  width: 20px;
+  height: 38px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.clipe-metalico-foto svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.retrato-moldura-3x4 {
+  width: 86px;
+  height: 114px;
+  background-color: #E2DDD3;
+  border: 3px solid #F4EFE6;
+  box-shadow: 0 2px 6px rgba(25, 18, 10, 0.35), inset 0 0 0 1px rgba(90, 80, 65, 0.3);
   flex-shrink: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 5;
 }
 
-.retrato-moldura svg {
+.foto-3x4-arquivo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.08) brightness(0.96);
+}
+
+.retrato-moldura-3x4 svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Carimbo circular oficial DOPS/SSP aplicado meio a meio na foto e no papel manila */
+.carimbo-circular-dops {
+  position: absolute;
+  bottom: -14px;
+  right: -20px;
+  width: 76px;
+  height: 76px;
+  z-index: 10;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  transform: rotate(-11deg);
+  opacity: 0.88;
+}
+
+.carimbo-circular-dops.carimbo-vermelho {
+  color: #8C2B22;
+}
+
+.carimbo-circular-dops.carimbo-azul {
+  color: #243E63;
+}
+
+.carimbo-circular-dops.carimbo-verde {
+  color: #315234;
+}
+
+.carimbo-circular-dops svg {
   width: 100%;
   height: 100%;
   display: block;
@@ -851,14 +1448,34 @@ html, body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  position: relative;
+  z-index: 6;
+}
+
+.personagem-topo-linha {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px dashed rgba(140, 120, 100, 0.35);
+  padding-bottom: 4px;
+  margin-bottom: 3px;
+}
+
+.personagem-prontuario-num {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: #6B5E4F;
+  text-transform: uppercase;
 }
 
 .personagem-papel-tag {
   font-family: var(--fonte-datilografada);
   font-size: 11px;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: var(--cor-carimbo-vermelho);
   text-transform: uppercase;
 }
@@ -880,7 +1497,7 @@ html, body {
 
 .personagem-desc {
   font-family: var(--fonte-editorial);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.35;
   color: var(--cor-tinta-desbotada);
   margin-top: 2px;
@@ -973,44 +1590,71 @@ html, body {
 /* ==========================================================================
    BARRA INFERIOR DE ATALHOS DO PALCO (PASTAS DE ACESSO RÁPIDO)
    ========================================================================== */
+/* ==========================================================================
+   GUIAS DE FICHÁRIO KARDEX SUSPENSAS (TICKET 22)
+   ========================================================================== */
 .barra-atalhos-dossie {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
+  position: relative;
+  padding-top: 4px;
 }
 
 .btn-atalho-pasta {
-  background-color: #D8CEB8;
-  border: 2px solid #A69880;
-  border-bottom: 4px solid #7A6D58;
-  padding: 10px 12px;
+  background-color: #D4C9B2;
+  background-image: 
+    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(110, 95, 70, 0.08) 100%),
+    var(--textura-papel-grao);
+  background-size: 100% 100%, 256px 256px;
+  border: 1px solid #9C8E78;
+  border-bottom: 3px solid #6B5E4A;
+  padding: 8px 12px 10px 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   text-align: left;
   position: relative;
-  transition: all 0.12s ease;
-  box-shadow: 0 4px 10px rgba(28, 20, 12, 0.3);
+  transition: all 0.15s ease;
+  box-shadow: 0 3px 8px rgba(20, 15, 10, 0.35);
+  overflow: visible;
+}
+
+/* Visor saliente de celuloide amarelado da guia Kardex */
+.visor-celuloide-aba {
+  position: absolute;
+  top: -4px;
+  left: 10px;
+  right: 10px;
+  height: 5px;
+  background: linear-gradient(180deg, rgba(240, 230, 200, 0.6) 0%, rgba(190, 170, 130, 0.3) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(110, 90, 60, 0.3);
+  pointer-events: none;
 }
 
 .btn-atalho-pasta:hover {
-  background-color: #E6DDD0;
-  border-color: #7D705B;
+  background-color: #E2D7C0;
+  border-color: #7D6E58;
   transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(20, 15, 10, 0.45);
 }
 
+/* Aba Kardex Ativa (Conexão direta ao visor de inspeção) */
 .btn-atalho-pasta.ativo {
   background-color: var(--cor-papel-principal);
   border-color: var(--cor-tinta-principal);
   border-top: 4px solid var(--cor-carimbo-vermelho);
-  border-bottom: 2px solid var(--cor-tinta-principal);
-  box-shadow: 0 6px 14px rgba(28, 20, 12, 0.45);
+  border-bottom: 1px solid transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(18, 12, 6, 0.5);
+  z-index: 5;
 }
 
 .atalho-icone {
-  font-size: 22px;
+  font-size: 20px;
   color: var(--cor-carimbo-vermelho);
   line-height: 1;
   flex-shrink: 0;
@@ -1117,8 +1761,8 @@ html, body {
   outline: 1px solid rgba(170, 150, 120, 0.22);
   outline-offset: -3px;
   box-shadow: 
-    0 12px 32px rgba(28, 20, 12, 0.5), 
-    0 0 2px rgba(28, 20, 12, 0.35),
+    3px 14px 34px rgba(22, 14, 8, 0.52), 
+    0 1px 3px rgba(22, 14, 8, 0.38),
     inset 0 0 40px rgba(130, 105, 70, 0.12),
     inset 0 0 3px rgba(90, 70, 45, 0.2);
   padding: 38px 46px;
@@ -1127,12 +1771,66 @@ html, body {
   position: relative;
   height: fit-content;
   min-height: 100%;
+  transform: rotate(0.35deg);
+  transform-origin: 50% 120px;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .folha-narrativa.folha-transicao {
   opacity: 0.25;
-  transform: translateY(4px);
+  transform: rotate(0.35deg) translateY(4px);
+}
+
+/* Grampo metálico oxidado com migração de ferrugem na celulose (Ticket 19) */
+.grampo-papel-oxidado {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  width: 28px;
+  height: 14px;
+  z-index: 18;
+  pointer-events: none;
+  transform: rotate(-3deg);
+}
+
+.halo-ferrugem-papel {
+  position: absolute;
+  top: -6px;
+  left: -8px;
+  width: 44px;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(165, 84, 38, 0.42) 0%, rgba(165, 84, 38, 0.16) 55%, transparent 75%);
+  mix-blend-mode: multiply;
+  filter: blur(1.5px);
+}
+
+.arame-grampo-metal {
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  width: 22px;
+  height: 5px;
+  background: linear-gradient(180deg, #6B5B4E 0%, #3D332A 60%, #524338 100%);
+  border: 1px solid #29221C;
+  box-shadow: 1px 2px 3px rgba(18, 12, 6, 0.45);
+}
+
+.arame-grampo-metal::before,
+.arame-grampo-metal::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  width: 2px;
+  height: 7px;
+  background-color: #1A140E;
+}
+
+.arame-grampo-metal::before {
+  left: -2px;
+}
+
+.arame-grampo-metal::after {
+  right: -2px;
 }
 
 /* CABEÇALHO EDITORIAL */
@@ -1209,10 +1907,18 @@ html, body {
 .corpo-narrativa p {
   font-family: var(--fonte-editorial);
   font-size: 22px;
-  line-height: 1.75;
+  line-height: 1.70;
   color: #1A1917;
-  margin-bottom: 22px;
-  text-align: left;
+  margin-bottom: 18px;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-indent: 1.5em;
+}
+
+.corpo-narrativa p:first-of-type {
+  text-indent: 0;
 }
 
 /* LETRA CAPITULAR (3 LINHAS DE ALTURA) */
@@ -1371,46 +2077,87 @@ html, body {
   justify-content: center;
 }
 
+/* ==========================================================================
+   ORDEM DE DESPACHO ANEXA AO TEXTO (TICKET 22)
+   ========================================================================== */
 .btn-continuar-decisao {
   width: 100%;
-  background-color: #2E2720;
-  color: #F0EAE1;
+  background: 
+    linear-gradient(180deg, #2A241E 0%, #1D1814 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 12px);
+  color: #F4EFE6;
   border: 2px solid #5A4C3C;
-  border-bottom: 4px solid var(--cor-carimbo-vermelho);
-  padding: 16px 24px;
+  border-left: 6px solid var(--cor-carimbo-vermelho);
+  padding: 14px 22px 14px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--fonte-datilografada);
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 2px;
+  position: relative;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(28, 20, 12, 0.35);
+  box-shadow: 0 6px 16px rgba(18, 12, 6, 0.45);
   transition: all 0.15s ease-in-out;
 }
 
+/* Fita adesiva gomada ressecada fixando o despacho ao rodapé */
+.fita-despacho-adesiva {
+  position: absolute;
+  top: -8px;
+  left: 36px;
+  width: 58px;
+  height: 16px;
+  background-color: var(--cor-fita-adesiva);
+  border-left: 1px dashed rgba(160, 140, 90, 0.4);
+  border-right: 1px dashed rgba(160, 140, 90, 0.4);
+  box-shadow: 0 1px 3px rgba(20, 15, 10, 0.3);
+  transform: rotate(-1.5deg);
+  pointer-events: none;
+}
+
+.despacho-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.despacho-carimbo-titulo {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #E26860;
+  text-transform: uppercase;
+}
+
+.despacho-chamada {
+  font-family: var(--fonte-editorial);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #F8F5EE;
+}
+
 .btn-continuar-decisao:hover {
-  background-color: #3F352B;
+  background: linear-gradient(180deg, #383028 0%, #25201A 100%);
   border-color: #8C7760;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(28, 20, 12, 0.45);
+  box-shadow: 0 8px 22px rgba(18, 12, 6, 0.55);
 }
 
 .btn-continuar-decisao:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 6px rgba(28, 20, 12, 0.25);
+  box-shadow: 0 2px 6px rgba(18, 12, 6, 0.35);
 }
 
 .btn-continuar-decisao .seta-continuar {
-  font-size: 18px;
-  color: #E2CFA9;
+  font-size: 20px;
+  color: #E8D5B0;
   transition: transform 0.15s ease;
 }
 
 .btn-continuar-decisao:hover .seta-continuar {
   transform: translateX(4px);
-  color: #F0EAE1;
+  color: #FFFFFF;
 }
 
 .secao-deliberacao-decisoes {
@@ -1463,26 +2210,29 @@ html, body {
   background-color: #E2D9C8;
   background-image: var(--textura-papel-grao);
   background-size: 256px 256px;
-  box-shadow: 0 2px 6px rgba(28, 20, 12, 0.12), inset 0 0 15px rgba(130, 105, 70, 0.08);
-  border: 1px solid #BFB29B;
-  padding: 18px 22px;
+  box-shadow: 0 3px 8px rgba(24, 18, 12, 0.18), inset 0 0 20px rgba(120, 95, 60, 0.08);
+  border: 1px solid #B5A790;
+  /* Borda de micro-perfurador telex/despacho */
+  border-left: 5px solid #827258;
+  padding: 18px 24px;
   position: relative;
   font-family: var(--fonte-editorial);
   cursor: pointer;
-  transition: all 0.1s ease-in-out;
+  transition: all 0.12s ease-in-out;
   overflow: hidden;
 }
 
 .cartao-decisao.opcao-disponivel:hover {
-  background-color: #D8CEB8;
-  border-color: #82765F;
-  box-shadow: 3px 4px 0px rgba(30, 25, 20, 0.16);
+  background-color: #D6CBB4;
+  border-color: #6E614A;
+  border-left-color: var(--cor-carimbo-vermelho);
+  box-shadow: 0 5px 14px rgba(24, 18, 12, 0.28);
   transform: translateY(-1px);
 }
 
 .cartao-decisao.opcao-disponivel:active {
   transform: translateY(1px);
-  box-shadow: none;
+  box-shadow: 0 1px 4px rgba(24, 18, 12, 0.2);
 }
 
 /* ==========================================================================
@@ -1592,36 +2342,55 @@ html, body {
 }
 
 /* CENSURA VISUAL INTERATIVA (OPÇÕES BLOQUEADAS) */
+/* ==========================================================================
+   TARJA DE CENSURA DA POLÍCIA FEDERAL / AI-5 (TICKET 22)
+   ========================================================================== */
 .cartao-decisao.opcao-bloqueada {
-  background-color: #D5CBB8;
-  border: 1px solid #A89C83;
-  opacity: 0.78;
+  background-color: #CEBFAB;
+  border: 1px solid #948772;
+  border-left: 5px solid #1C1916;
+  opacity: 0.88;
   cursor: not-allowed;
   position: relative;
   overflow: hidden;
 }
 
-.tarja-censura-faixa {
+/* Tarja densa de tinta nanquim/alcatrão preto passada à trincha */
+.tarja-censura-ai5 {
   position: absolute;
-  top: 14px;
-  right: -25px;
-  background-color: var(--cor-carimbo-vermelho);
-  color: #F0EAE1;
+  top: 12px;
+  right: -10px;
+  background-color: #161412;
+  border-left: 3px solid var(--cor-carimbo-vermelho);
+  border-right: 3px solid var(--cor-carimbo-vermelho);
+  padding: 4px 24px;
+  transform: rotate(3deg);
+  box-shadow: 0 3px 8px rgba(10, 8, 6, 0.75);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carimbo-censura-dcdp {
+  color: #E24840;
   font-family: var(--fonte-datilografada);
-  font-size: 11px;
-  font-weight: bold;
+  font-size: 10px;
+  font-weight: 900;
   letter-spacing: 1.5px;
-  padding: 4px 35px;
-  transform: rotate(14deg);
-  box-shadow: 0 2px 4px rgba(25, 20, 15, 0.35);
-  z-index: 5;
+  text-transform: uppercase;
 }
 
 .cartao-decisao.opcao-bloqueada .decisao-rotulo {
-  color: #635C50;
+  color: #574F44;
   text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  text-decoration-color: #1E1D1B;
+  text-decoration-thickness: 2.5px;
+  text-decoration-color: #1A1816;
+}
+
+.decisao-descricao.rasurada-nanquim {
+  color: #635A4E;
+  opacity: 0.82;
 }
 
 /* ==========================================================================
@@ -1632,20 +2401,34 @@ body.fase-2 {
   --cor-fundo-mesa: #4E4236;
   --cor-mesa-iluminada: #685848;
   --cor-mesa-borda: #332A21;
+  --foto-filtro-base: grayscale(35%) sepia(20%) contrast(128%) brightness(85%) hue-rotate(170deg);
+  --foto-vinheta-centro: transparent;
+  --foto-vinheta-borda: rgba(14, 18, 22, 0.78);
+  --foto-borda-suporte: #5C625E;
+  --foto-fundo-cartolina: #B2AAA0;
 }
 
 /* ==========================================================================
    PAINEL HIDROLÓGICO DA CHEIA DE 75 (TICKET 11)
    ========================================================================== */
+/* ==========================================================================
+   PAINEL DA CHEIA DE 75 — RÉGUA LIMNIMÉTRICA DA CHESF / DEFESA CIVIL (TICKET 21)
+   ========================================================================== */
 .painel-cheia-75 {
   display: none;
-  background-color: #2E3025;
-  border: 1px solid #6E7058;
+  background: 
+    linear-gradient(180deg, #242920 0%, #1A1F17 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 2px, transparent 2px, transparent 16px);
+  border: 2px solid #524A3A;
+  border-bottom: 2px solid #141812;
   color: #E2DCCB;
-  padding: 12px 16px;
-  box-shadow: 0 6px 16px rgba(28, 20, 12, 0.45);
+  padding: 10px 14px;
+  box-shadow: 
+    0 8px 24px rgba(16, 12, 8, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   font-family: var(--fonte-datilografada);
   flex-shrink: 0;
+  position: relative;
 }
 
 body.fase-3 .painel-cheia-75 {
@@ -1655,15 +2438,45 @@ body.fase-3 .painel-cheia-75 {
 .cheia-cabecalho {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #6E7058;
+  align-items: center;
+  border-bottom: 1px dashed #4D4536;
   padding-bottom: 6px;
   margin-bottom: 8px;
-  font-size: 12px;
-  letter-spacing: 1.5px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.cheia-alerta-bloco {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Luz piloto analógica de aviso da Defesa Civil com filamento pulsante */
+.luz-piloto-alerta {
+  width: 8px;
+  height: 8px;
+  background-color: #E0564C;
+  border: 1px solid #380E0B;
+  box-shadow: 0 0 6px #E0564C, inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  display: inline-block;
+  animation: pulsarAlertaChesf 2.2s infinite ease-in-out;
+}
+
+@keyframes pulsarAlertaChesf {
+  0%, 100% { opacity: 1; filter: brightness(1.2); }
+  50% { opacity: 0.45; filter: brightness(0.8); }
 }
 
 .cheia-alerta-luz {
-  color: #E06C68;
+  color: #E66860;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+}
+
+.cheia-titulo {
+  color: #B5A894;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -1673,53 +2486,104 @@ body.fase-3 .painel-cheia-75 {
   align-items: center;
 }
 
+/* Wrapper da Régua Limnimétrica Esmaltada */
+.cheia-regua-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  background-color: rgba(16, 18, 14, 0.6);
+  border: 1px solid #484032;
+  padding: 4px 6px;
+}
+
+.regua-marcas-escala {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 8.5px;
+  font-family: var(--fonte-datilografada);
+  font-weight: bold;
+  color: #8C806E;
+  text-align: right;
+  line-height: 1;
+}
+
+.regua-marcas-escala .cota-critica {
+  color: #D94840;
+}
+
+.regua-marcas-escala .cota-alerta {
+  color: #E6A045;
+}
+
+/* Régua com esmalte branco/preto e marcas industriais de medição */
 .cheia-regua-grafica {
-  width: 44px;
-  height: 70px;
-  background-color: #1E2018;
-  border: 1px solid #75735E;
+  width: 32px;
+  height: 80px;
+  background-color: #E5DFC9;
+  background-image: 
+    repeating-linear-gradient(180deg, #1C1914 0px, #1C1914 2px, transparent 2px, transparent 8px);
+  border: 2px solid #2B251D;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
 }
 
+/* Nível da água barrenta com lodo e espuma na crista */
 .regua-nivel-agua {
   width: 100%;
-  background: linear-gradient(to top, #3D4230 0%, #63694C 100%);
-  border-top: 2px solid #B5B084;
+  background: linear-gradient(to top, rgba(32, 40, 24, 0.96) 0%, rgba(68, 76, 44, 0.92) 80%, rgba(120, 116, 68, 0.95) 100%);
+  border-top: 2px solid #D6CEA0;
+  box-shadow: 0 0 6px rgba(190, 180, 110, 0.5);
+  position: relative;
   transition: height 0.6s ease-out;
+}
+
+.linha-espuma-rio {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #EAE3BA;
+  opacity: 0.8;
 }
 
 .cheia-dados-numericos {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  font-size: 13px;
+  gap: 10px;
+  font-size: 12px;
 }
 
 .dado-cheia-linha {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  background-color: rgba(20, 22, 17, 0.45);
+  border: 1px solid #443C2E;
+  padding: 4px 8px;
 }
 
 .dado-cheia-linha .rotulo {
-  color: #B0AA96;
-  font-size: 11px;
+  color: #9C907C;
+  font-size: 9.5px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
 .dado-cheia-linha .valor {
-  color: #F0EAE1;
+  color: #F4EFE6;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .dado-cheia-linha.status-panico .valor {
-  color: #E06C68;
-  font-weight: bold;
+  color: #E25852;
 }
 
 /* ATMOSFERA FASE 3: LODO E UMIDADE */
@@ -1729,6 +2593,17 @@ body.fase-3 {
   --cor-fundo-mesa: #4A493B;
   --cor-mesa-iluminada: #62614F;
   --cor-mesa-borda: #2E2D24;
+  --foto-filtro-base: sepia(48%) contrast(114%) brightness(78%) hue-rotate(45deg) saturate(108%);
+  --foto-vinheta-centro: rgba(22, 30, 20, 0.18);
+  --foto-vinheta-borda: rgba(16, 24, 15, 0.90);
+  --foto-borda-suporte: #3C3B30;
+  --foto-fundo-cartolina: #8F8C76;
+}
+
+/* ESTADO DE EXCEÇÃO: EVENTO DE CRISE FORÇADO / BATIDA POLICIAL DO DOPS */
+body.em-crise-urgente {
+  --foto-filtro-base: grayscale(10%) sepia(55%) contrast(138%) brightness(80%) hue-rotate(-15deg);
+  --foto-vinheta-borda: rgba(90, 20, 16, 0.88);
 }
 
 body.fase-3 .folha-narrativa {
@@ -1885,19 +2760,22 @@ body.fase-3 .folha-narrativa {
 /* ==========================================================================
    VINHETA / OVERLAY DE TRANSIÇÃO HISTÓRICA (TICKET 15)
    ========================================================================== */
+/* ==========================================================================
+   TRANSIÇÃO HISTÓRICA & VIRADA DE ANO — EDIÇÃO EXTRAORDINÁRIA (TICKET 21)
+   ========================================================================== */
 .overlay-virada-ano {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(22, 17, 12, 0.78);
-  backdrop-filter: blur(3px);
+  /* Vinheta escura analógica motivada de redação noturna (SEM blur digital de iOS) */
+  background: radial-gradient(ellipse 95% 85% at 50% 50%, rgba(22, 16, 11, 0.90) 0%, rgba(10, 7, 5, 0.97) 100%);
   z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 24px;
   animation: fadeInVirada 0.25s ease-out forwards;
 }
 
@@ -1906,59 +2784,104 @@ body.fase-3 .folha-narrativa {
   to { opacity: 1; }
 }
 
+/* Folha de Jornal Extraordinário / Calendário de Parede com Textura Rústica */
 .cartao-virada-ano {
-  background-color: var(--cor-papel-secundario);
-  border: 3px double var(--cor-tinta-principal);
-  padding: 34px 48px;
-  max-width: 540px;
+  background-color: #EFE8DC;
+  background-image: 
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.25) 0%, rgba(110, 90, 65, 0.08) 100%),
+    var(--textura-papel-grao);
+  background-repeat: no-repeat, repeat;
+  background-size: 100% 100%, 256px 256px;
+  border: 2px solid #5A4E3E;
+  outline: 1px dashed rgba(90, 78, 62, 0.45);
+  outline-offset: -5px;
+  padding: 32px 44px;
+  max-width: 580px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 22px 64px rgba(6, 4, 2, 0.88), 
+    0 2px 4px rgba(6, 4, 2, 0.5),
+    inset 0 0 35px rgba(120, 95, 65, 0.12);
   position: relative;
+  transform: rotate(-0.35deg);
   animation: viradaAnoSlam 0.35s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
 }
 
 @keyframes viradaAnoSlam {
   0% {
-    transform: scale(0.92) translateY(20px);
+    transform: scale(0.92) translateY(24px) rotate(-1.5deg);
     opacity: 0;
   }
   100% {
-    transform: scale(1) translateY(0);
+    transform: scale(1) translateY(0) rotate(-0.35deg);
     opacity: 1;
   }
+}
+
+.virada-jornal-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
 .virada-selo-topo {
   font-family: var(--fonte-datilografada);
   font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 2px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
   color: var(--cor-carimbo-vermelho);
-  display: block;
-  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.virada-carimbo-ano {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #7A6C58;
+  border: 1px solid #9E8E76;
+  padding: 1px 6px;
+  transform: rotate(2deg);
+}
+
+.virada-filete-duplo {
+  border-top: 3px double #3D3528;
+  margin: 8px 0 14px 0;
 }
 
 .virada-titulo {
   font-family: var(--fonte-editorial);
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--cor-tinta-principal);
-  margin-bottom: 12px;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.virada-manchete-sub {
+  font-family: var(--fonte-editorial);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--cor-tinta-desbotada);
+  margin-bottom: 14px;
 }
 
 .virada-anos-linha {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 22px;
   font-family: var(--fonte-editorial);
-  font-size: 46px;
+  font-size: 48px;
   font-weight: bold;
-  margin: 14px 0;
-  border-top: 1px dashed #9E917B;
-  border-bottom: 1px dashed #9E917B;
-  padding: 12px 0;
+  margin: 12px 0;
+  border-top: 1px dashed #A89B84;
+  border-bottom: 1px dashed #A89B84;
+  padding: 10px 0;
+  background-color: rgba(220, 210, 190, 0.25);
 }
 
 .ano-origem {
@@ -1976,37 +2899,31 @@ body.fase-3 .folha-narrativa {
 
 .virada-idade-linha {
   font-family: var(--fonte-datilografada);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   color: var(--cor-azul-caneta);
-  margin-bottom: 6px;
-}
-
-.virada-subtitulo {
-  font-family: var(--fonte-editorial);
-  font-size: 17px;
-  font-style: italic;
-  color: var(--cor-tinta-desbotada);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
 .virada-rodape-acao {
-  margin-top: 24px;
+  margin-top: 22px;
   display: flex;
   justify-content: center;
 }
 
 .btn-continuar-virada {
   font-family: var(--fonte-datilografada);
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
   color: #F8F2E4;
   background-color: var(--cor-tinta-principal);
   border: 2px solid var(--cor-carimbo-vermelho);
-  padding: 12px 26px;
+  padding: 12px 24px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -2016,7 +2933,7 @@ body.fase-3 .folha-narrativa {
   background-color: var(--cor-carimbo-vermelho);
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
 }
 
 .btn-continuar-virada:active {

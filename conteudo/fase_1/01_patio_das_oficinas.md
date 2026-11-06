@@ -5,7 +5,8 @@ fase: 1
 ano: 1958
 tipo: "dossie"
 custo_acoes: 1
-imagem: "cais_recife_demo.svg"
+imagem: "cenarios/fase1_portuarios_saps_126056.webp"
+tombo_mcr: "126.056"
 condicao_social_padrao: "Filho de Estivador"
 
 requisitos_acesso:

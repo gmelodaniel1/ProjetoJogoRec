@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { carregarTodosEventos, parseEventFile } = require('./src/narrative-parser');
+const { compilarEventosParaWeb } = require('./scripts/build-web');
 
 let mainWindow = null;
 const pastaConteudo = path.join(__dirname, 'conteudo');
@@ -17,7 +18,7 @@ function iniciarObservadorDeConteudo() {
       if (debounceWatcherTimer) clearTimeout(debounceWatcherTimer);
       debounceWatcherTimer = setTimeout(() => {
         console.log(`[HOT-RELOAD] Arquivo alterado no disco: ${filename}`);
-        const dadosAtualizados = carregarTodosEventos(pastaConteudo);
+        const dadosAtualizados = compilarEventosParaWeb();
         if (mainWindow && !mainWindow.isDestroyed()) {
           mainWindow.webContents.send('narrative:events-updated', dadosAtualizados);
         }
@@ -101,6 +102,11 @@ ipcMain.handle('narrative:get-event', async (event, eventId) => {
 });
 
 app.whenReady().then(() => {
+  try {
+    compilarEventosParaWeb();
+  } catch (e) {
+    console.warn('[BUILD-WEB] Falha ao sincronizar bundle inicial:', e.message);
+  }
   createWindow();
   iniciarObservadorDeConteudo();
 

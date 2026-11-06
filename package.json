@@ -4,7 +4,10 @@
   "description": "RPG narrativo determinístico ambientado no Recife (1958-1975)",
   "main": "main.js",
   "scripts": {
+    "build:web": "node scripts/build-web.js",
+    "prestart": "node scripts/build-web.js",
     "start": "electron .",
+    "pretest": "node scripts/build-web.js",
     "test": "node test/runner.js"
   },
   "keywords": [

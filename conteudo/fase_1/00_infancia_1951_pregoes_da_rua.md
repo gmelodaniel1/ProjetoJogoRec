@@ -7,7 +7,8 @@ etapa: "infancia"
 tipo: "dossie"
 custo_acoes: 0
 avanco_ano: 1
-imagem: "cais_recife_demo.svg"
+imagem: "cenarios/fase1_comicio_princesas_125940.webp"
+tombo_mcr: "125.940"
 
 opcoes:
   - id: "imitar_pregoes_feira"

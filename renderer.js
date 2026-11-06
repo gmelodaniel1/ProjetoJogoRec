@@ -267,7 +267,14 @@ function atualizarProntuario(estado, deltas) {
   if (!estado) return;
 
   // Atualização de Fase e Atmosfera
-  document.body.className = `fase-${estado.faseAtual}`;
+  const emCriseAtiva = Boolean(
+    modoVisual === 'evento' &&
+    eventoAtivoId &&
+    cacheEventos[eventoAtivoId] &&
+    cacheEventos[eventoAtivoId].metadata &&
+    cacheEventos[eventoAtivoId].metadata.tipo === 'crise_urgente'
+  );
+  document.body.className = `fase-${estado.faseAtual}${emCriseAtiva ? ' em-crise-urgente' : ''}`;
 
   if (elEtiquetaFase) {
     const nomesFase = {
@@ -284,19 +291,19 @@ function atualizarProntuario(estado, deltas) {
     elAnoAtual.textContent = `RECIFE, ${estado.anoAtual} • ${rotuloIdade}`;
   }
 
-  // Medidor Visual de Ações
+  // Medidor Visual de Ações (Ticket 20: Orifícios Perfurados de Ação)
   if (elIndicadorAcoes) {
     const restantes = estado.acoesRestantesFase;
     const totais = estado.acoesTotaisFase;
     let pontosHtml = '';
     for (let i = 0; i < totais; i++) {
       if (i < restantes) {
-        pontosHtml += '<span class="ponto-ativo">●</span>';
+        pontosHtml += '<span class="ponto-ativo" title="Ação Disponível">●</span>';
       } else {
-        pontosHtml += '<span class="ponto-gasto">○</span>';
+        pontosHtml += '<span class="ponto-gasto" title="Ação Consumida">○</span>';
       }
     }
-    elIndicadorAcoes.innerHTML = `AÇÕES: ${pontosHtml} (${restantes}/${totais})`;
+    elIndicadorAcoes.innerHTML = `<span class="acoes-texto">AÇÕES:</span> <span class="acoes-furos-trilha">${pontosHtml}</span> <span class="acoes-contagem">(${restantes}/${totais})</span>`;
   }
 
   // Prontuário Social e Parentesco
@@ -542,12 +549,16 @@ function renderizarPainelConsequencias() {
 
   elPainelConsequencias.style.display = 'block';
   elPainelConsequencias.innerHTML = `
+    <div class="fita-conseq-adesiva" aria-hidden="true"></div>
     <div class="conseq-cabecalho">
-      <span class="conseq-titulo">❖ IMPACTO DA TUA ÚLTIMA DECISÃO — CARIMBO [${ultimaConsequenciaDecisao.carimbo}]</span>
-      <button class="btn-fechar-conseq" id="btn-fechar-conseq">✕ OCULTAR</button>
+      <div class="conseq-cabecalho-esq">
+        <span class="conseq-carimbo-oficial">[ REGISTRADO EM PRONTUÁRIO // DOPS ]</span>
+        <span class="conseq-titulo">❖ DESPACHO DO INQUÉRITO — RESULTADO: [${ultimaConsequenciaDecisao.carimbo}]</span>
+      </div>
+      <button class="btn-fechar-conseq" id="btn-fechar-conseq">✕ ARQUIVAR DESPACHO</button>
     </div>
     <div class="conseq-escolha-origem">
-      "${ultimaConsequenciaDecisao.opcaoRotulo}" (${ultimaConsequenciaDecisao.eventoTitulo})
+      <span class="conseq-origem-rotulo">AÇÃO REGISTRADA:</span> "${ultimaConsequenciaDecisao.opcaoRotulo}" <span class="conseq-evento-origem">(${ultimaConsequenciaDecisao.eventoTitulo})</span>
     </div>
     <div class="conseq-lista-mudancas">
       ${linhasHtml}
@@ -766,35 +777,57 @@ function atualizarMolduraEvidencia(evento = null) {
   if (!elSlotEvidencia) return;
 
   const estado = store.getState();
+  const ehCrise = Boolean(evento && evento.metadata && evento.metadata.tipo === 'crise_urgente');
+  document.body.classList.toggle('em-crise-urgente', ehCrise);
+
   const ano = evento && evento.metadata ? evento.metadata.ano : estado.anoAtual;
   const tituloCena = evento && evento.metadata ? evento.metadata.titulo.toUpperCase() : `ARQUIVO CENTRAL — FASE ${estado.faseAtual}`;
   const idStr = evento && evento.metadata ? evento.metadata.id : `FASE-${estado.faseAtual}`;
   const numProcesso = Math.abs(idStr.split('').reduce((acc, c) => acc + c.charCodeAt(0), 100)) % 899 + 100;
+  const tomboMcr = evento && evento.metadata && evento.metadata.tombo_mcr ? evento.metadata.tombo_mcr : null;
 
   if (elCenarioLocal) {
     elCenarioLocal.textContent = `${tituloCena} (RECIFE, ${ano})`;
   }
   if (elCenarioRegistro) {
-    elCenarioRegistro.textContent = `REGISTRO N.º ${numProcesso}/${String(ano).slice(2)}`;
+    elCenarioRegistro.textContent = tomboMcr
+      ? `TOMBO N.º ${tomboMcr}/MCR`
+      : `REGISTRO N.º ${numProcesso}/${String(ano).slice(2)}`;
   }
   if (elResumoCenario) {
     elResumoCenario.textContent = evento && evento.metadata ? evento.metadata.titulo : `Recife, ${ano}`;
   }
 
-  if (evento && evento.metadata && evento.metadata.imagem) {
-    elSlotEvidencia.innerHTML = `
-      <div class="foto-jornal-wrapper">
-        <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Cenário'}">
-        <div class="selo-sobreposto-cenario">${estado.faseAtual === 3 ? 'DEFESA CIVIL / PE' : 'REGISTRO DE ACERVO'}</div>
-      </div>
-    `;
-    return;
-  }
-
   const svgCena = gerarSvgCenario(evento, estado);
   const carimboSelo = estado.faseAtual === 3
     ? 'CALAMIDADE — CHEIA DE 75'
-    : (evento && evento.metadata && evento.metadata.tipo === 'crise_urgente' ? 'MANDADO DE CAPTURA' : 'ARQUIVO ICONOGRÁFICO // PE');
+    : (ehCrise ? 'MANDADO DE CAPTURA' : 'ARQUIVO ICONOGRÁFICO // PE');
+
+  if (evento && evento.metadata && evento.metadata.imagem) {
+    const seloImg = estado.faseAtual === 3
+      ? 'DEFESA CIVIL / PE'
+      : (ehCrise ? 'MANDADO DE CAPTURA' : (tomboMcr ? `ACERVO MCR // ${tomboMcr}` : 'REGISTRO DE ACERVO'));
+
+    elSlotEvidencia.innerHTML = `
+      <div class="foto-jornal-wrapper">
+        <img src="artes/${evento.metadata.imagem}" class="filtro-jornal-75" alt="${evento.metadata.titulo || 'Cenário'}">
+        <div class="selo-sobreposto-cenario">${seloImg}</div>
+      </div>
+    `;
+
+    const imgEl = elSlotEvidencia.querySelector('img.filtro-jornal-75');
+    if (imgEl) {
+      imgEl.addEventListener('error', () => {
+        elSlotEvidencia.innerHTML = `
+          <div class="foto-jornal-wrapper">
+            ${svgCena}
+            <div class="selo-sobreposto-cenario">${carimboSelo}</div>
+          </div>
+        `;
+      }, { once: true });
+    }
+    return;
+  }
 
   elSlotEvidencia.innerHTML = `
     <div class="foto-jornal-wrapper">
@@ -805,50 +838,33 @@ function atualizarMolduraEvidencia(evento = null) {
 }
 
 // ==========================================================================
-// TELA DE RELAÇÕES & VÍNCULOS (ABA 3)
+// TELA DE RELAÇÕES & VÍNCULOS (ABA 3 - TICKET 18: RETRATOS 3x4 DE PRONTUÁRIO)
 // ==========================================================================
-function gerarSvgRetrato(tipoAvatar) {
-  if (tipoAvatar === 'pai') {
-    return `
-      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
-        <rect width="60" height="72" fill="#C8BCA6"/>
-        <circle cx="30" cy="26" r="12" fill="#4A4237"/>
-        <rect x="16" y="13" width="28" height="6" fill="#2E2922"/>
-        <path d="M 10 72 Q 30 44 50 72" fill="#383229"/>
-      </svg>
-    `;
-  }
-  if (tipoAvatar === 'militar' || tipoAvatar === 'dops') {
-    return `
-      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
-        <rect width="60" height="72" fill="#BFB29B"/>
-        <polygon points="14,18 46,18 42,10 18,10" fill="#2B3026"/>
-        <rect x="12" y="17" width="36" height="4" fill="#1E211B"/>
-        <circle cx="30" cy="29" r="11" fill="#4A4237"/>
-        <rect x="21" y="25" width="7" height="4" fill="#1E1D1B"/>
-        <rect x="32" y="25" width="7" height="4" fill="#1E1D1B"/>
-        <path d="M 8 72 Q 30 45 52 72" fill="#2B3026"/>
-      </svg>
-    `;
-  }
-  if (tipoAvatar === 'aliado') {
-    return `
-      <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
-        <rect width="60" height="72" fill="#CCC0AA"/>
-        <circle cx="30" cy="26" r="12" fill="#52483C"/>
-        <path d="M 18 20 Q 30 10 42 20" fill="#29241E"/>
-        <path d="M 10 72 Q 30 45 50 72" fill="#473E33"/>
-      </svg>
-    `;
-  }
+function gerarSvgRetratoFallback(tipoAvatar) {
+  // Retrato antropométrico com réguas de altura (estilo fichamento policial e militar de 1950/60)
   return `
-    <svg viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
-      <rect width="60" height="72" fill="#D4C8B2"/>
-      <circle cx="30" cy="26" r="12" fill="#3E372E"/>
-      <path d="M 17 22 Q 30 11 43 22" fill="#24201B"/>
-      <path d="M 9 72 Q 30 44 51 72" fill="#2E3640"/>
+    <svg viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; background:#C5BDAF;">
+      <!-- Fundo milimetrado e régua antropométrica -->
+      <line x1="0" y1="20" x2="90" y2="20" stroke="#8F8372" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <text x="4" y="18" font-family="'Courier Prime', monospace" font-size="6" fill="#6E6354">1.80m</text>
+      <line x1="0" y1="40" x2="90" y2="40" stroke="#8F8372" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <text x="4" y="38" font-family="'Courier Prime', monospace" font-size="6" fill="#6E6354">1.70m</text>
+      <line x1="0" y1="60" x2="90" y2="60" stroke="#8F8372" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <text x="4" y="58" font-family="'Courier Prime', monospace" font-size="6" fill="#6E6354">1.60m</text>
+      <line x1="0" y1="80" x2="90" y2="80" stroke="#8F8372" stroke-width="0.8" stroke-dasharray="2 2"/>
+      <text x="4" y="78" font-family="'Courier Prime', monospace" font-size="6" fill="#6E6354">1.50m</text>
+      <!-- Silhueta fotográfica documental -->
+      <circle cx="45" cy="42" r="18" fill="#3D352B"/>
+      <ellipse cx="45" cy="96" rx="34" ry="26" fill="#2E2720"/>
+      <!-- Placa de identificação no peito -->
+      <rect x="18" y="88" width="54" height="16" fill="#E5DFC9" stroke="#1C1610" stroke-width="1.2"/>
+      <text x="45" y="98" font-family="'Courier Prime', monospace" font-size="6.5" font-weight="bold" text-anchor="middle" fill="#1C1610" letter-spacing="0.6">DOPS / SSP-PE</text>
     </svg>
   `;
+}
+
+function gerarSvgRetrato(tipoAvatar) {
+  return gerarSvgRetratoFallback(tipoAvatar);
 }
 
 function renderizarTelaRelacoes() {
@@ -862,46 +878,106 @@ function renderizarTelaRelacoes() {
 
   const listaRelacoes = [
     {
+      id: 'severino',
+      prontuario: 'REGISTRO PORTUÁRIO Nº 04.812/P • DOCAS DO RECIFE',
       papel: 'VÍNCULO PATERNO • CAIS DE SANTO ANTÔNIO',
       nome: 'Mestre Severino (Teu Pai)',
       status: `Nível ${valPai} • ${espPai.rotulo.toUpperCase()}`,
       desc: 'Veterano das docas do Recife. A sua confiança define se a família estará unida quando o cerco fechar.',
       classe: 'personagem-aliado',
-      avatar: 'pai'
+      avatar: 'pai',
+      foto: 'artes/retratos/retrato_severino.webp',
+      tipoCarimbo: 'carimbo-azul',
+      carimboTextoSuperior: 'CAPITANIA DOS PORTOS • PE',
+      carimboCentro: 'MATRICULADO',
+      carimboTextoInferior: 'CAIS DO RECIFE • 1958'
     },
     {
+      id: 'helena',
+      prontuario: 'PRONTUÁRIO DOPS/PE Nº 11.405-C • VIGILÂNCIA',
       papel: 'MOVIMENTO ESTUDANTIL • VÁRZEA',
       nome: 'Helena & Gráfica Clandestina',
       status: `Influência: ${estado.recursosVolateis.influencia} • ${espInf.rotulo.toUpperCase()}`,
       desc: 'Articuladora das oficinas de alfabetização e panfletagem noturna nos arredores da Várzea e Boa Vista.',
       classe: 'personagem-aliado',
-      avatar: 'aliado'
+      avatar: 'aliado',
+      foto: 'artes/retratos/retrato_helena.webp',
+      tipoCarimbo: 'carimbo-vermelho',
+      carimboTextoSuperior: 'POLÍCIA CIVIL DO ESTADO DE PE',
+      carimboCentro: 'INVESTIGADA',
+      carimboTextoInferior: 'DOPS • ORDEM POLÍTICA'
     },
     {
+      id: 'sindicato',
+      prontuario: 'REGISTRO DRT/PE Nº 082 • FEDERAÇÃO OPERÁRIA',
       papel: 'TRABALHADORES & VIZINHANÇA',
       nome: 'Sindicato & Moradores da Madalena',
       status: `Moral Popular: ${estado.recursosVolateis.moral_popular} • ${espMor.rotulo.toUpperCase()}`,
       desc: 'A solidariedade acumulada entre estivadores, ferroviários e vizinhos de bairro nas horas de escassez.',
       classe: 'personagem-protagonista',
-      avatar: 'protagonista'
+      avatar: 'protagonista',
+      foto: 'artes/retratos/retrato_sindicato.webp',
+      tipoCarimbo: 'carimbo-verde',
+      carimboTextoSuperior: 'FEDERAÇÃO OPERÁRIA DE PE',
+      carimboCentro: 'SINDICALIZADO',
+      carimboTextoInferior: 'DELEGACIA REG. TRABALHO'
     },
     {
+      id: 'dops',
+      prontuario: 'INQUÉRITO POLICIAL-MILITAR • SSP/DOPS-PE Nº 001/64',
       papel: 'APARATO DE VIGILÂNCIA • RUA DA UNIÃO',
       nome: 'Delegacia do D.O.P.S. / PE',
       status: `Suspeita: ${estado.recursosVolateis.suspeita_dops}/10 • ${espSusp.rotulo.toUpperCase()}`,
       desc: 'Investigadores e arquivos políticos do estado. Ao atingir 10 de suspeita, uma batida compulsória é deflagrada.',
       classe: 'personagem-antagonista',
-      avatar: 'dops'
+      avatar: 'dops',
+      foto: 'artes/retratos/retrato_dops.webp',
+      tipoCarimbo: 'carimbo-vermelho',
+      carimboTextoSuperior: 'SECRETARIA DE SEGURANÇA PÚBLICA',
+      carimboCentro: 'CONFIDENCIAL',
+      carimboTextoInferior: 'D.O.P.S. • ARQUIVO MORTO'
     }
   ];
 
-  elGaleriaPersonagens.innerHTML = listaRelacoes.map(p => `
+  elGaleriaPersonagens.innerHTML = listaRelacoes.map((p, idx) => `
     <div class="cartao-personagem ${p.classe}">
-      <div class="retrato-moldura">
-        ${gerarSvgRetrato(p.avatar)}
+      <div class="prontuario-foto-coluna">
+        <div class="clipe-metalico-foto" aria-hidden="true" title="Fixação metálica de prontuário">
+          <svg width="20" height="38" viewBox="0 0 20 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12 V30 C5 33 9 35 12 33 C15 31 15 27 15 23 V7 C15 3 9 3 9 7 V25 C9 27 11 28 12 27 C13 26 13 24 13 21 V12" stroke="#5A6166" stroke-width="2.6" stroke-linecap="round" fill="none" filter="drop-shadow(1px 2px 2px rgba(18,12,6,0.5))"/>
+            <path d="M5 12 V30 C5 33 9 35 12 33 C15 31 15 27 15 23 V7 C15 3 9 3 9 7 V25" stroke="#D3DCDE" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="retrato-moldura-3x4">
+          <img src="${p.foto}" alt="Retrato 3x4: ${p.nome}" class="foto-3x4-arquivo" onerror="this.onerror=null; this.parentElement.innerHTML=gerarSvgRetratoFallback('${p.avatar}');" />
+        </div>
+        <div class="carimbo-circular-dops ${p.tipoCarimbo}" aria-hidden="true">
+          <svg viewBox="0 0 76 76" width="76" height="76">
+            <circle cx="38" cy="38" r="35" stroke="currentColor" stroke-width="1.8" fill="none" stroke-dasharray="3 1.5"/>
+            <circle cx="38" cy="38" r="27" stroke="currentColor" stroke-width="1" fill="none"/>
+            <path id="carimbo-arc-top-${idx}" d="M 14 38 A 24 24 0 0 1 62 38" fill="none"/>
+            <text font-family="'Courier Prime', monospace" font-size="5.8" font-weight="bold" fill="currentColor" letter-spacing="0.8">
+              <textPath href="#carimbo-arc-top-${idx}" startOffset="50%" text-anchor="middle">
+                ${p.carimboTextoSuperior}
+              </textPath>
+            </text>
+            <text x="38" y="42" font-family="'Courier Prime', monospace" font-size="7.5" font-weight="900" text-anchor="middle" fill="currentColor" letter-spacing="1">
+              ${p.carimboCentro}
+            </text>
+            <path id="carimbo-arc-bot-${idx}" d="M 62 38 A 24 24 0 0 1 14 38" fill="none"/>
+            <text font-family="'Courier Prime', monospace" font-size="5.2" font-weight="bold" fill="currentColor" letter-spacing="0.6">
+              <textPath href="#carimbo-arc-bot-${idx}" startOffset="50%" text-anchor="middle">
+                ${p.carimboTextoInferior}
+              </textPath>
+            </text>
+          </svg>
+        </div>
       </div>
       <div class="personagem-info">
-        <span class="personagem-papel-tag">${p.papel}</span>
+        <div class="personagem-topo-linha">
+          <span class="personagem-prontuario-num">${p.prontuario}</span>
+          <span class="personagem-papel-tag">${p.papel}</span>
+        </div>
         <span class="personagem-nome">${p.nome}</span>
         <span class="personagem-status">${p.status}</span>
         <p class="personagem-desc">${p.desc}</p>
@@ -1306,13 +1382,15 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
         itemBloqueado.dataset.opcaoId = opcao.id;
 
         itemBloqueado.innerHTML = `
-          <div class="tarja-censura-faixa">BLOQUEADO</div>
+          <div class="tarja-censura-ai5">
+            <span class="carimbo-censura-dcdp">[ CENSURADO // LEI DE IMPRENSA • AI-5 ]</span>
+          </div>
           <div class="decisao-topo">
             <span class="decisao-numero">${numRomano}</span>
             <span class="decisao-rotulo">${opcao.rotulo}</span>
-            <span class="etiqueta-custo">[BLOQUEADO]</span>
+            <span class="etiqueta-custo">[VETADO PELA CENSURA]</span>
           </div>
-          ${opcao.descricao ? `<div class="decisao-descricao">${opcao.descricao}</div>` : ''}
+          ${opcao.descricao ? `<div class="decisao-descricao rasurada-nanquim">${opcao.descricao}</div>` : ''}
           <div class="decisao-requisitos">
             ${requisitosHtml}
           </div>
@@ -1335,52 +1413,83 @@ function exibirNotificacaoHotReload(nome) {
   timerNotificacao = setTimeout(() => elNotificacao.classList.remove('visivel'), 2200);
 }
 
-// Inicialização
+// Inicialização (Suporte Híbrido: Electron Desktop + Web/GitHub Pages)
 async function inicializarNarrativa() {
-  if (!window.electronAPI) return;
-
   try {
-    const dados = await window.electronAPI.getAllEvents();
+    let dados = null;
+
+    if (window.electronAPI && typeof window.electronAPI.getAllEvents === 'function') {
+      dados = await window.electronAPI.getAllEvents();
+    } else if (window.EVENTOS_PRECARREGADOS && window.EVENTOS_PRECARREGADOS.eventos) {
+      dados = window.EVENTOS_PRECARREGADOS;
+    } else {
+      const resposta = await fetch('conteudo/eventos.json');
+      if (resposta.ok) {
+        dados = await resposta.json();
+      }
+    }
+
     if (dados && dados.eventos) {
       cacheEventos = dados.eventos;
       atualizarProntuario(store.getState(), null);
       renderizarDossie();
     }
 
-    // Hot-reloading
-    window.electronAPI.onEventsUpdated((dadosAtualizados) => {
-      console.log("[RENDERER] Eventos atualizados no disco.");
-      if (dadosAtualizados && dadosAtualizados.eventos) {
-        cacheEventos = dadosAtualizados.eventos;
+    // Hot-reloading (exclusivo do ambiente Desktop Electron)
+    if (window.electronAPI && typeof window.electronAPI.onEventsUpdated === 'function') {
+      window.electronAPI.onEventsUpdated((dadosAtualizados) => {
+        console.log("[RENDERER] Eventos atualizados no disco.");
+        if (dadosAtualizados && dadosAtualizados.eventos) {
+          cacheEventos = dadosAtualizados.eventos;
 
-        if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
-          renderizarEvento(cacheEventos[eventoAtivoId], deliberacaoAberta);
-          exibirNotificacaoHotReload(cacheEventos[eventoAtivoId].metadata.titulo);
-        } else {
-          renderizarDossie();
-          exibirNotificacaoHotReload('Dossiê da Fase');
+          if (modoVisual === 'evento' && eventoAtivoId && cacheEventos[eventoAtivoId]) {
+            renderizarEvento(cacheEventos[eventoAtivoId], deliberacaoAberta);
+            exibirNotificacaoHotReload(cacheEventos[eventoAtivoId].metadata.titulo);
+          } else {
+            renderizarDossie();
+            exibirNotificacaoHotReload('Dossiê da Fase');
+          }
         }
-      }
-    });
+      });
+    }
   } catch (err) {
     console.error("Falha ao inicializar narrativa:", err);
   }
 }
 
-// Tela Cheia
+// Tela Cheia (Electron + HTML5 Fullscreen API para Web)
 async function atualizarStatusFullscreen() {
-  if (window.electronAPI && btnFullscreen) {
+  if (!btnFullscreen) return;
+  if (window.electronAPI && typeof window.electronAPI.isFullscreen === 'function') {
     const isFull = await window.electronAPI.isFullscreen();
     btnFullscreen.textContent = isFull ? 'MODO JANELA' : 'TELA CHEIA';
+  } else {
+    const isFullWeb = Boolean(document.fullscreenElement);
+    btnFullscreen.textContent = isFullWeb ? 'MODO JANELA' : 'TELA CHEIA';
   }
 }
 
-if (btnFullscreen && window.electronAPI) {
+if (btnFullscreen) {
   btnFullscreen.addEventListener('click', async () => {
-    await window.electronAPI.toggleFullscreen();
-    atualizarStatusFullscreen();
+    if (window.electronAPI && typeof window.electronAPI.toggleFullscreen === 'function') {
+      await window.electronAPI.toggleFullscreen();
+      atualizarStatusFullscreen();
+    } else {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      } catch (e) {
+        console.warn("Fullscreen web indisponível:", e);
+      }
+      atualizarStatusFullscreen();
+    }
   });
 }
+
+document.addEventListener('fullscreenchange', atualizarStatusFullscreen);
 
 // ==========================================================================
 // CONSOLE DE DEPURAÇÃO DO CRIADOR (TICKET 12)

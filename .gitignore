@@ -3,3 +3,12 @@ node_modules/
 dist/
 *.log
 artes/*.pdf
+__pycache__/
+.scratch/__pycache__/
+.scratch/*.jpg
+.scratch/*.webp
+.scratch/*.py
+.scratch/*.js
+.scratch/mcr_samples/
+.scratch/portraits/
+.scratch/portraits_raw/

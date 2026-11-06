@@ -7,7 +7,8 @@ etapa: "infancia"
 tipo: "dossie"
 custo_acoes: 0
 avanco_ano: 1
-imagem: "cais_recife_demo.svg"
+imagem: "cenarios/fase1_escolares_125976.webp"
+tombo_mcr: "125.976"
 
 opcoes:
   - id: "desenhar_letras_tabua"

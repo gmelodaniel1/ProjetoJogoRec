@@ -1,0 +1,707 @@
+// Arquivo gerado automaticamente por scripts/build-web.js
+window.EVENTOS_PRECARREGADOS = {
+  "eventos": {
+    "crise_urgente_batida_dops": {
+      "metadata": {
+        "id": "crise_urgente_batida_dops",
+        "titulo": "A Batida Policial na Madrugada",
+        "fase": 1,
+        "ano": 1963,
+        "tipo": "crise_urgente",
+        "custo_acoes": 0,
+        "imagem": "cenarios/fase2_recife_vibe_noturno.webp",
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "subornar_inspetor",
+            "rotulo": "Entregar todas as tuas economias ao chefe da ronda",
+            "descricao": "O inspetor aceita empurrar o teu dossiê para o fundo da gaveta, mas o preço limpa os teus bolsos.",
+            "carimbo": "SUBORNO",
+            "requisitos": {
+              "capital": 25
+            },
+            "efeitos": {
+              "capital": -25,
+              "suspeita_dops": -5
+            }
+          },
+          {
+            "id": "sacrificar_lealdade_familiar",
+            "rotulo": "Permitir que teu pai assuma os panfletos e seja levado",
+            "descricao": "O velho dá um passo à frente antes que os policiais alcancem o teu quarto. O olhar dele nunca mais te perdoará.",
+            "carimbo": "INFÂMIA",
+            "requisitos": {
+              "relacao_pai": 1
+            },
+            "efeitos": {
+              "relacao_pai": -3,
+              "honra_familiar": -2,
+              "suspeita_dops": -6,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "resistir_ao_interrogatorio",
+            "rotulo": "Enfrentar os porões da Rua do Hospício sem delatar ninguém",
+            "descricao": "Quarenta e oito horas de pauladas e isolamento na cela úmida. Teu corpo carrega cicatrizes, mas a tua boca não abre.",
+            "carimbo": "RESISTÊNCIA",
+            "requisitos": {
+              "sangue_frio": 2
+            },
+            "efeitos": {
+              "sangue_frio": -1,
+              "moral_popular": 4,
+              "suspeita_dops": -4
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>As coronhadas de revólver contra a porta de madeira acordam o sobrado às três da manhã. O som de passos pesados no corredor não deixa dúvidas: o <span class=\"grifo-faccao\">DOPS</span> cercou a saída pelo quintal.</p>\n<p>&quot;Abram em nome da Lei de Segurança!&quot;, grita a voz rouca do sargento lá fora. O teu prontuário acumulou denúncias demais e a tua suspeita atingiu o limite máximo de tolerância do regime. Não há para onde fugir pelos telhados. Precisas pagar o preço imediatamente para não desaparecer nos porões.</p>\n",
+      "corpoTextoPuro": "As coronhadas de revólver contra a porta de madeira acordam o sobrado às três da manhã. O som de passos pesados no corredor não deixa dúvidas: o DOPS cercou a saída pelo quintal.\n\n\"Abram em nome da Lei de Segurança!\", grita a voz rouca do sargento lá fora. O teu prontuário acumulou denúncias demais e a tua suspeita atingiu o limite máximo de tolerância do regime. Não há para onde fugir pelos telhados. Precisas pagar o preço imediatamente para não desaparecer nos porões.",
+      "arquivoOrigem": "conteudo/crises/crise_urgente_batida_dops.md"
+    },
+    "crise_urgente_miseria_despejo": {
+      "metadata": {
+        "id": "crise_urgente_miseria_despejo",
+        "titulo": "A Ordem de Despejo e Penhora",
+        "fase": 1,
+        "ano": 1962,
+        "tipo": "crise_urgente",
+        "custo_acoes": 0,
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "vender_favores",
+            "rotulo": "Trocar tua influência política por um empréstimo urgente",
+            "descricao": "Vender votos sindicais ou favores burocráticos para um agiota do cais em troca de dinheiro vivo.",
+            "carimbo": "COMPROMETIDO",
+            "requisitos": {
+              "influencia": 1
+            },
+            "efeitos": {
+              "influencia": -1,
+              "capital": 30,
+              "moral_popular": -2
+            }
+          },
+          {
+            "id": "humilhacao_publica",
+            "rotulo": "Implorar ajuda aos patrões de Casa Forte",
+            "descricao": "Engolir o orgulho e beijar a mão da elite usineira para evitar que tua família vá para a sarjeta.",
+            "carimbo": "HUMILHAÇÃO",
+            "requisitos": {},
+            "efeitos": {
+              "honra_familiar": -2,
+              "capital": 20,
+              "moral_popular": -1
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>Os oficiais de justiça chegam acompanhados por dois praças da <span class=\"grifo-faccao\">Polícia Militar</span>. Teu Capital zerou por completo e as dívidas acumuladas bateram à porta. Móveis velhos, colchões de palha e as ferramentas de ofício são jogados na calçada sob o olhar curioso dos vizinhos.</p>\n<p>Se não conseguires recursos neste instante, a tua família será lançada na miséria absoluta dos alagadiços do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span>.</p>\n",
+      "corpoTextoPuro": "Os oficiais de justiça chegam acompanhados por dois praças da Polícia Militar. Teu Capital zerou por completo e as dívidas acumuladas bateram à porta. Móveis velhos, colchões de palha e as ferramentas de ofício são jogados na calçada sob o olhar curioso dos vizinhos.\n\nSe não conseguires recursos neste instante, a tua família será lançada na miséria absoluta dos alagadiços do Rio Capibaribe.",
+      "arquivoOrigem": "conteudo/crises/crise_urgente_miseria_despejo.md"
+    },
+    "ev_f1_1948_nascimento": {
+      "metadata": {
+        "id": "ev_f1_1948_nascimento",
+        "titulo": "1948 — O Nascimento nas Margens do Capibaribe",
+        "fase": 1,
+        "ano": 1948,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "avanco_ano": 1,
+        "imagem": "cais_recife_demo.svg",
+        "opcoes": [
+          {
+            "id": "choro_forte",
+            "rotulo": "Chorar com força diante do breu da noite",
+            "descricao": "Teu primeiro alento é um grito que ecoa sobre as águas escuras do mangue, exigindo o calor dos braços de tua mãe.",
+            "carimbo": "VALENTE",
+            "requisitos": {},
+            "efeitos": {
+              "presenca": 1,
+              "relacao_pai": 1
+            }
+          },
+          {
+            "id": "olhar_silencioso",
+            "rotulo": "Abrir os olhos em silêncio e absorver o murmúrio do rio",
+            "descricao": "Contemplar a fresta de luz de lamparina entre as tábuas do mocambo. Uma calma prematura que intriga os presentes.",
+            "carimbo": "ATENTO",
+            "requisitos": {},
+            "efeitos": {
+              "astucia": 1,
+              "sangue_frio": 1
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a cena completa do nascimento em 1948 --><p>A noite de 1948 caía pesada sobre a lama do <span class=\"grifo-rio\">Capibaribe</span>. No interior estreito do mocambo, erguido sobre estacas de mangue nas cercanias de <span class=\"grifo-bairro\">São José</span>, o ar cheirava a maresia, querosene e fumaça de candeeiro. </p>\n<p>Tua mãe ofegava sobre o catre de palha enquanto as parteiras da vizinhança trocavam sussurros apressados. Do lado de fora, a maré subia rente ao assoalho de tábuas frouxas, trazendo o marulhar lento das barcaças que cruzavam as pontes do Recife. Foi naquele instante de penumbra que vieste ao mundo.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a cena completa do nascimento em 1948 -->\n\nA noite de 1948 caía pesada sobre a lama do Capibaribe. No interior estreito do mocambo, erguido sobre estacas de mangue nas cercanias de São José, o ar cheirava a maresia, querosene e fumaça de candeeiro. \n\nTua mãe ofegava sobre o catre de palha enquanto as parteiras da vizinhança trocavam sussurros apressados. Do lado de fora, a maré subia rente ao assoalho de tábuas frouxas, trazendo o marulhar lento das barcaças que cruzavam as pontes do Recife. Foi naquele instante de penumbra que vieste ao mundo.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1948_nascimento.md"
+    },
+    "ev_f1_1949_primeiros_passos": {
+      "metadata": {
+        "id": "ev_f1_1949_primeiros_passos",
+        "titulo": "1949 — Os Primeiros Passos sobre as Palafitas",
+        "fase": 1,
+        "ano": 1949,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "avanco_ano": 1,
+        "imagem": "cais_recife_demo.svg",
+        "opcoes": [
+          {
+            "id": "segurar_ferramentas_pai",
+            "rotulo": "Apoiar-se na caixa de ferramentas de ferro do teu pai",
+            "descricao": "Tocar o metal frio e a graxa das chaves de fenda do cais antes de dar o primeiro passo trôpego no chão de terra batida.",
+            "carimbo": "OFÍCIO",
+            "requisitos": {},
+            "efeitos": {
+              "oficio": 1,
+              "relacao_pai": 1
+            }
+          },
+          {
+            "id": "avancar_sozinho_porta",
+            "rotulo": "Soltar as mãos e arriscar a travessia em direção à luz",
+            "descricao": "Caminhar cambaleante rumo à porta aberta para a viela ensolarada, sem medo das frestas entre as tábuas.",
+            "carimbo": "TEMERÁRIO",
+            "requisitos": {},
+            "efeitos": {
+              "sangue_frio": 1,
+              "presenca": 1
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui os primeiros passos e o ambiente do mocambo em 1949 --><p>Com um ano de idade, o mundo para ti resumia-se aos limites daquela palafita e ao rumor incessante da maré batendo contra as estacas de sustentação. Teu pai retornava das oficinas com o macacão impregnado de fuligem, jogando sobre a esteira as peças que consertava à noite para render alguns trocados a mais.</p>\n<p>Foi ali, entre pregos de barco e caixotes de feira, que tuas pernas miúdas sustentaram pela primeira vez o peso do teu corpo, sob o olhar atento e severo de Mestre Severino.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui os primeiros passos e o ambiente do mocambo em 1949 -->\n\nCom um ano de idade, o mundo para ti resumia-se aos limites daquela palafita e ao rumor incessante da maré batendo contra as estacas de sustentação. Teu pai retornava das oficinas com o macacão impregnado de fuligem, jogando sobre a esteira as peças que consertava à noite para render alguns trocados a mais.\n\nFoi ali, entre pregos de barco e caixotes de feira, que tuas pernas miúdas sustentaram pela primeira vez o peso do teu corpo, sob o olhar atento e severo de Mestre Severino.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1949_primeiros_passos.md"
+    },
+    "ev_f1_1950_margens_do_rio": {
+      "metadata": {
+        "id": "ev_f1_1950_margens_do_rio",
+        "titulo": "1950 — As Margens do Rio e a Correnteza",
+        "fase": 1,
+        "ano": 1950,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "avanco_ano": 1,
+        "imagem": "cais_recife_demo.svg",
+        "opcoes": [
+          {
+            "id": "observar_movimento_aguas",
+            "rotulo": "Aprender a ler o ritmo da maré antes de se aproximar",
+            "descricao": "Notar como as folhas e os gravetos indicam a direção do fluxo do Capibaribe antes que a lama engula teus pés.",
+            "carimbo": "SAGAZ",
+            "requisitos": {},
+            "efeitos": {
+              "astucia": 1,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "ajudar_mutirao_vizinhos",
+            "rotulo": "Carregar pequenas tábuas para ajudar os vizinhos do beco",
+            "descricao": "Correr descalço entre os mocambos vizinhos para avisar que a água de inverno começou a invadir as cozinhas.",
+            "carimbo": "SOLIDÁRIO",
+            "requisitos": {},
+            "efeitos": {
+              "moral_popular": 1,
+              "presenca": 1
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o inverno de 1950 e o contato com as águas do Capibaribe --><p>Aos dois anos, a água deixava de ser apenas um som sob as tábuas para se tornar a presença mais viva do teu cotidiano. O inverno no Recife chegava sem pedir licença, e o <span class=\"grifo-rio\">Capibaribe</span> transbordava sobre o lodo dos quintais, obrigando as famílias a erguer móveis e esteiras sobre tijolos improvisados.</p>\n<p>As crianças da viela corriam à beira do canalete, observando os caranguejos que subiam pelo manguezal enquanto as mães gritavam advertências contra a correnteza escura.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o inverno de 1950 e o contato com as águas do Capibaribe -->\n\nAos dois anos, a água deixava de ser apenas um som sob as tábuas para se tornar a presença mais viva do teu cotidiano. O inverno no Recife chegava sem pedir licença, e o Capibaribe transbordava sobre o lodo dos quintais, obrigando as famílias a erguer móveis e esteiras sobre tijolos improvisados.\n\nAs crianças da viela corriam à beira do canalete, observando os caranguejos que subiam pelo manguezal enquanto as mães gritavam advertências contra a correnteza escura.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1950_margens_do_rio.md"
+    },
+    "ev_f1_1951_pregoes_da_rua": {
+      "metadata": {
+        "id": "ev_f1_1951_pregoes_da_rua",
+        "titulo": "1951 — Os Pregões nas Vielas de São José",
+        "fase": 1,
+        "ano": 1951,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "avanco_ano": 1,
+        "imagem": "cenarios/fase1_comicio_princesas_125940.webp",
+        "tombo_mcr": "125.940",
+        "opcoes": [
+          {
+            "id": "imitar_pregoes_feira",
+            "rotulo": "Decorar os versos dos mascates e pregoeiros do mercado",
+            "descricao": "Repetir os ritmos e as rimas dos vendedores de tapioca e peixe fresco, atraindo a atenção das comadres da rua.",
+            "carimbo": "ELOQUENTE",
+            "requisitos": {},
+            "efeitos": {
+              "presenca": 1,
+              "astucia": 1
+            }
+          },
+          {
+            "id": "guardar_trocados_familia",
+            "rotulo": "Cuidar com zelo das moedas que sobram do pão",
+            "descricao": "Recolher os trocados de cobre e entregá-los na lata de banha que tua mãe esconde atrás do pote de barro.",
+            "carimbo": "POUPADOR",
+            "requisitos": {},
+            "efeitos": {
+              "capital": 5,
+              "honra_familiar": 1
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o aprendizado das ruas, sons e feiras de São José em 1951 --><p>Com três anos de idade, teus passos já alcançavam a entrada da feira de <span class=\"grifo-bairro\">São José</span>. O burburinho das carroças de mulas, o chiar do óleo quente nas frigideiras de acarajé e o badalo dos bondes elétricos formavam a música da cidade.</p>\n<p>Os pregoeiros gritavam seus fardos de maxixe, farinha de mandioca e querosene, enquanto os homens falavam em voz baixa sobre o preço dos gêneros e as promessas do novo governo na capital.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui o aprendizado das ruas, sons e feiras de São José em 1951 -->\n\nCom três anos de idade, teus passos já alcançavam a entrada da feira de São José. O burburinho das carroças de mulas, o chiar do óleo quente nas frigideiras de acarajé e o badalo dos bondes elétricos formavam a música da cidade.\n\nOs pregoeiros gritavam seus fardos de maxixe, farinha de mandioca e querosene, enquanto os homens falavam em voz baixa sobre o preço dos gêneros e as promessas do novo governo na capital.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1951_pregoes_da_rua.md"
+    },
+    "ev_f1_1952_primeiras_letras": {
+      "metadata": {
+        "id": "ev_f1_1952_primeiras_letras",
+        "titulo": "1952 — Letras de Carvão e Cartilhas no Chão",
+        "fase": 1,
+        "ano": 1952,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "avanco_ano": 1,
+        "imagem": "cenarios/fase1_escolares_125976.webp",
+        "tombo_mcr": "125.976",
+        "opcoes": [
+          {
+            "id": "desenhar_letras_tabua",
+            "rotulo": "Riscar as primeiras vogais com ponta de carvão nas tábuas",
+            "descricao": "Copiar os títulos das manchetes velhas do Diário de Pernambuco que forram as paredes do quarto.",
+            "carimbo": "LETRADO",
+            "requisitos": {},
+            "efeitos": {
+              "astucia": 1,
+              "oficio": 1
+            }
+          },
+          {
+            "id": "defender_irmao_briga",
+            "rotulo": "Interpor teu corpo numa contenda de moleques do pátio",
+            "descricao": "Não recuar diante dos garotos mais velhos que disputavam os restos de cana-de-açúcar descarregados no porto.",
+            "carimbo": "TEMÍVEL",
+            "requisitos": {},
+            "efeitos": {
+              "sangue_frio": 1,
+              "presenca": 1
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui as primeiras letras e a formação do caráter em 1952 --><p>Aos quatro anos, as notícias do mundo chegavam ao mocambo impressas nos jornais amarelados que tua família usava para tapar os buracos do vento nas paredes de tábua. Entre anúncios de remédios e discursos de Getúlio Vargas, aprendeste a decifrar contornos de letras usando carvão de fogareiro.</p>\n<p>Na calçada, a meninada disputava lascas de madeira e restos de cana caídos dos vagões da <span class=\"grifo-faccao\">Great Western</span>, ensaiando as primeiras regras de respeito e lealdade da vizinhança.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui as primeiras letras e a formação do caráter em 1952 -->\n\nAos quatro anos, as notícias do mundo chegavam ao mocambo impressas nos jornais amarelados que tua família usava para tapar os buracos do vento nas paredes de tábua. Entre anúncios de remédios e discursos de Getúlio Vargas, aprendeste a decifrar contornos de letras usando carvão de fogareiro.\n\nNa calçada, a meninada disputava lascas de madeira e restos de cana caídos dos vagões da Great Western, ensaiando as primeiras regras de respeito e lealdade da vizinhança.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1952_primeiras_letras.md"
+    },
+    "ev_f1_1953_fim_da_infancia": {
+      "metadata": {
+        "id": "ev_f1_1953_fim_da_infancia",
+        "titulo": "1953 — As Sombras do Porto e o Fim da Infância",
+        "fase": 1,
+        "ano": 1953,
+        "etapa": "infancia",
+        "tipo": "dossie",
+        "custo_acoes": 0,
+        "ano_alvo": 1958,
+        "imagem": "cais_recife_demo.svg",
+        "opcoes": [
+          {
+            "id": "entrar_oficina_pai",
+            "rotulo": "Acompanhar teu pai e aprender a engrenagem das oficinas",
+            "descricao": "Trocar as brincadeiras de rua pelo barulho ritmado dos tornos mecânicos e pelas reuniões clandestinas da categoria.",
+            "carimbo": "OPERÁRIO",
+            "requisitos": {},
+            "efeitos": {
+              "oficio": 1,
+              "relacao_pai": 1,
+              "honra_familiar": 1
+            }
+          },
+          {
+            "id": "buscar_leitura_livros",
+            "rotulo": "Dedicar as tardes aos alfarrábios e cartilhas da Boa Vista",
+            "descricao": "Frequentar a biblioteca pública e os círculos de estudo mantidos pelos estudantes na Faculdade de Direito.",
+            "carimbo": "ESTUDIOSO",
+            "requisitos": {},
+            "efeitos": {
+              "astucia": 1,
+              "influencia": 1
+            }
+          },
+          {
+            "id": "sobreviver_biscates_rua",
+            "rotulo": "Engraxar sapatos e vender jornais pelas pontes do centro",
+            "descricao": "Conhecer cada esquina entre a Ponte Duarte Coelho e a Praça da Independência, acumulando teus próprios trocados.",
+            "carimbo": "VAGANTE",
+            "requisitos": {},
+            "efeitos": {
+              "sangue_frio": 1,
+              "capital": 15
+            }
+          }
+        ],
+        "requisitos_acesso": {}
+      },
+      "corpoHtml": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a despedida da primeira infância e o salto temporal para 1958 --><p>Aos cinco anos de idade, a infância descalça começava a ceder espaço às obrigações que a sobrevivência impunha aos filhos da classe trabalhadora no Recife. Mestre Severino olhou nos teus olhos e decretou que já tinhas tamanho para compreender o peso do trabalho e o custo da dignidade.</p>\n<p>Os anos seguintes correriam velozes como a maré do <span class=\"grifo-rio\">Capibaribe</span>. A cidade crescia vertiginosamente, engolindo os mocambos e abrindo avenidas de asfalto sob os governos do pós-guerra, enquanto a efervescência política das oficinas preparava o terreno para os grandes embates do final da década de 50.</p>\n",
+      "corpoTextoPuro": "<!-- ESPAÇO DO ROTEIRISTA: Redija aqui a despedida da primeira infância e o salto temporal para 1958 -->\n\nAos cinco anos de idade, a infância descalça começava a ceder espaço às obrigações que a sobrevivência impunha aos filhos da classe trabalhadora no Recife. Mestre Severino olhou nos teus olhos e decretou que já tinhas tamanho para compreender o peso do trabalho e o custo da dignidade.\n\nOs anos seguintes correriam velozes como a maré do Capibaribe. A cidade crescia vertiginosamente, engolindo os mocambos e abrindo avenidas de asfalto sob os governos do pós-guerra, enquanto a efervescência política das oficinas preparava o terreno para os grandes embates do final da década de 50.",
+      "arquivoOrigem": "conteudo/fase_1/00_infancia_1953_fim_da_infancia.md"
+    },
+    "ev_f1_01_patio_das_oficinas": {
+      "metadata": {
+        "id": "ev_f1_01_patio_das_oficinas",
+        "titulo": "A Fagulha no Pátio das Oficinas",
+        "fase": 1,
+        "ano": 1958,
+        "tipo": "dossie",
+        "custo_acoes": 1,
+        "imagem": "cenarios/fase1_portuarios_saps_126056.webp",
+        "tombo_mcr": "126.056",
+        "condicao_social_padrao": "Filho de Estivador",
+        "requisitos_acesso": {
+          "astucia": 1
+        },
+        "opcoes": [
+          {
+            "id": "aceitar_fardo",
+            "rotulo": "Aceitar o fardo e correr pelos becos úmidos",
+            "descricao": "Conheces cada viela e telhado entre o cais e a Rua da Palma. Tua agilidade nas pontes pode salvar a pele do velho e o sindicato.",
+            "carimbo": "SUBVERSIVO",
+            "requisitos": {
+              "astucia": 2
+            },
+            "efeitos": {
+              "sangue_frio": 1,
+              "moral_popular": 2,
+              "suspeita_dops": 1
+            }
+          },
+          {
+            "id": "confrontar_soldados",
+            "rotulo": "Enfrentar os soldados e encobrir a fuga com tua voz",
+            "descricao": "Gritar um falso alarme de incêndio no depósito para atrair a ronda militar para o lado oposto.",
+            "carimbo": "TEMERÁRIO",
+            "requisitos": {
+              "presenca": 2
+            },
+            "efeitos": {
+              "presenca": 1,
+              "suspeita_dops": 3
+            }
+          },
+          {
+            "id": "jogar_no_rio",
+            "rotulo": "Recusar a loucura e jogar os papéis no canal do Capibaribe",
+            "descricao": "A segurança da família vale mais do que panfletos molhados. Arrancar a cumplicidade do teu destino antes que seja tarde.",
+            "carimbo": "CAUTELOSO",
+            "requisitos": {},
+            "efeitos": {
+              "relacao_pai": -1,
+              "suspeita_dops": -1,
+              "sangue_frio": 1
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>O cheiro de melaço fermentado e óleo lubrificante impregnava as pedras irregulares do cais de <span class=\"grifo-bairro\">Santo Antônio</span>. Aos dezesseis anos, teus olhos já haviam testemunhado mais cansaço do que os livros do colégio poderiam descrever. Teu pai, com os nós dos dedos manchados de graxa preta, segurava um maço de panfletos mimeografados em segredo na sede da <span class=\"grifo-faccao\">União dos Ferroviários</span>. As batidas secas de botas militares contra o calçamento ecoavam da direção da Rua da Concórdia.</p>\n<p>&quot;Eles estão vindo do prédio do <span class=\"grifo-faccao\">DOPS</span>&quot;, sussurrou o velho, puxando-te pela manga da camisa desbotada para trás das caixas de madeira de bacalhau importado. &quot;Se me pegarem com essa lista de subscrição, não vejo o sol amanhã na <span class=\"grifo-bairro\">Boa Vista</span>. Toma isto. Corre pelo Beco do Munguzá e entrega ao tipógrafo antes do primeiro toque de recolher.&quot;</p>\n",
+      "corpoTextoPuro": "O cheiro de melaço fermentado e óleo lubrificante impregnava as pedras irregulares do cais de Santo Antônio. Aos dezesseis anos, teus olhos já haviam testemunhado mais cansaço do que os livros do colégio poderiam descrever. Teu pai, com os nós dos dedos manchados de graxa preta, segurava um maço de panfletos mimeografados em segredo na sede da União dos Ferroviários. As batidas secas de botas militares contra o calçamento ecoavam da direção da Rua da Concórdia.\n\n\"Eles estão vindo do prédio do DOPS\", sussurrou o velho, puxando-te pela manga da camisa desbotada para trás das caixas de madeira de bacalhau importado. \"Se me pegarem com essa lista de subscrição, não vejo o sol amanhã na Boa Vista. Toma isto. Corre pelo Beco do Munguzá e entrega ao tipógrafo antes do primeiro toque de recolher.\"",
+      "arquivoOrigem": "conteudo/fase_1/01_patio_das_oficinas.md"
+    },
+    "ev_f1_02_panfletagem_na_varzea": {
+      "metadata": {
+        "id": "ev_f1_02_panfletagem_na_varzea",
+        "titulo": "O Encontro Secreto na Várzea",
+        "fase": 1,
+        "ano": 1959,
+        "tipo": "dossie",
+        "custo_acoes": 1,
+        "imagem": "cenarios/fase1_ruinas_engenho_126065.webp",
+        "tombo_mcr": "126.065",
+        "requisitos_acesso": {
+          "sangue_frio": 1
+        },
+        "opcoes": [
+          {
+            "id": "distribuir_na_fabrica",
+            "rotulo": "Entrar no turno da noite da Fábrica de Tecidos",
+            "descricao": "Esconder manifestos operários entre os carretéis de algodão antes da troca de guarda.",
+            "carimbo": "AGITADOR",
+            "requisitos": {
+              "oficio": 2
+            },
+            "efeitos": {
+              "moral_popular": 3,
+              "capital": 10,
+              "suspeita_dops": 2
+            }
+          },
+          {
+            "id": "vigiar_perimetro",
+            "rotulo": "Ficar de guarda na esquina do bonde elétrico",
+            "descricao": "Prestar atenção em viaturas descaracterizadas e qualquer movimentação suspeita na Várzea.",
+            "carimbo": "SENTINELA",
+            "requisitos": {
+              "astucia": 2
+            },
+            "efeitos": {
+              "astucia": 1,
+              "suspeita_dops": -1
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>A neblina úmida que subia do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> envolvia os trilhos do bonde na <span class=\"grifo-bairro\">Várzea</span>. Longe do barulho portuário do centro, o silêncio dos engenhos desativados era quebrado apenas pelo coaxar dos sapos e pelo zumbido distante dos teares mecânicos.</p>\n<p>Três companheiros encapuzados esperavam junto ao muro de tijolos da tecelagem. O contato não era um estivador do porto, mas um jovem estudante de Direito do <span class=\"grifo-bairro\">Derby</span>, que trazia nos bolsos instruções clandestinas da <span class=\"grifo-faccao\">União dos Ferroviários</span>. Qualquer deslize na distribuição atrairia a patrulha da <span class=\"grifo-faccao\">Polícia Militar</span> para o bairro operário.</p>\n",
+      "corpoTextoPuro": "A neblina úmida que subia do Rio Capibaribe envolvia os trilhos do bonde na Várzea. Longe do barulho portuário do centro, o silêncio dos engenhos desativados era quebrado apenas pelo coaxar dos sapos e pelo zumbido distante dos teares mecânicos.\n\nTrês companheiros encapuzados esperavam junto ao muro de tijolos da tecelagem. O contato não era um estivador do porto, mas um jovem estudante de Direito do Derby, que trazia nos bolsos instruções clandestinas da União dos Ferroviários. Qualquer deslize na distribuição atrairia a patrulha da Polícia Militar para o bairro operário.",
+      "arquivoOrigem": "conteudo/fase_1/02_panfletagem_na_varzea.md"
+    },
+    "ev_f1_03_climax_marco_1964": {
+      "metadata": {
+        "id": "ev_f1_03_climax_marco_1964",
+        "titulo": "A Noite dos Tanques no Derby",
+        "fase": 1,
+        "ano": 1964,
+        "tipo": "climax_obrigatorio",
+        "custo_acoes": 0,
+        "imagem": "cenarios/fase1_praca_republica_126023.webp",
+        "tombo_mcr": "126.023",
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "queimar_arquivos",
+            "rotulo": "Invadir a sede e queimar os fichários sindicais",
+            "descricao": "As sirenes do Exército ecoam pela Avenida Caxangá. Tuas mãos destroem provas antes que os soldados do IV Exército arrombem as portas.",
+            "carimbo": "CLANDESTINO",
+            "requisitos": {
+              "sangue_frio": 1
+            },
+            "efeitos": {
+              "suspeita_dops": -3,
+              "honra_familiar": 1,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "resistir_ao_lado_do_pai",
+            "rotulo": "Formar cordão de resistência no Palácio do Governo",
+            "descricao": "Junto aos ferroviários e estudantes da Boa Vista, enfrentar os blindados que sobem a Ponte Duarte Coelho.",
+            "carimbo": "RESISTÊNCIA",
+            "requisitos": {
+              "moral_popular": 2
+            },
+            "efeitos": {
+              "moral_popular": 4,
+              "suspeita_dops": 4,
+              "relacao_pai": 2
+            }
+          },
+          {
+            "id": "aproveitar_o_caos",
+            "rotulo": "Negociar salvo-conduto com os novos oficiais",
+            "descricao": "Entregar as chaves dos armazéns aos militares em troca de imunidade para tua família e teus negócios.",
+            "carimbo": "ADESÃO",
+            "requisitos": {
+              "astucia": 2
+            },
+            "efeitos": {
+              "capital": 30,
+              "influencia": 2,
+              "relacao_pai": -2,
+              "suspeita_dops": -4
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>A madrugada de 1.º de abril de 1964 sepultou a juventude do Recife sob o ranger de lagartas de ferro. No <span class=\"grifo-bairro\">Derby</span>, a sede do IV <span class=\"grifo-faccao\">Exército</span> mobilizava contingentes em direção ao Palácio do Campo das Princesas. O governador foi deposto e as rádios transmitiam marchas marciais ininterruptas.</p>\n<p>Nas pontes do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span>, soldados com baionetas caladas revistavam cada trabalhador que tentava atravessar de <span class=\"grifo-bairro\">São José</span> para <span class=\"grifo-bairro\">Santo Antônio</span>. A infância e as disputas de rua haviam terminado: a partir daquela noite, cada decisão passaria a carregar o peso do Decreto e a sombra do <span class=\"grifo-faccao\">DOPS</span>.</p>\n",
+      "corpoTextoPuro": "A madrugada de 1.º de abril de 1964 sepultou a juventude do Recife sob o ranger de lagartas de ferro. No Derby, a sede do IV Exército mobilizava contingentes em direção ao Palácio do Campo das Princesas. O governador foi deposto e as rádios transmitiam marchas marciais ininterruptas.\n\nNas pontes do Rio Capibaribe, soldados com baionetas caladas revistavam cada trabalhador que tentava atravessar de São José para Santo Antônio. A infância e as disputas de rua haviam terminado: a partir daquela noite, cada decisão passaria a carregar o peso do Decreto e a sombra do DOPS.",
+      "arquivoOrigem": "conteudo/fase_1/03_climax_marco_1964.md"
+    },
+    "ev_f3_01_subida_aguas_madalena": {
+      "metadata": {
+        "id": "ev_f3_01_subida_aguas_madalena",
+        "titulo": "O Capibaribe Rompe as Margens na Madalena",
+        "fase": 3,
+        "ano": 1975,
+        "tipo": "dossie",
+        "custo_acoes": 1,
+        "consumo_tempo_horas": 4,
+        "elevacao_rio": 0.8,
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "resgatar_arquivos_sindicais",
+            "rotulo": "Entrar no galpão alagado e carregar os documentos para o sótão",
+            "descricao": "A água barrenta bate na altura do peito. Salvar as fichas e atas clandestinas acumuladas desde os anos 60 antes que a correnteza as desfaça.",
+            "carimbo": "RESGATE",
+            "requisitos": {
+              "sangue_frio": 2
+            },
+            "efeitos": {
+              "moral_popular": 3,
+              "suspeita_dops": 1,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "salvar_armazem_comercial",
+            "rotulo": "Pagar carroceiros para retirar as cargas de açúcar e tecidos",
+            "descricao": "Gastar parte do teu capital acumulado para salvar os fardos de mercadoria antes que o Derby e a Madalena fiquem submersos.",
+            "carimbo": "SALVAGUARDA",
+            "requisitos": {
+              "capital": 20
+            },
+            "efeitos": {
+              "capital": 25,
+              "moral_popular": -2
+            }
+          },
+          {
+            "id": "evacuar_moradores_mocambo",
+            "rotulo": "Ajudar famílias de estivadores a subir para o teto da igreja",
+            "descricao": "Abandonar os bens materiais e passar a noite puxando crianças e idosos com cordas.",
+            "carimbo": "SOLIDARIEDADE",
+            "requisitos": {
+              "oficio": 1
+            },
+            "efeitos": {
+              "moral_popular": 5,
+              "relacao_pai": 2,
+              "capital": -10
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>A chuva torrencial de julho não dava trégua há mais de setenta e duas horas. Ao romper da manhã de 17 de julho de 1975, o mugido surdo das águas do <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> ecoou pelos becos da <span class=\"grifo-bairro\">Madalena</span>.</p>\n<p>A régua hidrológica do governo já marcava mais de dois metros e meio acima do leito normal. A energia elétrica caiu em toda a zona norte e o centro da cidade; o telefone silenciou. Pelas ruas tomadas pelo lodo, móveis, animais e tábuas desciam em direção à <span class=\"grifo-rio\">Ponte Duarte Coelho</span>. Cada hora gasta agora define o que sobrará de tua vida após a água baixar.</p>\n",
+      "corpoTextoPuro": "A chuva torrencial de julho não dava trégua há mais de setenta e duas horas. Ao romper da manhã de 17 de julho de 1975, o mugido surdo das águas do Rio Capibaribe ecoou pelos becos da Madalena.\n\nA régua hidrológica do governo já marcava mais de dois metros e meio acima do leito normal. A energia elétrica caiu em toda a zona norte e o centro da cidade; o telefone silenciou. Pelas ruas tomadas pelo lodo, móveis, animais e tábuas desciam em direção à Ponte Duarte Coelho. Cada hora gasta agora define o que sobrará de tua vida após a água baixar.",
+      "arquivoOrigem": "conteudo/fase_3/01_subida_das_aguas_madalena.md"
+    },
+    "ev_f3_02_o_boato_de_tapacura": {
+      "metadata": {
+        "id": "ev_f3_02_o_boato_de_tapacura",
+        "titulo": "O Pânico de Tapacurá",
+        "fase": 3,
+        "ano": 1975,
+        "tipo": "dossie",
+        "custo_acoes": 1,
+        "consumo_tempo_horas": 5,
+        "elevacao_rio": 1,
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "acalmar_a_multidao",
+            "rotulo": "Subir no caminhão e gritar para a multidão não se pisotear",
+            "descricao": "Usar tua presença e moral acumulada para organizar o fluxo de pessoas na subida para a Rua do Hospício.",
+            "carimbo": "PACIFICADOR",
+            "requisitos": {
+              "presenca": 1
+            },
+            "efeitos": {
+              "moral_popular": 4,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "fugir_para_zona_alta",
+            "rotulo": "Pisar fundo no acelerador e fugir em direção às colinas de Casa Forte",
+            "descricao": "Abandonar o centro do Recife e garantir o teu próprio refúgio antes que a suposta onda de dez metros alcance a Avenida Caxangá.",
+            "carimbo": "SOBREVIVENTE",
+            "requisitos": {
+              "astucia": 2
+            },
+            "efeitos": {
+              "moral_popular": -3,
+              "capital": -5,
+              "sangue_frio": 1
+            }
+          },
+          {
+            "id": "saquear_reparticao_vazia",
+            "rotulo": "Aproveitar o abandono dos prédios públicos para confiscar pastas do DOPS",
+            "descricao": "Enquanto policiais e funcionários fogem desesperados, invadir a delegacia alagada para destruir de vez o teu prontuário.",
+            "carimbo": "AUDACIOSO",
+            "requisitos": {
+              "astucia": 3
+            },
+            "efeitos": {
+              "suspeita_dops": -8,
+              "sangue_frio": 1
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>&quot;A <span class=\"grifo-rio\">barragem de <span class=\"grifo-rio\">Tapacurá</span></span> estourou! Salve-se quem puder!&quot;, o grito histérico partiu da Praça do Diário e espalhou-se como pólvora por <span class=\"grifo-bairro\">Santo Antônio</span> e <span class=\"grifo-bairro\">Boa Vista</span>.</p>\n<p>Em minutos, o centro do Recife transformou-se em uma massa humana em pânico absoluto. Carros abandonados colidiam nas pontes, pessoas tropeçavam e eram pisoteadas nas calçadas inundadas, e o rumor de uma tromba d&#39;água gigantesca vinda de São Lourenço paralisava o coração da cidade. O rio já ultrapassava os três metros e meio, e a linha entre a ordem do Estado e a sobrevivência animal desintegrou-se por completo.</p>\n",
+      "corpoTextoPuro": "\"A barragem de Tapacurá estourou! Salve-se quem puder!\", o grito histérico partiu da Praça do Diário e espalhou-se como pólvora por Santo Antônio e Boa Vista.\n\nEm minutos, o centro do Recife transformou-se em uma massa humana em pânico absoluto. Carros abandonados colidiam nas pontes, pessoas tropeçavam e eram pisoteadas nas calçadas inundadas, e o rumor de uma tromba d'água gigantesca vinda de São Lourenço paralisava o coração da cidade. O rio já ultrapassava os três metros e meio, e a linha entre a ordem do Estado e a sobrevivência animal desintegrou-se por completo.",
+      "arquivoOrigem": "conteudo/fase_3/02_o_boato_de_tapacura.md"
+    },
+    "ev_f3_03_climax_recife_submerso": {
+      "metadata": {
+        "id": "ev_f3_03_climax_recife_submerso",
+        "titulo": "O Veredito das Águas (Epílogo de Julho de 1975)",
+        "fase": 3,
+        "ano": 1975,
+        "tipo": "climax_obrigatorio",
+        "custo_acoes": 0,
+        "consumo_tempo_horas": 6,
+        "elevacao_rio": 1.2,
+        "requisitos_acesso": {},
+        "opcoes": [
+          {
+            "id": "legado_de_resistencia",
+            "rotulo": "Reerguer a cidade junto ao povo sobre o lodo de Santo Antônio",
+            "descricao": "Teus recursos foram consumidos pela enchente, mas tua liderança e integridade forjaram um nome que a ditadura nunca conseguiu apagar.",
+            "carimbo": "IMORTAL",
+            "requisitos": {
+              "moral_popular": 5
+            },
+            "efeitos": {
+              "moral_popular": 10,
+              "honra_familiar": 3
+            }
+          },
+          {
+            "id": "ascensao_na_reconstrucao",
+            "rotulo": "Comandar os contratos de reconstrução civil da cidade",
+            "descricao": "A tragédia climática torna-se o maior negócio do século. Tua fortuna multiplica-se enquanto o Recife conta seus mortos.",
+            "carimbo": "MAGNATA",
+            "requisitos": {
+              "capital": 40
+            },
+            "efeitos": {
+              "capital": 100,
+              "influencia": 5
+            }
+          },
+          {
+            "id": "sobrevivencia_silenciosa",
+            "rotulo": "Contemplar os escombros na beira do cais e recomeçar do zero",
+            "descricao": "Tu sobreviveras à repressão e à maior cheia do século. A água baixou, levando o passado e deixando apenas as cicatrizes.",
+            "carimbo": "SOBREVIVENTE",
+            "requisitos": {},
+            "efeitos": {
+              "sangue_frio": 2
+            }
+          }
+        ]
+      },
+      "corpoHtml": "<p>A enchente histórica de julho de 1975 alcançou seu ápice a mais de quatro metros e meio. Oitenta por cento do Recife ficou debaixo d&#39;água. Quando o <span class=\"grifo-rio\">Rio <span class=\"grifo-rio\">Capibaribe</span></span> finalmente começou a recuar, deixou para trás uma crosta espessa de lodo fétido, pontes arruinadas e milhares de desabrigados.</p>\n<p>Ali, no cais onde tua jornada começou nos anos 50, o silêncio substituiu o som dos motores e o medo do <span class=\"grifo-faccao\">DOPS</span>. Todas as decisões que tomaste ao longo de dezessete anos — cada amizade mantida, cada recurso acumulado e cada traição evitada — culminaram neste momento final.</p>\n",
+      "corpoTextoPuro": "A enchente histórica de julho de 1975 alcançou seu ápice a mais de quatro metros e meio. Oitenta por cento do Recife ficou debaixo d'água. Quando o Rio Capibaribe finalmente começou a recuar, deixou para trás uma crosta espessa de lodo fétido, pontes arruinadas e milhares de desabrigados.\n\nAli, no cais onde tua jornada começou nos anos 50, o silêncio substituiu o som dos motores e o medo do DOPS. Todas as decisões que tomaste ao longo de dezessete anos — cada amizade mantida, cada recurso acumulado e cada traição evitada — culminaram neste momento final.",
+      "arquivoOrigem": "conteudo/fase_3/03_climax_recife_submerso.md"
+    }
+  },
+  "totalCarregados": 14,
+  "erros": []
+};

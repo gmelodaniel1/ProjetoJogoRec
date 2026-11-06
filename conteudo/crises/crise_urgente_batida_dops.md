@@ -5,6 +5,7 @@ fase: 1
 ano: 1963
 tipo: "crise_urgente"
 custo_acoes: 0
+imagem: "cenarios/fase2_recife_vibe_noturno.webp"
 
 requisitos_acesso: {}
 

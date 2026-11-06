@@ -5,6 +5,8 @@ fase: 1
 ano: 1959
 tipo: "dossie"
 custo_acoes: 1
+imagem: "cenarios/fase1_ruinas_engenho_126065.webp"
+tombo_mcr: "126.065"
 
 requisitos_acesso:
   sangue_frio: 1

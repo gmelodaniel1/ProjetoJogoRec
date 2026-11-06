@@ -1,0 +1,629 @@
+{
+  "timestamp": "2026-11-04T23:35:00.337Z",
+  "symmetryVerification": {
+    "imageAspect": {
+      "width": 1200,
+      "height": 570,
+      "ratio": 2.1052631578947367,
+      "simplifiedRatio": "40:19 (2.105263:1)"
+    },
+    "svgAspect": {
+      "width": 800,
+      "height": 380,
+      "ratio": 2.1052631578947367,
+      "simplifiedRatio": "40:19 (2.105263:1)"
+    },
+    "scaleHorizontal": 1.5,
+    "scaleVertical": 1.5,
+    "deltaDifference": 0,
+    "isPerfectSymmetry": true,
+    "explanation": "O aspect ratio 1200x570 e o viewBox 800x380 reduzem-se exatamente à fração 40/19 (fator de escala de 1.5x horizontal e vertical)."
+  },
+  "resolutionsTested": [
+    {
+      "resolution": "1080p FHD (16:9)",
+      "viewport": {
+        "width": 1904,
+        "height": 1015
+      },
+      "slotDimensions": {
+        "width": 1090,
+        "height": 807,
+        "aspectRatio": 1.351
+      },
+      "cenarioDimensions": {
+        "width": 1120,
+        "height": 859,
+        "aspectRatio": 1.304
+      },
+      "fits": {
+        "widescreen_1200x570_2_1": {
+          "originalAspect": "1200x570 (2.105:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 35.84,
+            "verticalTotal": 0,
+            "cutEachSide": 17.92
+          },
+          "visibleAreaPercent": 64.16,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 7.92
+        },
+        "documental_1200x800_3_2": {
+          "originalAspect": "1200x800 (1.500:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 9.95,
+            "verticalTotal": 0,
+            "cutEachSide": 4.98
+          },
+          "visibleAreaPercent": 90.05,
+          "safeZoneBreached": false,
+          "safeZoneMarginExceededBy": 0
+        },
+        "retrato_450x600_3_4": {
+          "originalAspect": "450x600 (0.750:1)",
+          "cropOrientation": "VERTICAL_CUT (Top/Bottom)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 0,
+            "verticalTotal": 44.47,
+            "cutEachSide": 22.24
+          },
+          "visibleAreaPercent": 55.53,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 12.24
+        }
+      },
+      "rawMetrics": {
+        "windowInner": {
+          "width": 1904,
+          "height": 1015
+        },
+        "slot": {
+          "width": 1090,
+          "height": 807,
+          "top": 84,
+          "left": 35,
+          "right": 1125,
+          "bottom": 891
+        },
+        "cenarioContainer": {
+          "width": 1120,
+          "height": 859,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 928
+        },
+        "palcoCentral": {
+          "width": 1120,
+          "height": 928,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 997
+        },
+        "colunaNarrativa": {
+          "width": 720,
+          "height": 928,
+          "top": 69,
+          "left": 1164,
+          "right": 1884,
+          "bottom": 997
+        },
+        "selo": {
+          "width": 283.74993896484375,
+          "height": 42.755523681640625,
+          "top": 93.62223815917969,
+          "left": 822.7891235351562,
+          "right": 1106.5390625,
+          "bottom": 136.3777618408203
+        },
+        "fitaEsq": {
+          "width": 91.45492553710938,
+          "height": 30.219619750976562,
+          "top": 58.89019012451172,
+          "left": 40.27253723144531,
+          "right": 131.7274627685547,
+          "bottom": 89.10980987548828
+        },
+        "fitaDir": {
+          "width": 91.29736328125,
+          "height": 29.449600219726562,
+          "top": 59.27519989013672,
+          "left": 1028.351318359375,
+          "right": 1119.648681640625,
+          "bottom": 88.72480010986328
+        }
+      }
+    },
+    {
+      "resolution": "900p HD+ (16:9)",
+      "viewport": {
+        "width": 1904,
+        "height": 1015
+      },
+      "slotDimensions": {
+        "width": 1090,
+        "height": 807,
+        "aspectRatio": 1.351
+      },
+      "cenarioDimensions": {
+        "width": 1120,
+        "height": 859,
+        "aspectRatio": 1.304
+      },
+      "fits": {
+        "widescreen_1200x570_2_1": {
+          "originalAspect": "1200x570 (2.105:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 35.84,
+            "verticalTotal": 0,
+            "cutEachSide": 17.92
+          },
+          "visibleAreaPercent": 64.16,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 7.92
+        },
+        "documental_1200x800_3_2": {
+          "originalAspect": "1200x800 (1.500:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 9.95,
+            "verticalTotal": 0,
+            "cutEachSide": 4.98
+          },
+          "visibleAreaPercent": 90.05,
+          "safeZoneBreached": false,
+          "safeZoneMarginExceededBy": 0
+        },
+        "retrato_450x600_3_4": {
+          "originalAspect": "450x600 (0.750:1)",
+          "cropOrientation": "VERTICAL_CUT (Top/Bottom)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 0,
+            "verticalTotal": 44.47,
+            "cutEachSide": 22.24
+          },
+          "visibleAreaPercent": 55.53,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 12.24
+        }
+      },
+      "rawMetrics": {
+        "windowInner": {
+          "width": 1904,
+          "height": 1015
+        },
+        "slot": {
+          "width": 1090,
+          "height": 807,
+          "top": 84,
+          "left": 35,
+          "right": 1125,
+          "bottom": 891
+        },
+        "cenarioContainer": {
+          "width": 1120,
+          "height": 859,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 928
+        },
+        "palcoCentral": {
+          "width": 1120,
+          "height": 928,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 997
+        },
+        "colunaNarrativa": {
+          "width": 720,
+          "height": 928,
+          "top": 69,
+          "left": 1164,
+          "right": 1884,
+          "bottom": 997
+        },
+        "selo": {
+          "width": 283.74993896484375,
+          "height": 42.755523681640625,
+          "top": 93.62223815917969,
+          "left": 822.7891235351562,
+          "right": 1106.5390625,
+          "bottom": 136.3777618408203
+        },
+        "fitaEsq": {
+          "width": 91.45492553710938,
+          "height": 30.219619750976562,
+          "top": 58.89019012451172,
+          "left": 40.27253723144531,
+          "right": 131.7274627685547,
+          "bottom": 89.10980987548828
+        },
+        "fitaDir": {
+          "width": 91.29736328125,
+          "height": 29.449600219726562,
+          "top": 59.27519989013672,
+          "left": 1028.351318359375,
+          "right": 1119.648681640625,
+          "bottom": 88.72480010986328
+        }
+      }
+    },
+    {
+      "resolution": "WXGA+ Laptop (16:10)",
+      "viewport": {
+        "width": 1904,
+        "height": 1015
+      },
+      "slotDimensions": {
+        "width": 1090,
+        "height": 807,
+        "aspectRatio": 1.351
+      },
+      "cenarioDimensions": {
+        "width": 1120,
+        "height": 859,
+        "aspectRatio": 1.304
+      },
+      "fits": {
+        "widescreen_1200x570_2_1": {
+          "originalAspect": "1200x570 (2.105:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 35.84,
+            "verticalTotal": 0,
+            "cutEachSide": 17.92
+          },
+          "visibleAreaPercent": 64.16,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 7.92
+        },
+        "documental_1200x800_3_2": {
+          "originalAspect": "1200x800 (1.500:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 9.95,
+            "verticalTotal": 0,
+            "cutEachSide": 4.98
+          },
+          "visibleAreaPercent": 90.05,
+          "safeZoneBreached": false,
+          "safeZoneMarginExceededBy": 0
+        },
+        "retrato_450x600_3_4": {
+          "originalAspect": "450x600 (0.750:1)",
+          "cropOrientation": "VERTICAL_CUT (Top/Bottom)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 0,
+            "verticalTotal": 44.47,
+            "cutEachSide": 22.24
+          },
+          "visibleAreaPercent": 55.53,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 12.24
+        }
+      },
+      "rawMetrics": {
+        "windowInner": {
+          "width": 1904,
+          "height": 1015
+        },
+        "slot": {
+          "width": 1090,
+          "height": 807,
+          "top": 84,
+          "left": 35,
+          "right": 1125,
+          "bottom": 891
+        },
+        "cenarioContainer": {
+          "width": 1120,
+          "height": 859,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 928
+        },
+        "palcoCentral": {
+          "width": 1120,
+          "height": 928,
+          "top": 69,
+          "left": 20,
+          "right": 1140,
+          "bottom": 997
+        },
+        "colunaNarrativa": {
+          "width": 720,
+          "height": 928,
+          "top": 69,
+          "left": 1164,
+          "right": 1884,
+          "bottom": 997
+        },
+        "selo": {
+          "width": 283.74993896484375,
+          "height": 42.755523681640625,
+          "top": 93.62223815917969,
+          "left": 822.7891235351562,
+          "right": 1106.5390625,
+          "bottom": 136.3777618408203
+        },
+        "fitaEsq": {
+          "width": 91.45492553710938,
+          "height": 30.219619750976562,
+          "top": 58.89019012451172,
+          "left": 40.27253723144531,
+          "right": 131.7274627685547,
+          "bottom": 89.10980987548828
+        },
+        "fitaDir": {
+          "width": 91.29736328125,
+          "height": 29.449600219726562,
+          "top": 59.27519989013672,
+          "left": 1028.351318359375,
+          "right": 1119.648681640625,
+          "bottom": 88.72480010986328
+        }
+      }
+    },
+    {
+      "resolution": "Budget Laptop (16:9)",
+      "viewport": {
+        "width": 1350,
+        "height": 703
+      },
+      "slotDimensions": {
+        "width": 662.8,
+        "height": 495,
+        "aspectRatio": 1.339
+      },
+      "cenarioDimensions": {
+        "width": 692.8,
+        "height": 547,
+        "aspectRatio": 1.267
+      },
+      "fits": {
+        "widescreen_1200x570_2_1": {
+          "originalAspect": "1200x570 (2.105:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 36.39,
+            "verticalTotal": 0,
+            "cutEachSide": 18.2
+          },
+          "visibleAreaPercent": 63.61,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 8.2
+        },
+        "documental_1200x800_3_2": {
+          "originalAspect": "1200x800 (1.500:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 10.73,
+            "verticalTotal": 0,
+            "cutEachSide": 5.36
+          },
+          "visibleAreaPercent": 89.27,
+          "safeZoneBreached": false,
+          "safeZoneMarginExceededBy": 0
+        },
+        "retrato_450x600_3_4": {
+          "originalAspect": "450x600 (0.750:1)",
+          "cropOrientation": "VERTICAL_CUT (Top/Bottom)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 0,
+            "verticalTotal": 43.99,
+            "cutEachSide": 22
+          },
+          "visibleAreaPercent": 56.01,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 12
+        }
+      },
+      "rawMetrics": {
+        "windowInner": {
+          "width": 1350,
+          "height": 703
+        },
+        "slot": {
+          "width": 662.84375,
+          "height": 495,
+          "top": 84,
+          "left": 35,
+          "right": 697.84375,
+          "bottom": 579
+        },
+        "cenarioContainer": {
+          "width": 692.84375,
+          "height": 547,
+          "top": 69,
+          "left": 20,
+          "right": 712.84375,
+          "bottom": 616
+        },
+        "palcoCentral": {
+          "width": 692.84375,
+          "height": 616,
+          "top": 69,
+          "left": 20,
+          "right": 712.84375,
+          "bottom": 685
+        },
+        "colunaNarrativa": {
+          "width": 593.15625,
+          "height": 616,
+          "top": 69,
+          "left": 736.84375,
+          "right": 1330,
+          "bottom": 685
+        },
+        "selo": {
+          "width": 283.7498779296875,
+          "height": 42.755523681640625,
+          "top": 93.62223815917969,
+          "left": 395.63287353515625,
+          "right": 679.3827514648438,
+          "bottom": 136.3777618408203
+        },
+        "fitaEsq": {
+          "width": 91.45492553710938,
+          "height": 30.219619750976562,
+          "top": 58.89019012451172,
+          "left": 40.27253723144531,
+          "right": 131.7274627685547,
+          "bottom": 89.10980987548828
+        },
+        "fitaDir": {
+          "width": 91.2972412109375,
+          "height": 29.449600219726562,
+          "top": 59.27519989013672,
+          "left": 601.1951293945312,
+          "right": 692.4923706054688,
+          "bottom": 88.72480010986328
+        }
+      }
+    },
+    {
+      "resolution": "720p Minimum Base (16:9)",
+      "viewport": {
+        "width": 1264,
+        "height": 655
+      },
+      "slotDimensions": {
+        "width": 616.3,
+        "height": 447,
+        "aspectRatio": 1.379
+      },
+      "cenarioDimensions": {
+        "width": 646.3,
+        "height": 499,
+        "aspectRatio": 1.295
+      },
+      "fits": {
+        "widescreen_1200x570_2_1": {
+          "originalAspect": "1200x570 (2.105:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 34.51,
+            "verticalTotal": 0,
+            "cutEachSide": 17.25
+          },
+          "visibleAreaPercent": 65.49,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 7.25
+        },
+        "documental_1200x800_3_2": {
+          "originalAspect": "1200x800 (1.500:1)",
+          "cropOrientation": "HORIZONTAL_CUT (Sides)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 8.08,
+            "verticalTotal": 0,
+            "cutEachSide": 4.04
+          },
+          "visibleAreaPercent": 91.92,
+          "safeZoneBreached": false,
+          "safeZoneMarginExceededBy": 0
+        },
+        "retrato_450x600_3_4": {
+          "originalAspect": "450x600 (0.750:1)",
+          "cropOrientation": "VERTICAL_CUT (Top/Bottom)",
+          "cropAmountsPercent": {
+            "horizontalTotal": 0,
+            "verticalTotal": 45.6,
+            "cutEachSide": 22.8
+          },
+          "visibleAreaPercent": 54.4,
+          "safeZoneBreached": true,
+          "safeZoneMarginExceededBy": 12.8
+        }
+      },
+      "rawMetrics": {
+        "windowInner": {
+          "width": 1264,
+          "height": 655
+        },
+        "slot": {
+          "width": 616.296875,
+          "height": 447,
+          "top": 84,
+          "left": 35,
+          "right": 651.296875,
+          "bottom": 531
+        },
+        "cenarioContainer": {
+          "width": 646.296875,
+          "height": 499,
+          "top": 69,
+          "left": 20,
+          "right": 666.296875,
+          "bottom": 568
+        },
+        "palcoCentral": {
+          "width": 646.296875,
+          "height": 568,
+          "top": 69,
+          "left": 20,
+          "right": 666.296875,
+          "bottom": 637
+        },
+        "colunaNarrativa": {
+          "width": 553.703125,
+          "height": 568,
+          "top": 69,
+          "left": 690.296875,
+          "right": 1244,
+          "bottom": 637
+        },
+        "selo": {
+          "width": 283.7498779296875,
+          "height": 42.755523681640625,
+          "top": 93.62223815917969,
+          "left": 349.08599853515625,
+          "right": 632.8358764648438,
+          "bottom": 136.3777618408203
+        },
+        "fitaEsq": {
+          "width": 91.45492553710938,
+          "height": 30.219619750976562,
+          "top": 58.89019012451172,
+          "left": 40.27253723144531,
+          "right": 131.7274627685547,
+          "bottom": 89.10980987548828
+        },
+        "fitaDir": {
+          "width": 91.2972412109375,
+          "height": 29.449600219726562,
+          "top": 59.27519989013672,
+          "left": 554.6482543945312,
+          "right": 645.9454956054688,
+          "bottom": 88.72480010986328
+        }
+      }
+    }
+  ],
+  "overlayObstruction": {
+    "seloPixelSize": {
+      "width": 283.7,
+      "height": 42.8
+    },
+    "seloSlotCoveragePercent": 1.38,
+    "fitaPixelSize": {
+      "width": 91.3,
+      "height": 29.4
+    },
+    "assessment": "Selo e fitas adesivas ocupam o quadrante superior direito (margens < 25px). Safe-zone de 80% desobstruída no centro."
+  },
+  "performanceBenchmark": {
+    "filterRecalcAvgMs": 0.507,
+    "filterRecalcMaxMs": 24,
+    "baselineRecalcAvgMs": 0.057,
+    "shakeRecalcAvgMs": 0.15,
+    "shakeRecalcMaxMs": 4.2,
+    "filterOverheadRatio": 8.94
+  }
+}
