@@ -3,6 +3,7 @@ node_modules/
 dist/
 *.log
 artes/*.pdf
+acervo-historico/*.pdf
 __pycache__/
 .scratch/__pycache__/
 .scratch/*.jpg

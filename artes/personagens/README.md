@@ -47,3 +47,4 @@ Para que seus desenhos fiquem nítidos e imponentes na tela (escala em plano mé
 | **Mestre Severino** (Pai / Ferroviário) | `severino` | `artes/personagens/severino.png` (ou `.webp`) |
 | **Delegado do DOPS** (Repressão Policial) | `delegado_dops` | `artes/personagens/delegado_dops.png` (ou `.webp`) |
 | **Outros Personagens** | `[id_personagem]` | `artes/personagens/[id_personagem].png` |
+
