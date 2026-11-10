@@ -920,11 +920,11 @@ body.fase-3 .mesa-viewport {
 .item-recurso-detalhado {
   background-color: var(--cor-papel-principal);
   border: 1px solid #BFB29B;
-  padding: 12px 16px;
+  padding: 8px 12px;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -933,13 +933,13 @@ body.fase-3 .mesa-viewport {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #D8CEB8;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
 }
 
 .rotulo-attr,
 .rotulo-recurso {
   font-family: var(--fonte-datilografada);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   letter-spacing: 1px;
   color: var(--cor-tinta-principal);
@@ -948,16 +948,17 @@ body.fase-3 .mesa-viewport {
 .valor-attr,
 .valor-recurso {
   font-family: var(--fonte-datilografada);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: var(--cor-azul-caneta);
 }
 
 .attr-explicacao {
   font-family: var(--fonte-editorial);
-  font-size: 16px;
-  line-height: 1.35;
+  font-size: 13px;
+  line-height: 1.25;
   color: var(--cor-tinta-desbotada);
+  margin: 2px 0 0 0;
 }
 
 .recurso-alerta {
@@ -1468,29 +1469,36 @@ body.fase-3 .mesa-viewport {
 
 .personagem-topo-linha {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
   border-bottom: 1px dashed rgba(140, 120, 100, 0.35);
-  padding-bottom: 4px;
+  padding-bottom: 3px;
   margin-bottom: 3px;
 }
 
 .personagem-prontuario-num {
   font-family: var(--fonte-datilografada);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: bold;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.5px;
   color: #6B5E4F;
   text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 58%;
 }
 
 .personagem-papel-tag {
   font-family: var(--fonte-datilografada);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   color: var(--cor-carimbo-vermelho);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .personagem-nome {
@@ -2110,6 +2118,49 @@ body.fase-3 .mesa-viewport {
   margin-top: 14px;
 }
 
+/* Transição histórica de fase no dossiê */
+.banner-fase-transicao {
+  background-color: #E8DECA;
+  background-image: var(--textura-papel-grao);
+  background-size: 256px 256px;
+  border: 2px solid var(--cor-carimbo-vermelho);
+  padding: 18px 20px;
+  margin-top: 10px;
+  box-shadow: 0 3px 8px rgba(28, 20, 12, 0.16);
+}
+
+.banner-fase-transicao-tag {
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--cor-carimbo-vermelho);
+}
+
+.banner-fase-transicao-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--cor-tinta-principal);
+  margin: 6px 0;
+}
+
+.banner-fase-transicao-texto {
+  font-family: var(--fonte-editorial);
+  font-size: 16px;
+  line-height: 1.45;
+  color: #3E3427;
+  margin: 8px 0 14px 0;
+}
+
+.btn-avancar-fase-bloco {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  font-size: 14px;
+  padding: 10px;
+}
+
 .cartao-dossie-item {
   background-color: #E2D9C8;
   background-image: var(--textura-papel-grao);
@@ -2429,10 +2480,13 @@ body.fase-3 .mesa-viewport {
 
 .decisao-requisitos {
   padding-left: 26px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-family: var(--fonte-datilografada);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .req-item.req-atendido {
@@ -2445,15 +2499,47 @@ body.fase-3 .mesa-viewport {
   font-weight: bold;
 }
 
+.etiqueta-carimbo-opcao {
+  display: inline-block;
+  font-family: var(--fonte-datilografada);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--cor-carimbo-vermelho);
+  border: 1px solid var(--cor-carimbo-vermelho);
+  padding: 1px 6px;
+  background-color: rgba(138, 37, 34, 0.06);
+}
+
 .decisao-efeitos {
   padding-left: 26px;
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 6px;
   font-family: var(--fonte-datilografada);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
+}
+
+.efeito-delta-tag,
+.efeito-pilula {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  background-color: #E8E0CE;
+  border: 1px solid #B8AB96;
+  border-left: 3px solid #2B5438;
   color: #2B5438;
+}
+
+.efeito-delta-tag.efeito-negativo,
+.efeito-pilula.efeito-negativo {
+  border-left-color: var(--cor-carimbo-vermelho);
+  color: var(--cor-carimbo-vermelho);
+  background-color: #EEDCD9;
 }
 
 .efeito-item.efeito-negativo {
@@ -4240,15 +4326,41 @@ body.fase-3 .folha-narrativa {
 }
 
 .manual-conteudo {
-  font-family: var(--fonte-editorial);
-  font-size: 17px;
-  line-height: 1.6;
-  color: #29241E;
-  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.manual-conteudo p {
-  margin-bottom: 14px;
+.manual-card {
+  background-color: #E2D7C1;
+  border: 1px solid #B0A08B;
+  border-left: 3px solid #751F1C;
+  padding: 10px 14px;
+}
+
+.manual-card-tag {
+  font-family: var(--fonte-datilografada);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: #7A6952;
+}
+
+.manual-card-titulo {
+  font-family: var(--fonte-editorial);
+  font-size: 17px;
+  font-weight: 700;
+  color: #241D17;
+  margin: 2px 0 3px 0;
+}
+
+.manual-card p {
+  font-family: var(--fonte-editorial);
+  font-size: 15px;
+  line-height: 1.35;
+  color: #383025;
+  margin: 0;
 }
 
 .manual-rodape {

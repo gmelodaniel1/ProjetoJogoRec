@@ -25,7 +25,7 @@
         <div class="carimbo-confidencial-pasta" aria-hidden="true">CONFIDENCIAL // ARQUIVO MORTO</div>
         
         <div class="menu-cabecalho">
-          <span class="menu-orgao-oficial">ESTADO DE PERNAMBUCO • DEPARTAMENTO DE ORDEM POLÍTICA E SOCIAL</span>
+          <span class="menu-orgao-oficial">ESTADO DE PERNAMBUCO • D.O.P.S.</span>
           <div class="menu-filete-duplo"></div>
           <h1 class="menu-titulo-jogo">ÁGUAS DE FERRO</h1>
           <p class="menu-subtitulo-jogo">Crônicas do Recife sob o Capibaribe e a Ditadura (1948–1975)</p>
@@ -38,7 +38,7 @@
               <span class="menu-opcao-tecla">[ENTER]</span>
               <div class="menu-opcao-textos">
                 <span class="menu-opcao-titulo">CONTINUAR JOGO</span>
-                <span id="menu-continuar-subtitulo" class="menu-opcao-subtitulo">Nenhum jogo salvo no arquivo</span>
+                <span id="menu-continuar-subtitulo" class="menu-opcao-subtitulo" style="display: none;"></span>
               </div>
             </div>
             <span class="menu-opcao-seta">➔</span>
@@ -49,7 +49,6 @@
               <span class="menu-opcao-tecla">[N]</span>
               <div class="menu-opcao-textos">
                 <span class="menu-opcao-titulo">NOVO JOGO</span>
-                <span class="menu-opcao-subtitulo">Iniciar a história a partir do nascimento (Recife, 1948)</span>
               </div>
             </div>
             <span class="menu-opcao-seta">+</span>
@@ -60,7 +59,6 @@
               <span class="menu-opcao-tecla">[G]</span>
               <div class="menu-opcao-textos">
                 <span class="menu-opcao-titulo">CARREGAR JOGO</span>
-                <span class="menu-opcao-subtitulo">Consultar jogos salvos, auto-save e gerenciar arquivos</span>
               </div>
             </div>
             <span class="menu-opcao-seta">▤</span>
@@ -71,7 +69,6 @@
               <span class="menu-opcao-tecla">[M]</span>
               <div class="menu-opcao-textos">
                 <span class="menu-opcao-titulo">MANUAL DO JOGO</span>
-                <span class="menu-opcao-subtitulo">Diretrizes históricas, mecânicas de atributos e regras</span>
               </div>
             </div>
             <span class="menu-opcao-seta">?</span>
@@ -79,7 +76,7 @@
         </div>
 
         <div class="menu-rodape">
-          <span class="menu-aviso-dops">REPRODUÇÃO OU EXTRAVIO DESTE DOCUMENTO É CRIME CONTRA A SEGURANÇA NACIONAL</span>
+          <span class="menu-aviso-dops">CONFIDENCIAL // LEI DE SEGURANÇA NACIONAL</span>
           <span class="menu-versao-build">ED. 1958-1975 • VERSÃO TÉCNICA 1.0</span>
         </div>
       </div>
@@ -125,10 +122,21 @@
           <button id="btn-fechar-manual" class="btn-fechar-gaveteiro" title="Fechar Manual [ESC]">✕</button>
         </div>
         <div class="manual-conteudo">
-          <p><strong>1. DO FLUXO DO TEMPO:</strong> Tua jornada avança cronologicamente de 1948 a 1975 pelas margens do Rio Capibaribe. Cada decisão sela o destino do protagonista e molda a cidade.</p>
-          <p><strong>2. DOS ATRIBUTOS & RECURSOS:</strong> Inspirado nas crônicas de <em>The Life and Suffering of Sir Brante</em>, teus atos desenvolvem Astúcia, Sangue-Frio, Ofício e Presença, além de influenciar Capital, Moral Popular e Suspeita Policial.</p>
-          <p><strong>3. DO MOMENTO DE LEITURA & RESPOSTA:</strong> O inquérito separa a assimilação dos fatos da deliberação. Lê com calma os parágrafos até a Ordem de Despacho antes de selar tua escolha.</p>
-          <p><strong>4. DO SALVAMENTO:</strong> Teus passos são arquivados automaticamente a cada ocorrência. Tu podes registrar até 3 prontuários manuais no Gaveteiro a qualquer momento pressionando [ESC].</p>
+          <div class="manual-card">
+            <span class="manual-card-tag">01 // CRONOLOGIA</span>
+            <div class="manual-card-titulo">O Fluxo do Tempo (1948–1975)</div>
+            <p>Tua vida se desenrola em 4 etapas pelas margens do Capibaribe. Cada decisão carimba o teu prontuário e avança a história.</p>
+          </div>
+          <div class="manual-card">
+            <span class="manual-card-tag">02 // ATRIBUTOS & DOPS</span>
+            <div class="manual-card-titulo">Capacidade & Vigilância</div>
+            <p>Desenvolve Astúcia, Sangue-Frio, Ofício e Presença. Se a Suspeita do DOPS atingir 10/10 ou o Capital zerar, o cerco compulsório fecha.</p>
+          </div>
+          <div class="manual-card">
+            <span class="manual-card-tag">03 // CONTROLES & ATALHOS</span>
+            <div class="manual-card-titulo">Navegação & Deliberação</div>
+            <p>[Espaço] avança texto e confirma • [L] ler tudo • [1, 2, 3] carimbar escolhas • [ESC] gaveteiro de arquivos.</p>
+          </div>
         </div>
         <div class="manual-rodape">
           <button id="btn-entendido-manual" class="btn-dymo btn-dymo-preto">ENTENDIDO // RETORNAR</button>
@@ -144,8 +152,8 @@
           Iniciar um novo jogo reiniciará a história em 1948. Teus registros salvos nos slots manuais serão preservados, mas o progresso atual não salvo será reiniciado. Desejas prosseguir?
         </div>
         <div class="confirmacao-botoes">
-          <button id="btn-confirmar-novo-jogo" class="btn-confirmar-novo">INICIAR NOVO PRONTUÁRIO ➔</button>
-          <button id="btn-cancelar-novo-jogo" class="btn-cancelar-novo">CANCELAR & MANTER ARQUIVO</button>
+          <button id="btn-confirmar-novo-jogo" class="btn-confirmar-novo">SIM, INICIAR ➔</button>
+          <button id="btn-cancelar-novo-jogo" class="btn-cancelar-novo">CANCELAR</button>
         </div>
       </div>
     </div>
@@ -168,7 +176,7 @@
         <div class="virada-idade-linha" id="virada-idade-info">O protagonista completa 1 ano de idade</div>
         <div class="virada-rodape-acao">
           <button id="btn-continuar-virada-ano" class="btn-continuar-virada">
-            <span>ASSIMILAR OS FATOS & SEGUIR O TEMPO</span>
+            <span>SEGUIR O TEMPO [ESPAÇO]</span>
             <span class="seta-acao">➔</span>
           </button>
         </div>
@@ -228,7 +236,7 @@
         <!-- BOTÃO DE CONTINUAÇÃO COM PROPÓSITO -->
         <div class="resolucao-rodape">
           <button id="btn-continuar-resolucao" class="btn-continuar-resolucao">
-            <span>ASSIMILAR OS FATOS & SEGUIR ADIANTE</span>
+            <span>ASSIMILAR OS FATOS & SEGUIR ADIANTE [ESPAÇO]</span>
             <span class="seta-acao">➔</span>
           </button>
         </div>
@@ -256,9 +264,8 @@
       <div class="comandos-sistema">
         <button id="btn-audio-toggle" class="btn-dymo btn-dymo-grafite" title="Alternar Efeitos Sonoros [Mute]">[SOM: ON]</button>
         <button id="btn-menu-arquivo" class="btn-dymo btn-dymo-ambar" title="Gaveteiro de Arquivos & Menu [ESC]">[ESC] ARQUIVO</button>
-        <span class="atalho-guia">[F11] TELA CHEIA</span>
         <button id="btn-devtools" class="btn-dymo btn-dymo-vermelho" title="Console de Depuração [F1]">[F1] DEVTOOLS</button>
-        <button id="btn-fullscreen" class="btn-dymo btn-dymo-preto" title="Alternar Tela Cheia">TELA CHEIA</button>
+        <button id="btn-fullscreen" class="btn-dymo btn-dymo-preto" title="Alternar Tela Cheia">[F11] TELA CHEIA</button>
       </div>
 
       <!-- Rebite metálico mecânico chanfrado direito -->
@@ -430,7 +437,7 @@
                         <span class="valor-attr" id="attr-astucia">2</span>
                       </div>
                       <div class="slot-espectro" id="espectro-astucia"></div>
-                      <p class="attr-explicacao">Leitura de rua, malícia política, dissimulação e improviso em situações de risco.</p>
+                      <p class="attr-explicacao">Leitura de rua, malícia política e improviso em situações de risco.</p>
                     </div>
 
                     <div class="item-atributo-detalhado">
@@ -476,7 +483,7 @@
                         <span class="valor-recurso" id="rec-capital">Cr$ 40</span>
                       </div>
                       <div class="slot-espectro" id="espectro-capital"></div>
-                      <p class="attr-explicacao">Economias em Cruzeiros. Se cair a Cr$ 0, dispara crise de despejo e penúria.</p>
+                      <p class="attr-explicacao">Economias em cruzeiros; em zero, precipita despejo e penúria.</p>
                     </div>
 
                     <div class="item-recurso-detalhado">
@@ -485,7 +492,7 @@
                         <span class="valor-recurso" id="rec-influencia">1</span>
                       </div>
                       <div class="slot-espectro" id="espectro-influencia"></div>
-                      <p class="attr-explicacao">Favores políticos, contatos sindicais, jornalísticos e eclesiásticos no Recife.</p>
+                      <p class="attr-explicacao">Contatos políticos, sindicais, eclesiásticos e de imprensa no Recife.</p>
                     </div>
 
                     <div class="item-recurso-detalhado recurso-alerta">
@@ -494,7 +501,7 @@
                         <span class="valor-recurso" id="rec-suspeita">2 / 10</span>
                       </div>
                       <div class="slot-espectro" id="espectro-suspeita"></div>
-                      <p class="attr-explicacao">Atenção dos investigadores na Rua da União. Em 10/10 ocorre batida policial.</p>
+                      <p class="attr-explicacao">Vigilância dos agentes da Rua da União; em 10/10 deflagra batida policial.</p>
                     </div>
 
                     <div class="item-recurso-detalhado">
@@ -649,8 +656,8 @@
               <span class="texto-acao-leitura">CONTINUAR LEITURA</span>
               <span class="indicador-tecla-leitura">[Espaço ▾]</span>
             </button>
-            <button id="btn-ler-tudo" class="btn-ler-tudo" title="Exibir todo o texto do evento de uma vez">
-              [LER TUDO]
+            <button id="btn-ler-tudo" class="btn-ler-tudo" title="Exibir todo o texto do evento de uma vez [L]">
+              [LER TUDO - L]
             </button>
           </div>
 

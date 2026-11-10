@@ -681,7 +681,11 @@ function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, call
   // 1. Cabeçalho de data e cidade
   if (elResolucaoDataAno) {
     const ano = meta.ano || estado.anoAtual || 1958;
-    elResolucaoDataAno.textContent = `RECIFE, ${ano}`;
+    if (viradaAnoPendente) {
+      elResolucaoDataAno.textContent = `RECIFE, ${viradaAnoPendente.anterior} ➔ ${viradaAnoPendente.novo}`;
+    } else {
+      elResolucaoDataAno.textContent = `RECIFE, ${ano}`;
+    }
   }
 
   // 2. Carimbo oficial com classe de tom correspondente
@@ -756,12 +760,21 @@ function exibirTelaResolucaoConsequencia({ evento, opcao, resultadoDecisao, call
   // 7. Balanço tátil de atributos e patamares (utiliza descreverDelta compartilhado)
   if (elResolucaoBalancoAtributos) {
     elResolucaoBalancoAtributos.innerHTML = '';
+
+    if (viradaAnoPendente) {
+      const chipAno = document.createElement('div');
+      chipAno.className = 'resolucao-chip-delta';
+      const rotIdade = viradaAnoPendente.idade === 0 ? 'Nascimento' : `${viradaAnoPendente.idade} ${viradaAnoPendente.idade === 1 ? 'ano' : 'anos'}`;
+      chipAno.innerHTML = `<span><strong>CALENDÁRIO</strong> ➔ ${viradaAnoPendente.novo} (${rotIdade})</span>`;
+      elResolucaoBalancoAtributos.appendChild(chipAno);
+    }
+
     const deltas = (resultadoDecisao && resultadoDecisao.deltas) || {};
     const entradas = Object.entries(deltas).filter(
       ([, info]) => info && typeof info.delta === 'number' && info.delta !== 0
     );
 
-    if (entradas.length === 0) {
+    if (entradas.length === 0 && !viradaAnoPendente) {
       const chipVazio = document.createElement('div');
       chipVazio.className = 'resolucao-chip-delta';
       chipVazio.innerHTML = `<span>NENHUMA ALTERAÇÃO DIRETA DE ATRIBUTOS</span>`;
@@ -825,9 +838,16 @@ if (elOverlayResolucaoConsequencia) {
   });
 }
 
+let timerViradaAnoAuto = null;
+
 function fecharTransicaoViradaAno() {
   if (!elOverlayViradaAno || elOverlayViradaAno.style.display === 'none') return;
   
+  if (timerViradaAnoAuto) {
+    clearTimeout(timerViradaAnoAuto);
+    timerViradaAnoAuto = null;
+  }
+
   elOverlayViradaAno.classList.add('saindo');
   setTimeout(() => {
     elOverlayViradaAno.style.display = 'none';
@@ -857,6 +877,12 @@ function exibirTransicaoViradaAno(anoDe, anoPara, idade) {
       try { elBtnContinuarViradaAno.focus(); } catch (_) {}
     }, 50);
   }
+
+  // Transição fluida: avança automaticamente após 3.2s ou imediatamente ao clique / tecla
+  if (timerViradaAnoAuto) clearTimeout(timerViradaAnoAuto);
+  timerViradaAnoAuto = setTimeout(() => {
+    fecharTransicaoViradaAno();
+  }, 3200);
 }
 
 if (elBtnContinuarViradaAno) {
@@ -867,14 +893,16 @@ if (elBtnContinuarViradaAno) {
 }
 
 if (elOverlayViradaAno) {
-  elOverlayViradaAno.addEventListener('click', (e) => {
-    if (e.target === elOverlayViradaAno) {
-      fecharTransicaoViradaAno();
-    }
+  elOverlayViradaAno.addEventListener('click', () => {
+    fecharTransicaoViradaAno();
   });
 }
 
 window.addEventListener('keydown', (e) => {
+  // Guarda de foco: não interceptar digitação em campos de entrada de texto
+  const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (tag === 'input' || tag === 'textarea') return;
+
   // 1. Resolução de consequências e virada de ano
   if (elOverlayResolucaoConsequencia && elOverlayResolucaoConsequencia.style.display === 'flex') {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -934,6 +962,31 @@ window.addEventListener('keydown', (e) => {
       }
     }
   }
+
+  // 4. Atalhos Numéricos para Opções de Decisão durante o Evento
+  if (
+    modoVisual === 'evento' &&
+    elSecaoDeliberacao &&
+    elSecaoDeliberacao.style.display !== 'none' &&
+    (!elOverlayResolucaoConsequencia || elOverlayResolucaoConsequencia.style.display === 'none') &&
+    (!elOverlayViradaAno || elOverlayViradaAno.style.display === 'none') &&
+    (!elTelaMenuPrincipal || elTelaMenuPrincipal.style.display === 'none')
+  ) {
+    const num = parseInt(e.key, 10);
+    if (!isNaN(num) && num >= 1 && num <= 9 && elListaDecisoes) {
+      const btnAlvo = elListaDecisoes.querySelector(`button.cartao-decisao.opcao-disponivel[data-numero-atalho="${num}"]`);
+      if (btnAlvo) {
+        e.preventDefault();
+        btnAlvo.click();
+      } else {
+        const itemBloqueado = elListaDecisoes.querySelector(`.cartao-decisao.opcao-bloqueada[data-numero-atalho="${num}"]`);
+        if (itemBloqueado) {
+          e.preventDefault();
+          if (audioManager) audioManager.somAlertaTenso();
+        }
+      }
+    }
+  }
 });
 
 // ==========================================================================
@@ -948,12 +1001,14 @@ function atualizarStatusMenuPrincipal() {
     btnMenuContinuar.disabled = false;
     if (elMenuContinuarSubtitulo) {
       elMenuContinuarSubtitulo.textContent = 
-        `${meta.anoAtual} (${meta.idade} anos) • ${meta.condicaoSocial} • ${meta.tituloCena}`;
+        `${meta.anoAtual} (${meta.idade} anos) • ${meta.tituloCena}`;
+      elMenuContinuarSubtitulo.style.display = 'block';
     }
   } else {
     btnMenuContinuar.disabled = true;
     if (elMenuContinuarSubtitulo) {
-      elMenuContinuarSubtitulo.textContent = "Nenhum jogo salvo no arquivo";
+      elMenuContinuarSubtitulo.textContent = '';
+      elMenuContinuarSubtitulo.style.display = 'none';
     }
   }
 }
@@ -1042,13 +1097,13 @@ function renderizarSlotsGaveteiro() {
           <span class="slot-tag-identificador">${ehAuto ? 'AUTO-SAVE' : slot.nomePadrao.toUpperCase()}</span>
           <span class="slot-data-salvamento">VAZIO</span>
         </div>
-        <p style="font-family: var(--fonte-editorial); font-size: 16px; margin: 18px 0; color: #8C7B65;">
-          Ficha arquivística disponível para registro de prontuário.
+        <p style="font-family: var(--fonte-editorial); font-size: 15px; margin: 14px 0; color: #8C7B65;">
+          Ficha de arquivo disponível.
         </p>
         ${!ehAuto ? `
           <div class="slot-acoes-botoes" style="width: 100%;">
             <button class="btn-slot-salvar" data-acao="salvar-slot" data-slot="${slot.slotId}">
-              ARQUIVAR ESTADO ATUAL 💾
+              SALVAR AQUI 💾
             </button>
           </div>
         ` : ''}
@@ -1058,7 +1113,7 @@ function renderizarSlotsGaveteiro() {
       const attrs = meta.resumoAtributos || {};
       card.innerHTML = `
         <div class="slot-cabecalho">
-          <span class="slot-tag-identificador">${ehAuto ? 'SALVAMENTO AUTOMÁTICO' : slot.nomePadrao.toUpperCase()}</span>
+          <span class="slot-tag-identificador">${ehAuto ? 'AUTO-SAVE' : slot.nomePadrao.toUpperCase()}</span>
           <span class="slot-data-salvamento">${meta.dataFormatada || ''}</span>
         </div>
         <div class="slot-titulo-cena">${escaparHtml(meta.tituloCena || 'Ocorrência Histórica')}</div>
@@ -1077,11 +1132,11 @@ function renderizarSlotsGaveteiro() {
               EXCLUIR ✖
             </button>
             <button class="btn-slot-salvar" data-acao="salvar-slot" data-slot="${slot.slotId}">
-              SOBRESCREVER 💾
+              SALVAR 💾
             </button>
           ` : ''}
           <button class="btn-slot-carregar" data-acao="carregar-slot" data-slot="${slot.slotId}">
-            REQUISITAR & CONTINUAR ➔
+            CONTINUAR ➔
           </button>
         </div>
       `;
@@ -1334,24 +1389,22 @@ function gerarRequisitosDetalhadosHtml(opcao, avaliacao, estadoAtual) {
       if (req.atendido) {
         itens.push(`
           <div class="req-item req-atendido">
-            ✓ EXIGE ${req.rotulo} — Tens <strong>${req.valorAtual} [${espAtual.rotulo}]</strong>
+            ✓ EXIGE ${req.rotulo} (Tens ${req.valorAtual} [${espAtual.rotulo}])
           </div>
         `);
       } else {
         itens.push(`
           <div class="req-item req-falho">
-            ✗ BLOQUEADO: Exige ${req.rotulo} — Tens apenas <strong>${req.valorAtual} [${espAtual.rotulo}]</strong>
+            ✗ BLOQUEADO: Exige ${req.rotulo} (Tens ${req.valorAtual} [${espAtual.rotulo}])
           </div>
         `);
       }
     });
   }
 
-  if (avaliacao.disponivel) {
+  if (opcao.carimbo && opcao.carimbo !== 'REGISTRADO') {
     itens.push(`
-      <div class="req-item req-atendido">
-        ✓ CARIMBO DE REGISTRO: <strong>[${opcao.carimbo || 'REGISTRADO'}]</strong>
-      </div>
+      <span class="etiqueta-carimbo-opcao">[CARIMBO: ${opcao.carimbo}]</span>
     `);
   }
 
@@ -1382,16 +1435,13 @@ function gerarPrevisaoEfeitosHtml(efeitos, estadoAtual) {
     const strFuturo = chave === 'capital' ? `Cr$ ${futuro}` : futuro;
 
     const tagMudanca = mudouPatamar
-      ? ` <strong>(${espFuturo.indice > espAtual.indice ? '▲' : '▼'} Muda p/ ${espFuturo.rotulo.toUpperCase()})</strong>`
+      ? ` ➔ <em>${espFuturo.rotulo.toUpperCase()}</em>`
       : '';
 
     return `
-      <div class="efeito-transicao-item ${ehNegativo ? 'efeito-negativo' : ''}">
-        <span class="efeito-transicao-esq">${ehNegativo ? '▼' : '▲'} ${nome} (${sinal})</span>
-        <span class="efeito-transicao-dir">
-          ${strAtual} [${espAtual.rotulo}] ➔ <strong>${strFuturo} [${espFuturo.rotulo}]</strong>${tagMudanca}
-        </span>
-      </div>
+      <span class="efeito-transicao-item efeito-delta-tag efeito-pilula ${ehNegativo ? 'efeito-negativo' : ''}" title="${nome}: de ${strAtual} [${espAtual.rotulo}] para ${strFuturo} [${espFuturo.rotulo}]">
+        <span class="efeito-transicao-esq">${ehNegativo ? '▼' : '▲'} ${nome} (${sinal})</span>${tagMudanca}
+      </span>
     `;
   }).join('');
 }
@@ -1993,11 +2043,7 @@ function renderizarTelaCronologia() {
     <div>
       ${htmlRegua}
     </div>
-    <div>
-      <div class="rotulo-secao-pasta">MARCOS HISTÓRICOS & ETAPAS DA VIDA</div>
-      <div class="cronologia-fases-lista">${htmlFases}</div>
-    </div>
-    <div>
+    <div style="margin-top: 14px;">
       <div class="rotulo-secao-pasta">DIÁRIO DE OCORRÊNCIAS & ESCOLHAS CARIMBADAS (${diarioDecisoes.length})</div>
       <div class="cronologia-diario-lista">${htmlDiario}</div>
     </div>
@@ -2059,7 +2105,26 @@ function renderizarDossie() {
   htmlCorpo += `<div class="lista-dossie-itens">`;
 
   if (infoDossie.eventosDisponiveis.length === 0) {
-    htmlCorpo += `<p class="dossie-vazio">Nenhum acontecimento pendente neste momento. Todos os registros desta etapa foram concluídos.</p>`;
+    if (estadoAtual.faseAtual < 3) {
+      htmlCorpo += `
+        <div class="banner-fase-transicao banner-fase-concluida">
+          <div class="banner-fase-transicao-tag">
+            TRANSIÇÃO HISTÓRICA // RECIFE, ${estadoAtual.anoAtual}
+          </div>
+          <div class="banner-fase-transicao-titulo">
+            O Tempo Avança Rumo à Ruptura de 1975
+          </div>
+          <p class="banner-fase-transicao-texto">
+            Os anos de chumbo e as transformações da ditadura atravessaram o Recife. Teus passos na clandestinidade e no trabalho te conduziram até o momento decisivo: as vésperas da Grande Cheia de 1975.
+          </p>
+          <button id="btn-avancar-proxima-fase" class="btn-abrir-evento btn-avancar-fase-bloco">
+            AVANÇAR PARA A FASE 3: A CHEIA DE 1975 ➔
+          </button>
+        </div>
+      `;
+    } else {
+      htmlCorpo += `<p class="dossie-vazio">Nenhum acontecimento pendente neste momento. Todos os registros desta etapa foram concluídos.</p>`;
+    }
   } else {
     infoDossie.eventosDisponiveis.forEach(ev => {
       const meta = ev.metadata;
@@ -2094,6 +2159,15 @@ function renderizarDossie() {
 
   htmlCorpo += `</div>`;
   if (elCorpo) elCorpo.innerHTML = htmlCorpo;
+
+  const btnAvancarFase = document.getElementById('btn-avancar-proxima-fase');
+  if (btnAvancarFase) {
+    btnAvancarFase.addEventListener('click', () => {
+      store.avancarFase(3);
+      tocarSomCarimbo();
+      renderizarDossie();
+    });
+  }
 
   document.querySelectorAll('.btn-abrir-evento[data-evento-id]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -2227,15 +2301,19 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta, evento = null) {
     removerListenerTecladoLeitura();
     if (elBlocoProgredirLeitura) elBlocoProgredirLeitura.style.display = 'none';
 
-    // Apresenta o botão de despacho para que o jogador delibere no seu tempo
-    if (elBlocoContinuar) {
-      elBlocoContinuar.style.display = 'flex';
+    // Revela imediatamente a deliberação com foco na primeira opção disponível
+    deliberacaoAberta = true;
+    if (elBlocoContinuar) elBlocoContinuar.style.display = 'none';
+    if (elDivisorDecisoes) elDivisorDecisoes.style.display = 'block';
+    if (elSecaoDeliberacao) {
+      elSecaoDeliberacao.style.display = 'block';
       setTimeout(() => {
-        elBlocoContinuar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        if (elBtnContinuar) {
-          try { elBtnContinuar.focus(); } catch (_) {}
+        elSecaoDeliberacao.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const primeiroBotao = elListaDecisoes ? elListaDecisoes.querySelector('button.opcao-disponivel') : null;
+        if (primeiroBotao) {
+          try { primeiroBotao.focus(); } catch (_) {}
         }
-      }, 40);
+      }, 50);
     }
   }
 
@@ -2339,6 +2417,11 @@ function iniciarProgressaoTexto(corpoHtml, deliberacaoJaAberta, evento = null) {
         e.preventDefault();
         elBtnContinuar.click();
       }
+    } else if (e.key === 'l' || e.key === 'L') {
+      if (elBlocoProgredirLeitura && elBlocoProgredirLeitura.style.display !== 'none') {
+        e.preventDefault();
+        revelarTodosParagrafos(true);
+      }
     }
   };
 
@@ -2418,10 +2501,11 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
         const botao = document.createElement('button');
         botao.className = 'cartao-decisao opcao-disponivel';
         botao.dataset.opcaoId = opcao.id;
+        botao.dataset.numeroAtalho = String(idx + 1);
 
         botao.innerHTML = `
           <div class="decisao-topo">
-            <span class="decisao-numero">${numRomano}</span>
+            <span class="decisao-numero">[${idx + 1}] ${numRomano}</span>
             <span class="decisao-rotulo">${opcao.rotulo}</span>
             ${meta.tipo === 'climax_obrigatorio' ? '<span class="etiqueta-custo">[CLÍMAX]</span>' : ''}
           </div>
@@ -2485,13 +2569,14 @@ function renderizarEvento(evento, deliberacaoAbertaParam = null) {
         const itemBloqueado = document.createElement('div');
         itemBloqueado.className = 'cartao-decisao opcao-bloqueada';
         itemBloqueado.dataset.opcaoId = opcao.id;
+        itemBloqueado.dataset.numeroAtalho = String(idx + 1);
 
         itemBloqueado.innerHTML = `
           <div class="tarja-censura-ai5">
             <span class="carimbo-censura-dcdp">[ CENSURADO // LEI DE IMPRENSA • AI-5 ]</span>
           </div>
           <div class="decisao-topo">
-            <span class="decisao-numero">${numRomano}</span>
+            <span class="decisao-numero">[${idx + 1}] ${numRomano}</span>
             <span class="decisao-rotulo">${opcao.rotulo}</span>
             <span class="etiqueta-custo">[VETADO PELA CENSURA]</span>
           </div>
